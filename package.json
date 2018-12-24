@@ -1,0 +1,22 @@
+{
+  "name": "write-always",
+  "version": "0.0.0",
+  "description": "A community built around creative writing and sharing stories.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DaJoker29/write-always.git"
+  },
+  "author": "Dewitt Buckingham (http://zerodaedalus.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DaJoker29/write-always/issues"
+  },
+  "homepage": "https://github.com/DaJoker29/write-always#readme",
+  "dependencies": {
+    "eslint": "5.11.0"
+  }
+}
