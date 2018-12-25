@@ -4,7 +4,17 @@
   "description": "A community built around creative writing and sharing stories.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --open",
+    "build": "NODE_ENV=production; webpack --progress",
+    "lint": "eslint .",
+    "fix": "eslint --fix ."
+  },
+  "_moduleAliases": {
+    "@root": "./",
+    "@app": "app/",
+    "@tools": "tools/",
+    "@config": "app/config/"
   },
   "husky": {
     "hooks": {
@@ -12,7 +22,10 @@
     }
   },
   "lint-staged": {
-    "*.{js,json,vue}": ["eslint --fix", "git add"]
+    "*.{js,json,vue}": [
+      "eslint --fix",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
@@ -26,6 +39,10 @@
   "homepage": "https://github.com/DaJoker29/write-always#readme",
   "dependencies": {
     "babel-eslint": "10.0.1",
+    "callsite": "1.0.0",
+    "debug": "4.1.1",
+    "deepmerge": "3.0.0",
+    "dotenv": "6.2.0",
     "eslint": "5.11.0",
     "eslint-config-airbnb": "17.1.0",
     "eslint-config-prettier": "3.3.0",
@@ -36,8 +53,15 @@
     "eslint-plugin-prettier": "3.0.0",
     "eslint-plugin-react": "7.11.1",
     "eslint-plugin-vue": "5.0.0",
+    "html-webpack-plugin": "3.2.0",
     "husky": "1.2.1",
     "lint-staged": "8.1.0",
-    "prettier": "1.15.3"
+    "module-alias": "2.1.0",
+    "prettier": "1.15.3",
+    "verror": "1.10.0",
+    "webpack": "4.28.2",
+    "webpack-cli": "3.1.2",
+    "webpack-dev-server": "3.1.14",
+    "webpack-merge": "4.1.5"
   }
 }
