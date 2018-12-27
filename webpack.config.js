@@ -6,6 +6,7 @@ const path = require('path');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const config = require('@app/config');
+const { VueLoaderPlugin } = require('vue-loader');
 
 const common = merge({
   entry: './app/client/index.js',
@@ -13,10 +14,22 @@ const common = merge({
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'public')
   },
+  resolve: {
+    extensions: ['.js', '.vue', '.json']
+  },
+  module: {
+    rules: [
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader'
+      }
+    ]
+  },
   plugins: [
     new HtmlWebpackPlugin({
       title: config.appName
-    })
+    }),
+    new VueLoaderPlugin()
   ]
 });
 

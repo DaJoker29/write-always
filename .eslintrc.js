@@ -1,3 +1,10 @@
+const alias = [
+  ['@root', './'],
+  ['@app', './app/'],
+  ['@tools', './tools/'],
+  ['@config', './app/config/']
+];
+
 module.exports = {
   env: {
     node: true
@@ -11,6 +18,7 @@ module.exports = {
     'plugin:vue/recommended'
   ],
   parserOptions: {
+    echmaVersion: 7,
     ecmaFeatures: {
       jsx: true
     },
@@ -29,6 +37,14 @@ module.exports = {
     'import/no-extraneous-dependencies': 0,
     'import/no-unresolved': ['error']
     // TODO: Fix this rule so the @imports don't fail in the JS
+  },
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.json', '.vue']
+      },
+      alias
+    }
   },
   plugins: ['json', 'import', 'import-order-autofix']
 };
