@@ -36,7 +36,6 @@ module.exports = {
     'no-console': 0,
     'import/no-extraneous-dependencies': 0,
     'import/no-unresolved': ['error']
-    // TODO: Fix this rule so the @imports don't fail in the JS
   },
   settings: {
     'import/resolver': {

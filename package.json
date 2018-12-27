@@ -8,7 +8,9 @@
     "start": "webpack-dev-server --open",
     "build": "NODE_ENV=production; webpack --progress",
     "lint": "eslint .",
-    "fix": "eslint --fix ."
+    "fix": "eslint --fix .",
+    "todo": "leasot app/**/**.* -x",
+    "todo-generate": "leasot app/**/**.* -x --reporter markdown > TODO.md"
   },
   "_moduleAliases": {
     "@root": "./",
@@ -18,7 +20,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "npm run todo-generate && git add TODO.md && lint-staged"
     }
   },
   "lint-staged": {
@@ -56,6 +58,7 @@
     "eslint-plugin-vue": "5.0.0",
     "html-webpack-plugin": "3.2.0",
     "husky": "1.2.1",
+    "leasot": "6.6.2",
     "lint-staged": "8.1.0",
     "module-alias": "2.1.0",
     "prettier": "1.15.3",
