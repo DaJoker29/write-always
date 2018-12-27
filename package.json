@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --open",
     "build": "NODE_ENV=production; webpack --progress",
-    "lint": "eslint .",
-    "fix": "eslint --fix .",
+    "lint": "eslint --ext .js,.json,.vue .",
+    "fix": "eslint --ext .js,.json,.vue . --fix",
     "todo": "leasot app/**/**.* -x",
     "todo-generate": "leasot app/**/**.* -x --reporter markdown > TODO.md"
   },
@@ -42,6 +42,7 @@
   "dependencies": {
     "babel-eslint": "10.0.1",
     "callsite": "1.0.0",
+    "css-loader": "2.1.0",
     "debug": "4.1.1",
     "deepmerge": "3.0.0",
     "dotenv": "6.2.0",
@@ -65,6 +66,7 @@
     "verror": "1.10.0",
     "vue": "2.5.21",
     "vue-loader": "15.4.2",
+    "vue-style-loader": "4.1.2",
     "vue-template-compiler": "2.5.21",
     "webpack": "4.28.2",
     "webpack-cli": "3.1.2",

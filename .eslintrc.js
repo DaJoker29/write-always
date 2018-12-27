@@ -6,23 +6,28 @@ const alias = [
 ];
 
 module.exports = {
+  root: true,
   env: {
-    node: true
+    node: true,
+    browser: true,
+    es6: true
   },
   extends: [
-    'eslint:recommended',
     'airbnb',
+    'eslint:recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
-    'plugin:prettier/recommended',
-    'plugin:vue/recommended'
+    'plugin:vue/recommended',
+    'prettier',
+    'prettier/vue'
   ],
   parserOptions: {
+    parser: 'babel-eslint',
+    sourceType: 'module',
     echmaVersion: 7,
     ecmaFeatures: {
       jsx: true
-    },
-    sourceType: 'module'
+    }
   },
   rules: {
     'prettier/prettier': ['error', { singleQuote: true }],
@@ -45,5 +50,5 @@ module.exports = {
       alias
     }
   },
-  plugins: ['json', 'import', 'import-order-autofix']
+  plugins: ['prettier', 'vue', 'json', 'import', 'import-order-autofix']
 };

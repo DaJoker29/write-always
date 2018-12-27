@@ -1,11 +1,308 @@
 <template>
   <body>
-    <!-- TODO: Inject template-->
     <!-- FIXME: Make Responsive -->
-    <p>Something</p>
+    <!-- Navbar -->
+    <div class="navbar">
+      <div>
+        <h1 class="site-title"><a href="/"> Write, Always </a></h1>
+      </div>
+      <div>
+        <nav class="main-nav">
+          <ul>
+            <li><a href="/authors"> Authors </a></li>
+            <li><a href="/stories"> Stories </a></li>
+            <li><a href="/contact"> Contact </a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Sidebar -->
+      <aside class="intro">
+        <p>
+          Welcome! We are a community of writers and readers who are passionate
+          about storytelling. Here we share our stories for the public at large.
+        </p>
+        <p>
+          Currently, we are invite-only so if you would like to join,
+          <a href=""> please contact one of our admins. </a>
+        </p>
+      </aside>
+
+      <!-- Main Feed -->
+      <main class="recent-stories">
+        <article class="story">
+          <header>
+            <h2>
+              <a class="story-title" href=""> Title of a Story </a>
+              <a class="author-name" href=""> John Smith Doe </a>
+            </h2>
+          </header>
+          <section class="story-body">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Voluptatum aut sit odit et suscipit, laboriosam iure eveniet ea,
+              quasi repellat laudantium quas cupiditate mollitia praesentium,
+              quia ex non pariatur reiciendis.
+            </p>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Voluptatum aut sit odit et suscipit, laboriosam iure eveniet ea,
+              quasi repellat laudantium quas cupiditate mollitia praesentium,
+              quia ex non pariatur reiciendis.
+            </p>
+          </section>
+          <footer>
+            <p>
+              <time>January 7, 2019</time> &bull; <a href=""> Edit </a> &bull;
+              <a href=""> Critique </a> &bull; <a href=""> Comment </a>
+            </p>
+          </footer>
+        </article>
+        <article class="story">
+          <header>
+            <h2>
+              <a class="story-title" href=""> Title of a Story </a>
+              <a class="author-name" href=""> John Smith Doe </a>
+            </h2>
+          </header>
+          <section class="story-body">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Voluptatum aut sit odit et suscipit, laboriosam iure eveniet ea,
+              quasi repellat laudantium quas cupiditate mollitia praesentium,
+              quia ex non pariatur reiciendis.
+            </p>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Voluptatum aut sit odit et suscipit, laboriosam iure eveniet ea,
+              quasi repellat laudantium quas cupiditate mollitia praesentium,
+              quia ex non pariatur reiciendis.
+            </p>
+          </section>
+          <footer>
+            <p>
+              <time>January 7, 2019</time> &bull; <a href=""> Edit </a> &bull;
+              <a href=""> Critique </a> &bull; <a href=""> Comment </a>
+            </p>
+          </footer>
+        </article>
+        <article class="story">
+          <header>
+            <h2>
+              <a class="story-title" href=""> Title of a Story </a>
+              <a class="author-name" href=""> John Smith Doe </a>
+            </h2>
+          </header>
+          <section class="story-body">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Voluptatum aut sit odit et suscipit, laboriosam iure eveniet ea,
+              quasi repellat laudantium quas cupiditate mollitia praesentium,
+              quia ex non pariatur reiciendis.
+            </p>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Voluptatum aut sit odit et suscipit, laboriosam iure eveniet ea,
+              quasi repellat laudantium quas cupiditate mollitia praesentium,
+              quia ex non pariatur reiciendis.
+            </p>
+          </section>
+          <footer>
+            <p>
+              <time>January 7, 2019</time> &bull; <a href=""> Edit </a> &bull;
+              <a href=""> Critique </a> &bull; <a href=""> Comment </a>
+            </p>
+          </footer>
+        </article>
+      </main>
+    </div>
   </body>
 </template>
 
 <script>
 export default {};
 </script>
+
+<style>
+@import 'https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css';
+@import 'https://use.typekit.net/rai5ihu.css';
+
+:root {
+  --color-cream: #fffff0;
+  --color-black: #212321;
+  --color-white: #f2f2f2;
+  --color-blue: #49a5a9;
+  --color-red: #ed7a66;
+  --color-grey: #757575;
+
+  --font-main: open-sans, sans-serif;
+  --font-headings: grandma, serif;
+
+  --h1: 6.854rem;
+  --h2: 4.236rem;
+  --h3: 2.618rem;
+  --h4: 1.618rem;
+}
+
+html {
+  background-color: var(--color-cream);
+  color: var(--color-black);
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-main);
+  line-height: 1.7;
+  padding: 0 2em;
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-headings {
+  font-family: var(--font-headings);
+}
+
+h1,
+.h1 {
+  font-size: 6.854em;
+  font-weight: 700;
+}
+
+h2,
+.h2 {
+  font-size: 4.236em;
+}
+
+h3,
+.h3 {
+  font-size: 2.618em;
+}
+
+h4,
+.h4 {
+  font-size: 1.618em;
+}
+
+small,
+.small {
+  font-size: 0.618em;
+}
+
+a {
+  outline: none;
+  text-decoration: none;
+}
+
+a:link,
+a:visited {
+  color: var(--color-blue);
+  font-weight: 600;
+  border-bottom: 1px dashed;
+}
+
+a:focus,
+a:hover,
+a:active {
+  color: var(--color-red);
+}
+
+.navbar {
+  display: grid;
+  grid-gap: 1em;
+  grid-template-columns: 1fr 1fr;
+}
+
+.main-nav a:link,
+.main-nav a:visited,
+h1 > a:link,
+h1 > a:visited,
+h2 > a:link,
+h2 > a:visited,
+h3 > a:link,
+h3 > a:visited,
+h4 > a:link,
+h4 > a:visited {
+  text-decoration: none;
+  font-family: var(--font-headings);
+  color: var(--color-black);
+  border-bottom: none;
+  font-weight: 400;
+}
+
+.main-nav a:focus,
+.main-nav a:hover,
+.main-nav a:active,
+h1 > a:focus,
+h1 > a:hover,
+h1 > a:active,
+h2 > a:focus,
+h2 > a:hover,
+h2 > a:active,
+h3 > a:focus,
+h3 > a:hover,
+h3 > a:active,
+h4 > a:focus,
+h4 > a:hover,
+h4 > a:active {
+  font-weight: 700;
+}
+
+.main-nav > ul > li {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 2em;
+}
+
+.main-nav a {
+  font-size: 4.236em;
+}
+
+.container {
+  display: grid;
+  grid-gap: 2em;
+  grid-template-columns: 1fr 2fr;
+}
+
+.intro {
+  font-family: var(--font-headings);
+  font-size: var(--h3);
+  line-height: 1.3;
+  text-align: center;
+}
+
+.intro > p {
+  margin-bottom: 1em;
+}
+
+a.author-name:link,
+a.author-name:visited,
+a.author-name:focus {
+  font-size: var(--h4);
+  font-weight: 600;
+  font-family: var(--font-main);
+  color: var(--color-blue);
+  font-style: italic;
+}
+
+a.author-name:hover,
+a.author-name:active {
+  color: var(--color-red);
+}
+
+.story footer {
+  text-align: right;
+}
+
+.story footer * {
+  color: var(--color-grey);
+}
+
+.story footer a:hover,
+.story footer a:active {
+  color: var(--color-red);
+}
+</style>
