@@ -1,5 +1,8 @@
 <template>
-  <header class="site-header" :class="{ 'search-open': isSearchOpen }">
+  <header
+    class="site-header"
+    :class="{ 'search-open': isSearchOpen, 'nav-open': isNavOpen }"
+  >
     <div class="header-shell">
       <div class="logo"><a href=""> Write, Always</a></div>
       <div class="search">
@@ -8,9 +11,18 @@
         ></a>
       </div>
       <div class="hamburger">
-        <a class="btn-hamburger"> <i class="fas fa-bars"></i> </a>
+        <a class="btn-hamburger" @click="toggleNav">
+          <i class="fas fa-bars"></i>
+        </a>
       </div>
     </div>
+    <nav class="nav">
+      <ul>
+        <li><a href="/authors"> Authors </a></li>
+        <li><a href="/stories"> Stories </a></li>
+        <li><a href="/contact"> Contact </a></li>
+      </ul>
+    </nav>
     <div class="search-box">
       <form class="search-form">
         <input
@@ -30,9 +42,9 @@
 import { mapState, mapActions } from 'vuex';
 
 export default {
-  computed: mapState(['isSearchOpen']),
+  computed: mapState(['isSearchOpen', 'isNavOpen']),
   methods: {
-    ...mapActions(['toggleSearch'])
+    ...mapActions(['toggleSearch', 'toggleNav'])
   }
 };
 </script>
@@ -62,6 +74,11 @@ export default {
 .site-header .logo {
   display: inline-block;
   flex: 1;
+}
+
+.site-header .logo,
+.site-header .hamburger {
+  z-index: 100;
 }
 
 .site-header .logo a {
@@ -108,5 +125,41 @@ export default {
   background: 0 0;
   color: var(--color-white);
   font-size: var(--h4);
+}
+
+.nav {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: var(--color-red);
+  text-align: center;
+  font-size: var(--h3);
+  z-index: 99;
+  transform: scale(0);
+  transition: 0.3s;
+}
+
+.nav-open .nav {
+  transform: scale(1);
+}
+
+.nav ul {
+  width: 50%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column wrap;
+}
+
+.nav-open a {
+  color: var(--color-black);
 }
 </style>

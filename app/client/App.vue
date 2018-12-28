@@ -2,15 +2,7 @@
   <body>
     <SiteHeader />
     <!-- Navigation -->
-    <div>
-      <nav class="main-nav">
-        <ul>
-          <li><a href="/authors"> Authors </a></li>
-          <li><a href="/stories"> Stories </a></li>
-          <li><a href="/contact"> Contact </a></li>
-        </ul>
-      </nav>
-    </div>
+    <div><nav class="main-nav"></nav></div>
 
     <div class="container">
       <!-- Sidebar -->
