@@ -8,6 +8,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const config = require('@app/config');
 const { VueLoaderPlugin } = require('vue-loader');
 
+// TODO: Pass Config into view package using process.env.config
+
 const common = merge({
   entry: './app/client/index.js',
   output: {

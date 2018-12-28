@@ -9,8 +9,8 @@
     "build": "NODE_ENV=production; webpack --progress",
     "lint": "eslint --ext .js,.json,.vue .",
     "fix": "eslint --ext .js,.json,.vue . --fix",
-    "todo": "leasot app/**/**.* -x",
-    "todo-generate": "leasot app/**/**.* -x --reporter markdown > TODO.md"
+    "todo": "leasot . -xSIi \"node_modules,public\"",
+    "todo-generate": "leasot . -xSIi \"node_modules,public\" --reporter markdown > TODO.md"
   },
   "_moduleAliases": {
     "@root": "./",

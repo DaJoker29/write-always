@@ -126,10 +126,10 @@ export default {};
 </script>
 
 <style>
-/* TODO: Extract CSS to avoid FOUT*/
 @import 'https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css';
 @import 'https://use.typekit.net/rai5ihu.css';
 
+/* TODO: Extract CSS to avoid FOUT*/
 :root {
   --color-cream: #fffff0;
   --color-black: #212321;
