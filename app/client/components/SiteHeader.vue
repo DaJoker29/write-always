@@ -1,9 +1,11 @@
 <template>
-  <header class="site-header">
+  <header class="site-header" :class="{ 'search-open': isSearchOpen }">
     <div class="header-shell">
       <div class="logo"><a href=""> Write, Always</a></div>
       <div class="search">
-        <a class="btn-search"><i class="fas fa-search"></i></a>
+        <a class="btn-search" @click="toggleSearch"
+          ><i class="fas fa-search"></i
+        ></a>
       </div>
       <div class="hamburger">
         <a class="btn-hamburger"> <i class="fas fa-bars"></i> </a>
@@ -15,7 +17,7 @@
           id="search-field"
           type="text"
           class="search-field"
-          placeholder="Search"
+          placeholder="Search..."
           name="query"
           autocomplete="off"
         />
@@ -23,6 +25,17 @@
     </div>
   </header>
 </template>
+
+<script>
+import { mapState, mapActions } from 'vuex';
+
+export default {
+  computed: mapState(['isSearchOpen']),
+  methods: {
+    ...mapActions(['toggleSearch'])
+  }
+};
+</script>
 
 <style scoped>
 .site-header {
@@ -40,6 +53,9 @@
   overflow: hidden;
   flex-flow: row nowrap;
   align-items: center;
+}
+
+.header-shell.search-open {
   border-bottom: 1px solid var(--color-black);
 }
 
@@ -65,6 +81,24 @@
   border-radius: 0.125rem;
 }
 
+.search-box {
+  position: absolute;
+  margin: var(--spacing) 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: 1s;
+  background: 0 0;
+}
+
+.search-open .search-box {
+  opacity: 1;
+  visibility: visible;
+  background: var(--color-black);
+}
+
 .search-field {
   margin: var(--spacing-double) 0;
   padding: 0 var(--spacing-double);
@@ -72,6 +106,7 @@
   width: 100%;
   border: 1px solid transparent;
   background: 0 0;
+  color: var(--color-white);
   font-size: var(--h4);
 }
 </style>
