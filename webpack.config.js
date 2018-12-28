@@ -3,12 +3,11 @@ require('@app/utils');
 require('dotenv').config();
 
 const path = require('path');
+const { DefinePlugin } = require('webpack');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const config = require('@app/config');
 const { VueLoaderPlugin } = require('vue-loader');
-
-// TODO: Pass Config into view package using process.env.config
 
 const common = merge({
   entry: './app/client/index.js',
@@ -33,9 +32,19 @@ const common = merge({
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: config.appName
+      title: `${config.app.name} - ${config.app.tagline}`,
+      meta: {
+        description: config.app.description,
+        viewport: 'width=device-width, initial-scale=1',
+        'theme-color': config.app.themeColor
+      }
     }),
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
+    new DefinePlugin({
+      'process.env': {
+        SITE_CONFIG: JSON.stringify(config)
+      }
+    })
   ]
 });
 

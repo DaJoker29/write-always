@@ -274,6 +274,6 @@ a:active {
 }
 
 .container {
-  margin-top: calc(var(--spacing) * 10);
+  margin-top: calc(var(--spacing) * 5);
 }
 </style>
