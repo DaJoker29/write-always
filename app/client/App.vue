@@ -198,6 +198,8 @@ export default {
 
   --font-main: open-sans, sans-serif;
   --font-headings: grandma, serif;
+  --font-size: 16px;
+  --line-height: 1.7;
 
   --h1: 6.854rem;
   --h2: 4.236rem;
@@ -205,6 +207,7 @@ export default {
   --h4: 1.618rem;
 
   --spacing: 0.5rem;
+  --spacing-double: 1rem;
 }
 
 *,
@@ -216,12 +219,12 @@ export default {
 html {
   background-color: var(--color-cream);
   color: var(--color-black);
-  font-size: 16px;
+  font-size: var(--font-size);
 }
 
 body {
   font-family: var(--font-main);
-  line-height: 1.7;
+  line-height: var(--line-height);
 }
 
 h1,
