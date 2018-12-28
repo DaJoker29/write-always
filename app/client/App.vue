@@ -1,20 +1,15 @@
 <template>
   <body>
-    <!-- FIXME: Make Responsive -->
-    <!-- Navbar -->
-    <div class="navbar">
-      <div>
-        <h1 class="site-title"><a href="/"> Write, Always </a></h1>
-      </div>
-      <div>
-        <nav class="main-nav">
-          <ul>
-            <li><a href="/authors"> Authors </a></li>
-            <li><a href="/stories"> Stories </a></li>
-            <li><a href="/contact"> Contact </a></li>
-          </ul>
-        </nav>
-      </div>
+    <SiteHeader />
+    <!-- Navigation -->
+    <div>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="/authors"> Authors </a></li>
+          <li><a href="/stories"> Stories </a></li>
+          <li><a href="/contact"> Contact </a></li>
+        </ul>
+      </nav>
     </div>
 
     <div class="container">
@@ -116,18 +111,81 @@
             </p>
           </footer>
         </article>
+        <article class="story">
+          <header>
+            <h2>
+              <a class="story-title" href=""> Title of a Story </a>
+              <a class="author-name" href=""> John Smith Doe </a>
+            </h2>
+          </header>
+          <section class="story-body">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Voluptatum aut sit odit et suscipit, laboriosam iure eveniet ea,
+              quasi repellat laudantium quas cupiditate mollitia praesentium,
+              quia ex non pariatur reiciendis.
+            </p>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Voluptatum aut sit odit et suscipit, laboriosam iure eveniet ea,
+              quasi repellat laudantium quas cupiditate mollitia praesentium,
+              quia ex non pariatur reiciendis.
+            </p>
+          </section>
+          <footer>
+            <p>
+              <time>January 7, 2019</time> &bull; <a href=""> Edit </a> &bull;
+              <a href=""> Critique </a> &bull; <a href=""> Comment </a>
+            </p>
+          </footer>
+        </article>
+        <article class="story">
+          <header>
+            <h2>
+              <a class="story-title" href=""> Title of a Story </a>
+              <a class="author-name" href=""> John Smith Doe </a>
+            </h2>
+          </header>
+          <section class="story-body">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Voluptatum aut sit odit et suscipit, laboriosam iure eveniet ea,
+              quasi repellat laudantium quas cupiditate mollitia praesentium,
+              quia ex non pariatur reiciendis.
+            </p>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Voluptatum aut sit odit et suscipit, laboriosam iure eveniet ea,
+              quasi repellat laudantium quas cupiditate mollitia praesentium,
+              quia ex non pariatur reiciendis.
+            </p>
+          </section>
+          <footer>
+            <p>
+              <time>January 7, 2019</time> &bull; <a href=""> Edit </a> &bull;
+              <a href=""> Critique </a> &bull; <a href=""> Comment </a>
+            </p>
+          </footer>
+        </article>
       </main>
     </div>
   </body>
 </template>
 
 <script>
-export default {};
+import SiteHeader from './components/SiteHeader';
+
+export default {
+  components: {
+    SiteHeader
+  }
+};
 </script>
 
 <style>
 @import 'https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css';
 @import 'https://use.typekit.net/rai5ihu.css';
+@import 'https://use.fontawesome.com/releases/v5.6.3/css/all.css';
 
 /* TODO: Extract CSS to avoid FOUT*/
 :root {
@@ -145,6 +203,14 @@ export default {};
   --h2: 4.236rem;
   --h3: 2.618rem;
   --h4: 1.618rem;
+
+  --spacing: 0.5rem;
+}
+
+*,
+::after,
+::before {
+  box-sizing: border-box;
 }
 
 html {
@@ -156,14 +222,12 @@ html {
 body {
   font-family: var(--font-main);
   line-height: 1.7;
-  padding: 0 2em;
 }
 
 h1,
 h2,
 h3,
-h4,
-.font-headings {
+h4 {
   font-family: var(--font-headings);
 }
 
@@ -211,99 +275,5 @@ a:active {
   color: var(--color-red);
 }
 
-.navbar {
-  display: grid;
-  grid-gap: 1em;
-  grid-template-columns: 1fr 1fr;
-}
-
-.main-nav a:link,
-.main-nav a:visited,
-h1 > a:link,
-h1 > a:visited,
-h2 > a:link,
-h2 > a:visited,
-h3 > a:link,
-h3 > a:visited,
-h4 > a:link,
-h4 > a:visited {
-  text-decoration: none;
-  font-family: var(--font-headings);
-  color: var(--color-black);
-  border-bottom: none;
-  font-weight: 400;
-}
-
-.main-nav a:focus,
-.main-nav a:hover,
-.main-nav a:active,
-h1 > a:focus,
-h1 > a:hover,
-h1 > a:active,
-h2 > a:focus,
-h2 > a:hover,
-h2 > a:active,
-h3 > a:focus,
-h3 > a:hover,
-h3 > a:active,
-h4 > a:focus,
-h4 > a:hover,
-h4 > a:active {
-  font-weight: 700;
-}
-
-.main-nav > ul > li {
-  display: inline-block;
-  vertical-align: middle;
-  margin: 2em;
-}
-
-.main-nav a {
-  font-size: 4.236em;
-}
-
-.container {
-  display: grid;
-  grid-gap: 2em;
-  grid-template-columns: 1fr 2fr;
-}
-
-.intro {
-  font-family: var(--font-headings);
-  font-size: var(--h3);
-  line-height: 1.3;
-  text-align: center;
-}
-
-.intro > p {
-  margin-bottom: 1em;
-}
-
-a.author-name:link,
-a.author-name:visited,
-a.author-name:focus {
-  font-size: var(--h4);
-  font-weight: 600;
-  font-family: var(--font-main);
-  color: var(--color-blue);
-  font-style: italic;
-}
-
-a.author-name:hover,
-a.author-name:active {
-  color: var(--color-red);
-}
-
-.story footer {
-  text-align: right;
-}
-
-.story footer * {
-  color: var(--color-grey);
-}
-
-.story footer a:hover,
-.story footer a:active {
-  color: var(--color-red);
-}
+/* Components */
 </style>
