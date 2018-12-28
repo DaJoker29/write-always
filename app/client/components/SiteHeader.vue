@@ -56,8 +56,8 @@ export default {
   left: 0;
   width: 100%;
   background-color: var(--color-white);
-  border-bottom: var(--spacing) solid var(--color-blue);
-  padding: var(--spacing);
+  border-bottom: var(--spacing-half) solid var(--color-blue);
+  padding: var(--spacing-half) var(--spacing);
 }
 
 .header-shell {
@@ -67,46 +67,39 @@ export default {
   align-items: center;
 }
 
-.header-shell.search-open {
-  border-bottom: 1px solid var(--color-black);
-}
-
-.site-header .logo {
-  display: inline-block;
+.logo {
   flex: 1;
 }
 
-.site-header .logo,
-.site-header .hamburger {
+.logo,
+.hamburger {
   z-index: 100;
+  transition: var(--transition);
 }
 
-.site-header .logo a {
-  display: inline-block;
+.logo a {
   color: var(--color-black);
   border-bottom: 0;
-  font: bold var(--h3) var(--font-headings);
+  font: bold var(--h2) var(--font-headings);
 }
 
-.site-header .hamburger,
-.site-header .search {
-  flex: 0 0 2rem;
-  margin-left: var(--spacing);
-  display: inline-block;
-  padding: calc(var(--spacing) / 2) var(--spacing);
+.hamburger a,
+.search a {
+  margin-left: var(--spacing-half);
+  padding: 0 var(--spacing-half);
   text-align: center;
-  border-radius: 0.125rem;
+  font-size: var(--h4);
 }
 
 .search-box {
   position: absolute;
-  margin: var(--spacing) 0;
+  margin-top: var(--spacing-half);
   left: 0;
   right: 0;
   width: 100%;
   opacity: 0;
   visibility: hidden;
-  transition: 1s;
+  transition: var(--transition-long);
   background: 0 0;
 }
 
@@ -117,13 +110,13 @@ export default {
 }
 
 .search-field {
-  margin: var(--spacing-double) 0;
+  margin: var(--spacing) 0;
   padding: 0 var(--spacing-double);
   display: block;
   width: 100%;
   border: 1px solid transparent;
-  background: 0 0;
-  color: var(--color-white);
+  background: none;
+  color: var(--color-cream);
   font-size: var(--h4);
 }
 
@@ -140,10 +133,10 @@ export default {
   height: 100vh;
   background-color: var(--color-red);
   text-align: center;
-  font-size: var(--h3);
+  font-size: var(--h1);
   z-index: 99;
   transform: scale(0);
-  transition: 0.3s;
+  transition: var(--transition);
 }
 
 .nav-open .nav {
@@ -151,15 +144,25 @@ export default {
 }
 
 .nav ul {
-  width: 50%;
-  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-flow: column wrap;
 }
 
-.nav-open a {
-  color: var(--color-black);
+.nav a {
+  color: var(--color-white);
+  font-weight: bold;
+}
+
+.btn-hamburger,
+.logo a {
+  transition: var(--transition);
+}
+
+.nav-open .btn-hamburger,
+.nav-open .logo a {
+  color: var(--color-white);
+  padding: var(--spacing);
 }
 </style>

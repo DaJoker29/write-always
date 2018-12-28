@@ -1,8 +1,6 @@
 <template>
   <body>
     <SiteHeader />
-    <!-- Navigation -->
-    <div><nav class="main-nav"></nav></div>
 
     <div class="container">
       <!-- Sidebar -->
@@ -190,16 +188,21 @@ export default {
 
   --font-main: open-sans, sans-serif;
   --font-headings: grandma, serif;
-  --font-size: 16px;
+  --font-size: 20px;
   --line-height: 1.7;
 
-  --h1: 6.854rem;
-  --h2: 4.236rem;
-  --h3: 2.618rem;
-  --h4: 1.618rem;
+  --h1: 2.441rem;
+  --h2: 1.953rem;
+  --h3: 1.563rem;
+  --h4: 1.25rem;
+  --small: 0.8rem;
 
-  --spacing: 0.5rem;
-  --spacing-double: 1rem;
+  --spacing: var(--font-size);
+  --spacing-double: calc(var(--spacing) * 2);
+  --spacing-half: calc(var(--spacing) / 2);
+
+  --transition: 0.3s;
+  --transition-long: 1s;
 }
 
 *,
@@ -228,28 +231,28 @@ h4 {
 
 h1,
 .h1 {
-  font-size: 6.854em;
+  font-size: var(--h1);
   font-weight: 700;
 }
 
 h2,
 .h2 {
-  font-size: 4.236em;
+  font-size: var(--h2);
 }
 
 h3,
 .h3 {
-  font-size: 2.618em;
+  font-size: var(--h3);
 }
 
 h4,
 .h4 {
-  font-size: 1.618em;
+  font-size: var(--h4);
 }
 
 small,
 .small {
-  font-size: 0.618em;
+  font-size: var(--small);
 }
 
 a {
@@ -270,5 +273,7 @@ a:active {
   color: var(--color-red);
 }
 
-/* Components */
+.container {
+  margin-top: calc(var(--spacing) * 10);
+}
 </style>
