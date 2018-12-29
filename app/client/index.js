@@ -2,7 +2,7 @@ import Vue from 'vue';
 import store from './store';
 import App from './App';
 
-// TODO: Set Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 new Vue({
   store,
