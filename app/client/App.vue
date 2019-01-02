@@ -2,26 +2,19 @@
   <body :class="{ 'search-open': isSearchOpen, 'nav-open': isNavOpen }">
     <SiteHeader />
 
-    <div class="container">
-      <Intro />
-      <MainFeed />
-    </div>
+    <div class="container"><RouterView /></div>
   </body>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import SiteHeader from './components/SiteHeader';
-import Intro from './components/Intro';
-import MainFeed from './components/MainFeed';
 
 export default {
-  computed: mapState(['isSearchOpen', 'isNavOpen']),
   components: {
-    SiteHeader,
-    Intro,
-    MainFeed
-  }
+    SiteHeader
+  },
+  computed: mapState(['isSearchOpen', 'isNavOpen'])
 };
 </script>
 

@@ -16,7 +16,8 @@ const common = merge({
     path: path.resolve(__dirname, 'public')
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json']
+    extensions: ['.js', '.vue', '.json'],
+    alias: config.pkg._moduleAliases || {}
   },
   module: {
     rules: [

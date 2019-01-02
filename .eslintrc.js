@@ -1,10 +1,3 @@
-const alias = [
-  ['@root', './'],
-  ['@app', './app/'],
-  ['@tools', './tools/'],
-  ['@config', './app/config/']
-];
-
 module.exports = {
   root: true,
   env: {
@@ -47,7 +40,15 @@ module.exports = {
       node: {
         extensions: ['.js', '.json', '.vue']
       },
-      alias
+      alias: {
+        map: [
+          ['@root', './'],
+          ['@app', './app/'],
+          ['@tools', './tools/'],
+          ['@config', './app/config/']
+        ],
+        extensions: ['.js', '.json', '.vue']
+      }
     }
   },
   plugins: ['prettier', 'vue', 'json', 'import', 'import-order-autofix']
