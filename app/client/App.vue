@@ -2,7 +2,15 @@
   <body :class="{ 'search-open': isSearchOpen, 'nav-open': isNavOpen }">
     <SiteHeader />
 
-    <div class="container"><RouterView /></div>
+    <div class="container" @click="isSearchOpen === true ? toggleSearch : null">
+      <Transition
+        enter-active-class="animated fadeIn"
+        leave-active-class="animated fadeOut"
+        mode="out-in"
+      >
+        <RouterView />
+      </Transition>
+    </div>
   </body>
 </template>
 
@@ -22,6 +30,7 @@ export default {
 @import 'https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css';
 @import 'https://use.typekit.net/rai5ihu.css';
 @import 'https://use.fontawesome.com/releases/v5.6.3/css/all.css';
+@import 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css';
 
 /* TODO: Extract CSS to avoid FOUT*/
 :root {
@@ -47,16 +56,21 @@ export default {
   --spacing-double: calc(var(--spacing) * 2);
   --spacing-half: calc(var(--spacing) / 2);
 
-  --transition: 0.3s;
-  --transition-long: 1s;
+  --transition: 0.2s;
+  --transition-long: 0.8s;
 
   --bp-1: 767px;
+}
+
+.animated {
+  animation-duration: var(--transition);
 }
 
 *,
 ::after,
 ::before {
   box-sizing: border-box;
+  transition: all var(--transition) linear;
 }
 
 html {
@@ -103,30 +117,29 @@ small,
   font-size: var(--small);
 }
 
-a {
-  outline: none;
-  text-decoration: none;
-}
-
 a:link,
 a:visited {
   color: var(--color-blue);
   font-weight: 600;
   border-bottom: 1px dashed;
+  outline: none;
+  text-decoration: none;
 }
 
 a:focus,
 a:hover,
-a:active {
+a:active,
+.active {
   color: var(--color-red);
 }
 
 .container {
   margin-top: calc(var(--spacing-half) * 3 + var(--h2) * var(--line-height));
+  transition: var(--transition-long);
 }
 
 .search-open .container {
-  filter: grayscale(0.8) blur(var(--spacing-half));
+  filter: grayscale(1) blur(var(--spacing-half));
   z-index: -1;
 }
 </style>

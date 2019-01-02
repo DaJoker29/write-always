@@ -1,9 +1,16 @@
 <template>
   <header class="site-header">
     <div class="header-shell">
-      <div class="logo"><a href=""> Write, Always</a></div>
+      <div class="logo">
+        <RouterLink :to="{ name: 'home' }" @click.native="closeNav"
+          >Write, Always</RouterLink
+        >
+      </div>
       <div class="search">
-        <a class="btn-search" @click="toggleSearch"
+        <a
+          class="btn-search"
+          :class="{ active: isSearchOpen }"
+          @click="toggleSearch"
           ><i class="fas fa-search"></i
         ></a>
       </div>
@@ -18,6 +25,11 @@
         <li><a href="/authors"> Authors </a></li>
         <li><a href="/stories"> Stories </a></li>
         <li><a href="/contact"> Contact </a></li>
+        <li>
+          <RouterLink :to="{ name: 'login' }" @click.native="toggleNav"
+            >Log In</RouterLink
+          >
+        </li>
       </ul>
     </nav>
     <div class="search-box">
@@ -36,11 +48,14 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   methods: {
-    ...mapActions(['toggleSearch', 'toggleNav'])
+    ...mapActions(['toggleSearch', 'toggleNav', 'closeNav'])
+  },
+  computed: {
+    ...mapState(['isNavOpen', 'isSearchOpen'])
   }
 };
 </script>
@@ -54,6 +69,7 @@ export default {
   background-color: var(--color-white);
   border-bottom: var(--spacing-half) solid var(--color-blue);
   padding: var(--spacing-half) var(--spacing);
+  z-index: 16;
 }
 
 .header-shell {
@@ -93,16 +109,18 @@ export default {
   left: 0;
   right: 0;
   width: 100%;
-  opacity: 0;
-  visibility: hidden;
   transition: var(--transition-long);
-  background: 0 0;
+  transform: scaleY(0);
+  transform-origin: top center;
+}
+
+.search-box:focus-within {
+  box-shadow: inset 0 0 var(--spacing) 0 black;
 }
 
 .search-open .search-box {
-  opacity: 1;
-  visibility: visible;
   background: var(--color-black);
+  transform: scaleY(1);
 }
 
 .search-field {
@@ -135,10 +153,6 @@ export default {
   transition: var(--transition);
 }
 
-.nav-open .nav {
-  transform: scale(1);
-}
-
 .nav ul {
   display: flex;
   align-items: center;
@@ -154,6 +168,10 @@ export default {
 .btn-hamburger,
 .logo a {
   transition: var(--transition);
+}
+
+.nav-open .nav {
+  transform: scale(1);
 }
 
 .nav-open .btn-hamburger,

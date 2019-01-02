@@ -16,6 +16,9 @@ export default new Vuex.Store({
     },
     toggleNav(state) {
       state.isNavOpen = !state.isNavOpen;
+    },
+    closeNav(state) {
+      state.isNavOpen = false;
     }
   },
   actions: {
@@ -24,6 +27,9 @@ export default new Vuex.Store({
     },
     toggleNav({ commit }) {
       commit('toggleNav');
+    },
+    closeNav({ commit }) {
+      commit('closeNav');
     }
   }
 });
