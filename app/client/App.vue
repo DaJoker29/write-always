@@ -56,6 +56,8 @@ export default {
 
   --transition: 0.3s;
   --transition-long: 1s;
+
+  --bp-1: 767px;
 }
 
 *,

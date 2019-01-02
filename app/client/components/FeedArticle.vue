@@ -25,6 +25,7 @@ export default {
 <style scoped>
 .story {
   margin: var(--spacing);
+  flex: 1 1 var(--bp-1);
 }
 
 .story header a {

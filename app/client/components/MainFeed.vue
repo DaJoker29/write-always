@@ -1,5 +1,5 @@
 <template>
-  <main class="recent-stories">
+  <main class="main-feed">
     <FeedArticle
       v-for="(post, index) in posts"
       :key="`post-${index}`"
@@ -30,3 +30,10 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.main-feed {
+  display: flex;
+  flex-flow: row wrap;
+}
+</style>
