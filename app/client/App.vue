@@ -1,173 +1,26 @@
 <template>
-  <body>
+  <body :class="{ 'search-open': isSearchOpen, 'nav-open': isNavOpen }">
     <SiteHeader />
 
     <div class="container">
-      <!-- Sidebar -->
-      <aside class="intro">
-        <p>
-          Welcome! We are a community of writers and readers who are passionate
-          about storytelling. Here we share our stories for the public at large.
-        </p>
-        <p>
-          Currently, we are invite-only so if you would like to join,
-          <a href=""> please contact one of our admins. </a>
-        </p>
-      </aside>
-
-      <!-- Main Feed -->
-      <main class="recent-stories">
-        <article class="story">
-          <header>
-            <h2>
-              <a class="story-title" href=""> Title of a Story </a>
-              <a class="author-name" href=""> John Smith Doe </a>
-            </h2>
-          </header>
-          <section class="story-body">
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Voluptatum aut sit odit et suscipit, laboriosam iure eveniet ea,
-              quasi repellat laudantium quas cupiditate mollitia praesentium,
-              quia ex non pariatur reiciendis.
-            </p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Voluptatum aut sit odit et suscipit, laboriosam iure eveniet ea,
-              quasi repellat laudantium quas cupiditate mollitia praesentium,
-              quia ex non pariatur reiciendis.
-            </p>
-          </section>
-          <footer>
-            <p>
-              <time>January 7, 2019</time> &bull; <a href=""> Edit </a> &bull;
-              <a href=""> Critique </a> &bull; <a href=""> Comment </a>
-            </p>
-          </footer>
-        </article>
-        <article class="story">
-          <header>
-            <h2>
-              <a class="story-title" href=""> Title of a Story </a>
-              <a class="author-name" href=""> John Smith Doe </a>
-            </h2>
-          </header>
-          <section class="story-body">
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Voluptatum aut sit odit et suscipit, laboriosam iure eveniet ea,
-              quasi repellat laudantium quas cupiditate mollitia praesentium,
-              quia ex non pariatur reiciendis.
-            </p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Voluptatum aut sit odit et suscipit, laboriosam iure eveniet ea,
-              quasi repellat laudantium quas cupiditate mollitia praesentium,
-              quia ex non pariatur reiciendis.
-            </p>
-          </section>
-          <footer>
-            <p>
-              <time>January 7, 2019</time> &bull; <a href=""> Edit </a> &bull;
-              <a href=""> Critique </a> &bull; <a href=""> Comment </a>
-            </p>
-          </footer>
-        </article>
-        <article class="story">
-          <header>
-            <h2>
-              <a class="story-title" href=""> Title of a Story </a>
-              <a class="author-name" href=""> John Smith Doe </a>
-            </h2>
-          </header>
-          <section class="story-body">
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Voluptatum aut sit odit et suscipit, laboriosam iure eveniet ea,
-              quasi repellat laudantium quas cupiditate mollitia praesentium,
-              quia ex non pariatur reiciendis.
-            </p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Voluptatum aut sit odit et suscipit, laboriosam iure eveniet ea,
-              quasi repellat laudantium quas cupiditate mollitia praesentium,
-              quia ex non pariatur reiciendis.
-            </p>
-          </section>
-          <footer>
-            <p>
-              <time>January 7, 2019</time> &bull; <a href=""> Edit </a> &bull;
-              <a href=""> Critique </a> &bull; <a href=""> Comment </a>
-            </p>
-          </footer>
-        </article>
-        <article class="story">
-          <header>
-            <h2>
-              <a class="story-title" href=""> Title of a Story </a>
-              <a class="author-name" href=""> John Smith Doe </a>
-            </h2>
-          </header>
-          <section class="story-body">
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Voluptatum aut sit odit et suscipit, laboriosam iure eveniet ea,
-              quasi repellat laudantium quas cupiditate mollitia praesentium,
-              quia ex non pariatur reiciendis.
-            </p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Voluptatum aut sit odit et suscipit, laboriosam iure eveniet ea,
-              quasi repellat laudantium quas cupiditate mollitia praesentium,
-              quia ex non pariatur reiciendis.
-            </p>
-          </section>
-          <footer>
-            <p>
-              <time>January 7, 2019</time> &bull; <a href=""> Edit </a> &bull;
-              <a href=""> Critique </a> &bull; <a href=""> Comment </a>
-            </p>
-          </footer>
-        </article>
-        <article class="story">
-          <header>
-            <h2>
-              <a class="story-title" href=""> Title of a Story </a>
-              <a class="author-name" href=""> John Smith Doe </a>
-            </h2>
-          </header>
-          <section class="story-body">
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Voluptatum aut sit odit et suscipit, laboriosam iure eveniet ea,
-              quasi repellat laudantium quas cupiditate mollitia praesentium,
-              quia ex non pariatur reiciendis.
-            </p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Voluptatum aut sit odit et suscipit, laboriosam iure eveniet ea,
-              quasi repellat laudantium quas cupiditate mollitia praesentium,
-              quia ex non pariatur reiciendis.
-            </p>
-          </section>
-          <footer>
-            <p>
-              <time>January 7, 2019</time> &bull; <a href=""> Edit </a> &bull;
-              <a href=""> Critique </a> &bull; <a href=""> Comment </a>
-            </p>
-          </footer>
-        </article>
-      </main>
+      <Intro />
+      <MainFeed />
     </div>
   </body>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import SiteHeader from './components/SiteHeader';
+import Intro from './components/Intro';
+import MainFeed from './components/MainFeed';
 
 export default {
+  computed: mapState(['isSearchOpen', 'isNavOpen']),
   components: {
-    SiteHeader
+    SiteHeader,
+    Intro,
+    MainFeed
   }
 };
 </script>
@@ -274,6 +127,11 @@ a:active {
 }
 
 .container {
-  margin-top: calc(var(--spacing) * 5);
+  margin-top: calc(var(--spacing-half) * 3 + var(--h2) * var(--line-height));
+}
+
+.search-open .container {
+  filter: grayscale(0.8) blur(var(--spacing-half));
+  z-index: -1;
 }
 </style>

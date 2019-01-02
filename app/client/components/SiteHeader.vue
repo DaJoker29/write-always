@@ -1,8 +1,5 @@
 <template>
-  <header
-    class="site-header"
-    :class="{ 'search-open': isSearchOpen, 'nav-open': isNavOpen }"
-  >
+  <header class="site-header">
     <div class="header-shell">
       <div class="logo"><a href=""> Write, Always</a></div>
       <div class="search">
@@ -39,10 +36,9 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
-  computed: mapState(['isSearchOpen', 'isNavOpen']),
   methods: {
     ...mapActions(['toggleSearch', 'toggleNav'])
   }
@@ -80,7 +76,7 @@ export default {
 .logo a {
   color: var(--color-black);
   border-bottom: 0;
-  font: bold var(--h2) var(--font-headings);
+  font: bold var(--h2) / var(--line-height) var(--font-headings);
 }
 
 .hamburger a,
