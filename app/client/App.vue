@@ -16,7 +16,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import SiteHeader from './components/SiteHeader';
+import SiteHeader from '@client/components/SiteHeader';
 
 export default {
   components: {

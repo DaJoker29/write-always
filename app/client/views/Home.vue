@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import Intro from './Intro';
-import MainFeed from './MainFeed';
+import Intro from '@client/components/Intro';
+import MainFeed from '@client/components/MainFeed';
 
 export default {
   components: {

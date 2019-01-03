@@ -1,6 +1,6 @@
 <template>
   <main class="main-feed">
-    <FeedArticle
+    <Article
       v-for="(post, index) in posts"
       :key="`post-${index}`"
       :post="post"
@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import FeedArticle from './FeedArticle';
+import Article from './MainFeedArticle';
 
 const post = {
   title: 'Some kind of title goes here',
@@ -21,7 +21,7 @@ const post = {
 
 export default {
   components: {
-    FeedArticle
+    Article
   },
   data: function() {
     return {

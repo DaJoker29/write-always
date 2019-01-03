@@ -17,6 +17,8 @@
     "@root": "./",
     "@app": "app/",
     "@tools": "tools/",
+    "@client": "app/client/",
+    "@server": "app/server/",
     "@config": "app/config/"
   },
   "husky": {

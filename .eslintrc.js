@@ -45,6 +45,8 @@ module.exports = {
           ['@root', './'],
           ['@app', './app/'],
           ['@tools', './tools/'],
+          ['@client', './app/client/'],
+          ['@server', './app/server/'],
           ['@config', './app/config/']
         ],
         extensions: ['.js', '.json', '.vue']
