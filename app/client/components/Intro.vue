@@ -18,4 +18,15 @@
   color: var(--color-black);
   text-align: center;
 }
+
+.intro a:link,
+.intro a:visited {
+  color: var(--color-black);
+}
+
+.intro a:hover,
+.intro a:focus,
+.intro a:active {
+  color: var(--color-blue);
+}
 </style>
