@@ -3,13 +3,7 @@
     <SiteHeader />
 
     <div class="container" @click="isSearchOpen === true ? toggleSearch : null">
-      <Transition
-        enter-active-class="animated fadeIn"
-        leave-active-class="animated fadeOut"
-        mode="out-in"
-      >
-        <RouterView />
-      </Transition>
+      <Transition name="fade" mode="out-in"> <RouterView /> </Transition>
     </div>
   </body>
 </template>
@@ -30,7 +24,6 @@ export default {
 @import 'https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css';
 @import 'https://use.typekit.net/rai5ihu.css';
 @import 'https://use.fontawesome.com/releases/v5.6.3/css/all.css';
-@import 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css';
 
 /* TODO: Extract CSS to avoid FOUT*/
 :root {
@@ -62,8 +55,9 @@ export default {
   --bp-1: 767px;
 }
 
-.animated {
-  animation-duration: var(--transition);
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 
 *,
@@ -71,6 +65,7 @@ export default {
 ::before {
   box-sizing: border-box;
   transition: all var(--transition) linear;
+  animation-duration: var(--transition);
 }
 
 html {
@@ -131,6 +126,21 @@ a:hover,
 a:active,
 .active {
   color: var(--color-red);
+}
+
+input {
+  margin: var(--spacing) 0;
+  padding: var(--spacing-half) var(--spacing);
+  display: inline-block;
+  width: 100%;
+  border: transparent;
+  background: var(--color-black);
+  color: var(--color-cream);
+  font-size: var(--h4);
+}
+
+input:focus {
+  box-shadow: inset 0 0 var(--spacing) 0 black;
 }
 
 .container {

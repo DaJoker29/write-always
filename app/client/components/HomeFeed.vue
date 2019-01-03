@@ -1,5 +1,5 @@
 <template>
-  <main class="main-feed">
+  <main class="home-feed">
     <Article
       v-for="(post, index) in posts"
       :key="`post-${index}`"
@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import Article from './MainFeedArticle';
+import Article from './HomeFeedArticle';
 
 const post = {
   title: 'Some kind of title goes here',
@@ -32,7 +32,7 @@ export default {
 </script>
 
 <style scoped>
-.main-feed {
+.home-feed {
   display: flex;
   flex-flow: row wrap;
 }

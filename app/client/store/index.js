@@ -7,8 +7,14 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    username: localStorage.getItem('username') || '',
     isSearchOpen: false,
     isNavOpen: false
+  },
+  getters: {
+    isLoggedIn: state => state.username !== '',
+    isSearchOpen: state => state.isSearchOpen,
+    isNavOpen: state => state.isNavOpen
   },
   mutations: {
     toggleSearch(state) {
@@ -19,6 +25,14 @@ export default new Vuex.Store({
     },
     closeNav(state) {
       state.isNavOpen = false;
+    },
+    setUsername(state, payload) {
+      state.username = payload;
+      localStorage.setItem('username', payload);
+    },
+    logout(state) {
+      state.username = '';
+      localStorage.removeItem('username');
     }
   },
   actions: {
@@ -30,6 +44,12 @@ export default new Vuex.Store({
     },
     closeNav({ commit }) {
       commit('closeNav');
+    },
+    login({ commit }, { username }) {
+      commit('setUsername', username);
+    },
+    logout({ commit }) {
+      commit('logout');
     }
   }
 });

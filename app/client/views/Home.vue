@@ -1,18 +1,18 @@
 <template>
   <div>
     <Intro />
-    <MainFeed />
+    <HomeFeed />
   </div>
 </template>
 
 <script>
 import Intro from '@client/components/Intro';
-import MainFeed from '@client/components/MainFeed';
+import HomeFeed from '@client/components/HomeFeed';
 
 export default {
   components: {
     Intro,
-    MainFeed
+    HomeFeed
   }
 };
 </script>

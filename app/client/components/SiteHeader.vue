@@ -6,6 +6,7 @@
           >Write, Always</RouterLink
         >
       </div>
+      <!-- TODO: Separate search and nav into separate components -->
       <div class="search">
         <a
           class="btn-search"
@@ -21,13 +22,19 @@
       </div>
     </div>
     <nav class="nav">
+      <!-- TODO: Add link to profile/account page-->
       <ul>
         <li><a href="/authors"> Authors </a></li>
         <li><a href="/stories"> Stories </a></li>
         <li><a href="/contact"> Contact </a></li>
-        <li>
+        <li v-if="!isLoggedIn">
           <RouterLink :to="{ name: 'login' }" @click.native="toggleNav"
             >Log In</RouterLink
+          >
+        </li>
+        <li v-else>
+          <RouterLink :to="{ name: 'home' }" @click.native="logoutFunc"
+            >Log out</RouterLink
           >
         </li>
       </ul>
@@ -48,14 +55,18 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
-  methods: {
-    ...mapActions(['toggleSearch', 'toggleNav', 'closeNav'])
-  },
   computed: {
-    ...mapState(['isNavOpen', 'isSearchOpen'])
+    ...mapGetters(['isNavOpen', 'isSearchOpen', 'isLoggedIn'])
+  },
+  methods: {
+    ...mapActions(['toggleSearch', 'toggleNav', 'closeNav', 'logout']),
+    logoutFunc() {
+      this.toggleNav();
+      this.logout();
+    }
   }
 };
 </script>
@@ -124,14 +135,8 @@ export default {
 }
 
 .search-field {
-  margin: var(--spacing) 0;
-  padding: 0 var(--spacing-double);
-  display: block;
-  width: 100%;
-  border: 1px solid transparent;
   background: none;
-  color: var(--color-cream);
-  font-size: var(--h4);
+  box-shadow: none;
 }
 
 .nav {

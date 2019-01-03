@@ -1,3 +1,13 @@
 <template>
-  <main><h3>Log in Here</h3></main>
+  <LoginForm />
 </template>
+
+<script>
+import LoginForm from '@client/components/LoginForm';
+
+export default {
+  components: {
+    LoginForm
+  }
+};
+</script>
