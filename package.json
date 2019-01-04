@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --open",
+    "start": "nodemon index.js --config nodemon.json",
     "build": "NODE_ENV=production; webpack --progress",
     "lint": "eslint --ext .js,.json,.vue .",
     "fix": "eslint --ext .js,.json,.vue . --fix",
@@ -15,11 +15,11 @@
   },
   "_moduleAliases": {
     "@root": "./",
-    "@app": "app/",
-    "@tools": "tools/",
-    "@client": "app/client/",
-    "@server": "app/server/",
-    "@config": "app/config/"
+    "@app": "./app/",
+    "@tools": "./tools/",
+    "@client": "./app/client/",
+    "@server": "./app/server/",
+    "@config": "./app/config/"
   },
   "husky": {
     "hooks": {
@@ -64,11 +64,21 @@
     "eslint-plugin-prettier": "3.0.0",
     "eslint-plugin-react": "7.11.1",
     "eslint-plugin-vue": "5.0.0",
+    "helmet": "3.15.0",
     "html-webpack-plugin": "3.2.0",
     "husky": "1.2.1",
     "leasot": "6.6.2",
     "lint-staged": "8.1.0",
+    "method-override": "3.0.0",
     "module-alias": "2.1.0",
+    "mongoose": "5.4.2",
+    "morgan": "1.9.1",
+    "morgan-debug": "2.0.0",
+    "nodemon": "1.18.9",
+    "notp": "2.0.3",
+    "passport": "0.4.0",
+    "passport-jwt": "4.0.0",
+    "passport-local": "1.0.0",
     "prettier": "1.15.3",
     "verror": "1.10.0",
     "vue": "2.5.21",
@@ -79,7 +89,9 @@
     "vuex": "3.0.1",
     "webpack": "4.28.2",
     "webpack-cli": "3.1.2",
+    "webpack-dev-middleware": "3.5.0",
     "webpack-dev-server": "3.1.14",
+    "webpack-hot-middleware": "2.24.3",
     "webpack-merge": "4.1.5"
   }
 }
