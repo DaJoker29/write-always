@@ -10,6 +10,7 @@ const VError = require('verror');
 /* Why is this commented out?*/
 // const log = require('@tools/log')();
 const errLog = require('@tools/log')('error');
+const wpLog = require('@tools/log')('webpack');
 
 /* Is @config pulled from cache or reinitialized by this? */
 const config = require('@config');
@@ -50,12 +51,17 @@ if (!isProd) {
 
   app.use(
     webpackDevMiddleware(compiler, {
-      reload: true,
-      stats: 'errors-only',
+      logLevel: 'warn',
       publicPath: webpackConfig.output.publicPath
     })
   );
-  app.use(webpackHotMiddleware(compiler));
+  app.use(
+    webpackHotMiddleware(compiler, {
+      // test this line out once you have some real code.
+      // reload: true,
+      log: wpLog
+    })
+  );
 } else {
   // TODO: Production build task
   app.get('/', landing);

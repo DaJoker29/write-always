@@ -1,4 +1,4 @@
-const log = require('@tools/log')();
+const log = require('@tools/log')('config');
 
 const merge = require('deepmerge');
 const VError = require('verror');
@@ -28,10 +28,9 @@ const config = (module.exports = Object.assign(env, { pkg }, { app }));
 
 // TODO: Make output a bit more compact and streamlined
 
-log(
-  `Configuring ${config.app.name.toTitleCase()} (${config.env.toTitleCase()} mode)`
-);
-log(`Built using ${config.pkg.name.toTitleCase()}`);
-log(`Version ${config.pkg.version}`);
-log(`Crafted by ${config.pkg.author}`);
-log(`Repository: ${config.pkg.repository.url}`);
+log(`Application Name: ${config.app.name}`);
+log(`Package Name: ${config.pkg.name}`);
+log(`Mode: ${config.env}`);
+log(`Version: ${config.pkg.version}`);
+log(`Author: ${config.pkg.author}`);
+log(`Repo: ${config.pkg.repository.url}`);

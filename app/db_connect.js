@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const log = require('@tools/log')();
+const log = require('@tools/log')('db');
 const VError = require('verror');
 const { db } = require('@config');
 
-log(`Connecting to database: ${db}`);
+log(`Database: ${db}`);
 mongoose.connect(
   db,
   { useNewUrlParser: true }
@@ -19,7 +19,7 @@ mongoose.connection.on('disconnected', () => {
 });
 
 mongoose.connection.on('connected', () => {
-  log('Successfully connected to database.');
+  log('Connected to database.');
 });
 
 module.exports = mongoose.connection;

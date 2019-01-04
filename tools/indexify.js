@@ -3,7 +3,7 @@ const path = require('path');
 const callsite = require('callsite');
 
 function indexify(namespace) {
-  const log = require('@tools/log')();
+  const log = require('@tools/log')('loading');
   const stack = callsite();
   const dir = path.dirname(stack[1].getFileName());
   const files = fs.readdirSync(dir);
@@ -19,7 +19,7 @@ function indexify(namespace) {
   });
 
   Object.getOwnPropertyNames(result).forEach(prop => {
-    log(`${namespace}: ${prop}`);
+    log(`${namespace.toTitleCase()}: ${prop}`);
   });
   return result;
 }

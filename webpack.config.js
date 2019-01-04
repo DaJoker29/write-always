@@ -3,11 +3,20 @@ require('@app/utils');
 require('dotenv').config();
 
 const path = require('path');
-const { DefinePlugin } = require('webpack');
+const {
+  DefinePlugin,
+  NamedModulesPlugin,
+  HotModuleReplacementPlugin,
+  NoEmitOnErrorsPlugin
+} = require('webpack');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const config = require('@app/config');
 const { VueLoaderPlugin } = require('vue-loader');
+
+/**
+ * Common Configuration
+ */
 
 const common = merge({
   entry: './app/client/index.js',
@@ -49,14 +58,28 @@ const common = merge({
   ]
 });
 
+/**
+ * Production Configuration
+ */
+
 const production = merge({
   mode: 'production',
   devtool: 'sourcemap'
 });
 
+/**
+ * Development Configuration
+ */
+
 const development = merge({
+  entry: ['webpack-hot-middleware/client', '@client/index.js'],
   mode: 'development',
-  devtool: 'inline-source-map'
+  devtool: 'inline-source-map',
+  plugins: [
+    new NamedModulesPlugin(),
+    new HotModuleReplacementPlugin(),
+    new NoEmitOnErrorsPlugin()
+  ]
 });
 
 module.exports = merge(

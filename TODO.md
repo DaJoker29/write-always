@@ -2,8 +2,8 @@
 | Filename | line # | TODO
 |:------|:------:|:------
 | app/db_connect.js | 10 | Look into MongoDB new URL Parser to avoid deprecated syntax
-| app/index.js | 60 | Production build task
-| app/index.js | 64 | Add API Routes
+| app/index.js | 66 | Production build task
+| app/index.js | 70 | Add API Routes
 | app/passport.js | 7 | Update passport handlers
 | app/passport.js | 8 | Store strategy's in strategy folder
 | app/client/App.vue | 28 | Extract CSS to avoid FOUT
@@ -20,4 +20,4 @@
 ### FIXMEs
 | Filename | line # | FIXME
 |:------|:------:|:------
-| app/index.js | 106 | 500 error after missing favicon request. I think I need a wildcard handler for all non-API routes and the core files (index.html and bundle.js)
+| app/index.js | 112 | 500 error after missing favicon request. I think I need a wildcard handler for all non-API routes and the core files (index.html and bundle.js)

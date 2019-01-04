@@ -49,7 +49,7 @@ function onError(e) {
 }
 
 function onListen() {
-  log(`${config.name} has spun up @ http://localhost:${config.port}`);
+  log(`${config.app.name} has spun up @ http://localhost:${config.port}`);
 }
 
 function gracefulExit(code = 0) {
