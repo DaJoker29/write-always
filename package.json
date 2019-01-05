@@ -33,6 +33,11 @@
       "git add"
     ]
   },
+  "browserslist": [
+    "last 1 version",
+    "> 1%",
+    "IE 10"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DaJoker29/write-always.git"
@@ -44,6 +49,10 @@
   },
   "homepage": "https://github.com/DaJoker29/write-always#readme",
   "dependencies": {
+    "@babel/core": "7.2.2",
+    "@babel/polyfill": "7.2.5",
+    "@babel/preset-env": "7.2.3",
+    "@babel/register": "7.0.0",
     "@commitlint/cli": "7.2.1",
     "@commitlint/config-conventional": "7.1.2",
     "@commitlint/prompt-cli": "7.2.1",
@@ -72,6 +81,7 @@
     "method-override": "3.0.0",
     "module-alias": "2.1.0",
     "mongoose": "5.4.2",
+    "mongoose-unique-validator": "2.0.2",
     "morgan": "1.9.1",
     "morgan-debug": "2.0.0",
     "nodemon": "1.18.9",
@@ -80,6 +90,8 @@
     "passport-jwt": "4.0.0",
     "passport-local": "1.0.0",
     "prettier": "1.15.3",
+    "random-token": "0.0.8",
+    "shortid": "2.2.14",
     "verror": "1.10.0",
     "vue": "2.5.21",
     "vue-loader": "15.4.2",

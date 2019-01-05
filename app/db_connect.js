@@ -6,8 +6,7 @@ const { db } = require('@config');
 log(`Database: ${db}`);
 mongoose.connect(
   db,
-  { useNewUrlParser: true }
-  // TODO: Look into MongoDB new URL Parser to avoid deprecated syntax
+  { useNewUrlParser: true, useCreateIndex: true }
 );
 
 mongoose.connection.on('error', err => {
