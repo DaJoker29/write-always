@@ -3,8 +3,6 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-// TODO: Separate store into separate modules as data complexity grows.
-
 export default new Vuex.Store({
   state: {
     username: localStorage.getItem('username') || '',

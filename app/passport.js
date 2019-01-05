@@ -4,9 +4,6 @@ const { Strategy: LocalStrategy } = require('passport-local');
 const { User } = require('@server/models');
 const notp = require('notp');
 
-// TODO: Update passport handlers
-// TODO: Store strategy's in strategy folder
-
 passport.use(
   new LocalStrategy(async function(username, password, cb) {
     try {

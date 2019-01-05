@@ -9,9 +9,7 @@
     "build": "NODE_ENV=production; webpack --progress",
     "lint": "eslint --ext .js,.json,.vue .",
     "fix": "eslint --ext .js,.json,.vue . --fix",
-    "commit": "commit",
-    "todo": "leasot . -xSIi \"node_modules,public\"",
-    "todo-generate": "leasot . -xSIi \"node_modules,public\" --reporter markdown > TODO.md"
+    "commit": "commit"
   },
   "_moduleAliases": {
     "@root": "./",
@@ -24,7 +22,7 @@
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "npm run todo-generate && git add TODO.md && lint-staged"
+      "pre-commit": "lint-staged"
     }
   },
   "lint-staged": {
@@ -61,7 +59,6 @@
     "css-loader": "2.1.0",
     "debug": "4.1.1",
     "deepmerge": "3.0.0",
-    "dotenv": "6.2.0",
     "eslint": "5.11.0",
     "eslint-config-airbnb": "17.1.0",
     "eslint-config-prettier": "3.3.0",
@@ -76,7 +73,6 @@
     "helmet": "3.15.0",
     "html-webpack-plugin": "3.2.0",
     "husky": "1.2.1",
-    "leasot": "6.6.2",
     "lint-staged": "8.1.0",
     "method-override": "3.0.0",
     "module-alias": "2.1.0",

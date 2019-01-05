@@ -6,7 +6,6 @@
           >Write, Always</RouterLink
         >
       </div>
-      <!-- TODO: Separate search and nav into separate components -->
       <div class="search">
         <a
           class="btn-search"
@@ -22,8 +21,8 @@
       </div>
     </div>
     <nav class="nav">
-      <!-- TODO: Add link to profile/account page-->
       <ul>
+        <!-- Link to profile/account page should go here -->
         <li><a href="/authors"> Authors </a></li>
         <li><a href="/stories"> Stories </a></li>
         <li><a href="/contact"> Contact </a></li>

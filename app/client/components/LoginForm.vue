@@ -39,7 +39,6 @@ export default {
   methods: {
     ...mapActions(['login']),
     authenticate: function() {
-      // TODO: Add real authentication API
       if (this.username.length > 3 && this.password.length > 3) {
         this.login({ username: this.username });
         this.$router.push('/');

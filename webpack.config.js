@@ -1,6 +1,5 @@
 require('module-alias/register');
 require('@app/utils');
-require('dotenv').config();
 
 const path = require('path');
 const {

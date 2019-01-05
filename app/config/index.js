@@ -26,8 +26,6 @@ const app = merge.all([
 
 const config = (module.exports = Object.assign(env, { pkg }, { app }));
 
-// TODO: Make output a bit more compact and streamlined
-
 log(`Application Name: ${config.app.name}`);
 log(`Package Name: ${config.pkg.name}`);
 log(`Mode: ${config.env}`);

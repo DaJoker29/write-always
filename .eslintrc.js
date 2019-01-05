@@ -30,6 +30,7 @@ module.exports = {
     semi: ['error', 'always'],
     'import-order-autofix/order': 1,
     'no-multi-assign': 0,
+    'no-unused-vars': 1,
     'no-use-before-define': ['error', 'nofunc'],
     'no-console': 0,
     'import/no-extraneous-dependencies': 0,

@@ -7,8 +7,6 @@ const error = require('@tools/log')('error');
 const VError = require('verror');
 require('@app/utils');
 
-// TODO: Switch from CJS to ESM imports on server-side modules
-
 /**
  * Termination and Exit handling
  */

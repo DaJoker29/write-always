@@ -25,7 +25,6 @@ export default {
 @import 'https://use.typekit.net/rai5ihu.css';
 @import 'https://use.fontawesome.com/releases/v5.6.3/css/all.css';
 
-/* TODO: Extract CSS to avoid FOUT*/
 :root {
   --color-cream: #fffff0;
   --color-black: #212321;
