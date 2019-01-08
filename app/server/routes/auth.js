@@ -1,8 +1,9 @@
-const { Router } = require('express');
-const log = require('@tools/log')();
-const jwt = require('jsonwebtoken');
-const passport = require('passport');
+import { Router } from 'express';
+import Log from '@tools/log';
+import jwt from 'jsonwebtoken';
+import passport from 'passport';
 
+const log = Log();
 const router = Router();
 
 router.post('/login', loginHandler);
