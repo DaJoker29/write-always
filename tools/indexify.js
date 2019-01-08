@@ -14,8 +14,9 @@ function indexify(namespace) {
     const value = file.slice(0, -3);
     const key = value.charAt(0).toUpperCase() + value.slice(1);
 
+    const mod = `${dir}/${value}`;
     /* eslint-disable-next-line import/no-dynamic-require */
-    result[key] = require(`${dir}/${value}`);
+    result[key] = require(mod).default || require(mod); // works for CJS or ESM
   });
 
   Object.getOwnPropertyNames(result).forEach(prop => {
