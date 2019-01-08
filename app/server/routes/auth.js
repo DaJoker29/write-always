@@ -27,12 +27,11 @@ function loginHandler(req, res) {
         res.send(err);
       }
 
-      console.log(typeof user);
-      const { _id: id } = user;
+      const { _id: id, username } = user;
 
       const token = jwt.sign({ id }, 'somesecret');
 
-      return res.json({ id, token });
+      return res.json({ token, username });
     });
   })(req, res);
 }

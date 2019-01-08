@@ -1,16 +1,19 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import axios from 'axios';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    config: process.env.SITE_CONFIG,
     username: localStorage.getItem('username') || '',
+    token: localStorage.getItem('token') || '',
     isSearchOpen: false,
     isNavOpen: false
   },
   getters: {
-    isLoggedIn: state => state.username !== '',
+    isLoggedIn: state => state.username !== '' && state.token !== '',
     isSearchOpen: state => state.isSearchOpen,
     isNavOpen: state => state.isNavOpen
   },
@@ -28,8 +31,14 @@ export default new Vuex.Store({
       state.username = payload;
       localStorage.setItem('username', payload);
     },
+    setToken(state, payload) {
+      state.token = payload;
+      localStorage.setItem('token', payload);
+    },
     logout(state) {
       state.username = '';
+      state.token = '';
+      localStorage.removeItem('token');
       localStorage.removeItem('username');
     }
   },
@@ -43,10 +52,13 @@ export default new Vuex.Store({
     closeNav({ commit }) {
       commit('closeNav');
     },
-    login({ commit }, { username }) {
+    login({ commit }, { username, token }) {
+      axios.defaults.headers.common['Authorization'] = `bearer ${token}`;
       commit('setUsername', username);
+      commit('setToken', token);
     },
     logout({ commit }) {
+      delete axios.defaults.headers.common['Authorization'];
       commit('logout');
     }
   }

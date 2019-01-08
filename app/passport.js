@@ -7,7 +7,7 @@ const notp = require('notp');
 passport.use(
   new LocalStrategy(async function(username, password, cb) {
     try {
-      const user = await User.findOne({ username });
+      const user = await User.findOne({ username }, { token: 1, username: 1 });
       const login = notp.totp.verify(password, user.token);
 
       if (login) {
