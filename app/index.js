@@ -58,7 +58,7 @@ if (!isProd) {
   app.get('/', landing);
 }
 
-// app.use('/auth', Routes.Auth);
+app.use('/auth', Routes.Auth);
 // app.use('/api', Routes.Posts);
 // app.use('/api', Routes.Authors);
 // app.use('/api', Routes.Categories);

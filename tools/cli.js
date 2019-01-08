@@ -26,6 +26,7 @@ program
     // Create User
     if ('create' === cmd) {
       const { username, email, displayName } = options;
+      console.log(options);
 
       try {
         await User.create({ username, email, displayName });
@@ -40,11 +41,7 @@ program
       const { username } = options;
 
       try {
-        const user = await User.findOne({ username });
-        console.log(cmd);
-        console.log(options);
-        console.log(username);
-        console.log(user);
+        const user = await User.findOne({ username }, { token: 1 });
         const name = config.app.name.replace(/ /g, '');
         const mode = config.env === 'production' ? '' : '-' + config.env;
         const secret = base32
@@ -68,29 +65,31 @@ program
     if ('totp' === cmd) {
       const { username } = options;
 
-      await User.findOne({ username })
-        .then(user => {
-          const notp = require('notp');
-          console.log(
-            `Access Code (valid for 30sec): ${notp.totp.gen(user.token)}`
-          );
-        })
-        .catch(e => console.error(e.message));
+      try {
+        const user = await User.findOne({ username }, { token: 1 });
+        const notp = require('notp');
+        console.log(
+          `Access Code (valid for 30sec): ${notp.totp.gen(user.token)}`
+        );
+      } catch (e) {
+        console.error(e.message);
+      }
     }
 
     if (!cmd || 'list' === cmd) {
-      await User.find({})
-        .then(users => {
-          const notp = require('notp');
-          users.forEach(user => {
-            console.log(
-              `${user.username} - ${user.email}\n Access Code: ${notp.totp.gen(
-                user.token
-              )}\n`
-            );
-          });
-        })
-        .catch(e => console.error(e.message));
+      try {
+        const users = await User.find({}, { email: 1, token: 1 });
+        const notp = require('notp');
+        users.forEach(user => {
+          console.log(
+            `${user.displayName} - ${user.email}\n Access Code: ${notp.totp.gen(
+              user.token
+            )}\n`
+          );
+        });
+      } catch (e) {
+        console.error(e);
+      }
     }
 
     //////////////////////////////
