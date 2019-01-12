@@ -34,7 +34,8 @@ module.exports = {
     'no-use-before-define': ['error', 'nofunc'],
     'no-console': 0,
     'import/no-extraneous-dependencies': 0,
-    'import/no-unresolved': ['error']
+    'import/no-unresolved': ['error'],
+    'import/first': 0
   },
   settings: {
     'import/resolver': {

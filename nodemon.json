@@ -9,6 +9,6 @@
     "./app/server/**/*.js",
     "./app/config/**/*.js",
     "./app/*.js",
-    "./index.js"
+    "./start.js"
   ]
 }
