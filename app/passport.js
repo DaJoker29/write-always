@@ -1,10 +1,14 @@
 import passport from 'passport';
 import notp from 'notp';
 import Models from '@server/models';
+import config from '@config';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt';
 
 const { User } = Models;
+const {
+  app: { secret: secretOrKey }
+} = config;
 
 passport.use(
   new LocalStrategy(async function(username, password, cb) {
@@ -26,7 +30,7 @@ passport.use(
   new JWTStrategy(
     {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: 'somesecret'
+      secretOrKey
     },
     async function(payload, cb) {
       try {
