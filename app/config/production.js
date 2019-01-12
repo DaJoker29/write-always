@@ -1,3 +1,3 @@
-module.exports = {
-  env: 'production'
+export default {
+  mode: 'production'
 };

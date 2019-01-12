@@ -8,7 +8,7 @@ const router = Router();
 
 router.post('/login', loginHandler);
 
-module.exports = router;
+export default router;
 
 function loginHandler(req, res) {
   passport.authenticate('local', { session: false }, function(err, user, info) {

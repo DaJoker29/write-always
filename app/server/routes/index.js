@@ -1,3 +1,3 @@
-const { indexify } = require('@tools/indexify');
+import indexify from '@tools/indexify';
 
-module.exports = indexify('routes');
+export default indexify('routes');

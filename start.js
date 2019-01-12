@@ -1,6 +1,3 @@
-import 'module-alias/register';
-import '@app/utils';
-
 import { createServer } from 'http';
 import Log from '@tools/log';
 import VError from 'verror';
@@ -43,8 +40,8 @@ db.on('connected', launchServer);
  */
 
 function launchServer() {
-  log(`Launching server in ${config.env} mode`);
-  server.listen(config.port);
+  log(`Launching server in ${config.env.mode} mode`);
+  server.listen(config.env.port);
 }
 
 function onError(e) {
@@ -52,7 +49,7 @@ function onError(e) {
 }
 
 function onListen() {
-  log(`${config.app.name} has spun up @ http://localhost:${config.port}`);
+  log(`${config.app.name} has spun up @ http://localhost:${config.env.port}`);
 }
 
 function gracefulExit(code = 0) {

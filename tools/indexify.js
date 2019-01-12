@@ -1,9 +1,11 @@
-const fs = require('fs');
-const path = require('path');
-const callsite = require('callsite');
+import fs from 'fs';
+import path from 'path';
+import callsite from 'callsite';
+import Log from '@tools/log';
+
+const log = Log('loading');
 
 function indexify(namespace) {
-  const log = require('@tools/log')('loading');
   const stack = callsite();
   const dir = path.dirname(stack[1].getFileName());
   const files = fs.readdirSync(dir);
@@ -25,4 +27,4 @@ function indexify(namespace) {
   return result;
 }
 
-module.exports = { indexify };
+export default indexify;

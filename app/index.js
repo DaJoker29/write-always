@@ -1,23 +1,26 @@
-const path = require('path');
-const express = require('express');
-const morganDebug = require('morgan-debug');
-const bodyParser = require('body-parser');
-const methodOverride = require('method-override');
-const passport = require('passport');
-const helmet = require('helmet');
-const VError = require('verror');
+import path from 'path';
+import express from 'express';
+import morganDebug from 'morgan-debug';
+import bodyParser from 'body-parser';
+import methodOverride from 'method-override';
+import passport from 'passport';
+import helmet from 'helmet';
+import VError from 'verror';
+import webpack from 'webpack';
+import webpackDevMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
 
-const log = require('@tools/log')();
-const errLog = require('@tools/log')('error');
-const wpLog = require('@tools/log')('webpack');
+import Routes from '@server/routes';
+import config from '@config';
+import Log from '@tools/log';
 
-const config = require('@config');
-const Routes = require('@server/routes'); // use destructuring here
-
-const webpackConfig = require('@root/webpack.config');
+const errLog = Log('error');
+const wpLog = Log('webpack');
 
 const isProd = config.env === 'production';
-const app = (module.exports = express());
+const app = express();
+
+export default app;
 
 // configure express
 app.use(express.static(path.join(__dirname, 'dist')));
@@ -33,18 +36,15 @@ app.use(helmet());
 app.use(passport.initialize());
 
 // configure passport
-require('./passport');
+import './passport';
 
 if (!isProd) {
-  const webpack = require('webpack');
-  const webpackDevMiddleware = require('webpack-dev-middleware');
-  const webpackHotMiddleware = require('webpack-hot-middleware');
-  const compiler = webpack(webpackConfig);
+  const compiler = webpack(config.webpack);
 
   app.use(
     webpackDevMiddleware(compiler, {
       logLevel: 'warn',
-      publicPath: webpackConfig.output.publicPath
+      publicPath: config.webpack.output.publicPath
     })
   );
   app.use(

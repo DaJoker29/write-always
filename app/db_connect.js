@@ -1,7 +1,12 @@
-const mongoose = require('mongoose');
-const log = require('@tools/log')('db');
-const VError = require('verror');
-const { db } = require('@config');
+import mongoose from 'mongoose';
+import VError from 'verror';
+import config from '@config';
+import Log from '@tools/log';
+
+const log = Log('db');
+const {
+  env: { db }
+} = config;
 
 log(`Database: ${db}`);
 mongoose.connect(
@@ -21,4 +26,4 @@ mongoose.connection.on('connected', () => {
   log('Connected to database.');
 });
 
-module.exports = mongoose.connection;
+export default mongoose.connection;

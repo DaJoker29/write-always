@@ -1,7 +1,7 @@
-require('module-alias/register');
-const { name, description } = require('@root/package.json');
+import 'module-alias/register';
+import { name, description } from '@root/package.json';
 
-module.exports = {
+export default {
   name: name || 'Write, Well',
   description: description || 'A community built around stories',
   tagline: 'Go confidently...',

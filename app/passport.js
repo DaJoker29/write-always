@@ -1,8 +1,10 @@
-const passport = require('passport');
-const { ExtractJwt, Strategy: JWTStrategy } = require('passport-jwt');
-const { Strategy: LocalStrategy } = require('passport-local');
-const { User } = require('@server/models');
-const notp = require('notp');
+import passport from 'passport';
+import notp from 'notp';
+import Models from '@server/models';
+import { Strategy as LocalStrategy } from 'passport-local';
+import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt';
+
+const { User } = Models;
 
 passport.use(
   new LocalStrategy(async function(username, password, cb) {
@@ -26,7 +28,6 @@ passport.use(
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: 'somesecret'
     },
-
     async function(payload, cb) {
       try {
         const user = await User.findOne({ _id: payload.id });
