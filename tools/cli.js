@@ -8,6 +8,7 @@ require('@app/utils');
 const program = require('commander');
 const { User } = require('@server/models');
 const base32 = require('thirty-two');
+const encodeurl = require('encodeurl');
 const config = require('@app/config');
 const db = require('@app/db_connect');
 
@@ -41,20 +42,25 @@ program
       const { username } = options;
 
       try {
-        const user = await User.findOne({ username }, { token: 1 });
-        const name = config.app.name.replace(/ /g, '');
-        const mode = config.env === 'production' ? '' : '-' + config.env;
+        const user = await User.findOne(
+          { username },
+          { token: 1, username: 1 }
+        );
+        const name = config.app.name;
+        const mode =
+          config.env === 'production' ? '' : ` [${config.env.toUpperCase()}]`;
         const secret = base32
           .encode(user.token)
           .toString()
           .replace(/=/g, '');
 
-        const uri = `otpauth://totp/${name}${mode}:${
+        const uri = `otpauth://totp/${name} (${
           user.username
-        }?secret=${secret}`;
+        })${mode}?secret=${secret}`;
+        const encoded = encodeurl(uri);
 
         console.log(
-          `QR Code: https://chart.googleapis.com/chart?chs=166x166&chld=L|0&cht=qr&chl=${uri}`
+          `QR Code: https://chart.googleapis.com/chart?chs=166x166&chld=L|0&cht=qr&chl=${encoded}`
         );
       } catch (e) {
         console.error(e);

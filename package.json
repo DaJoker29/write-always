@@ -63,6 +63,7 @@
     "css-loader": "2.1.0",
     "debug": "4.1.1",
     "deepmerge": "3.0.0",
+    "encodeurl": "1.0.2",
     "eslint": "5.11.0",
     "eslint-config-airbnb": "17.1.0",
     "eslint-config-prettier": "3.3.0",
