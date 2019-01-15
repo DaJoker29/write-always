@@ -9,6 +9,7 @@ import VError from 'verror';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
+import history from 'connect-history-api-fallback';
 
 import Routes from '@server/routes';
 import config from '@config';
@@ -33,6 +34,7 @@ app.use(bodyParser.urlencoded({ extended: 'true' }));
 app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(helmet());
+app.use(history());
 app.use(passport.initialize());
 
 // configure passport

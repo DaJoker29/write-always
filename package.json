@@ -60,6 +60,7 @@
     "axios": "0.18.0",
     "babel-eslint": "10.0.1",
     "callsite": "1.0.0",
+    "connect-history-api-fallback": "1.6.0",
     "core-js": "2.6.2",
     "css-loader": "2.1.0",
     "debug": "4.1.1",
