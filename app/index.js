@@ -84,9 +84,7 @@ function forceFailure(req, res, next) {
 }
 
 function pageNotFound(req, res, next) {
-  const err = new VError('Not Found');
-  err.status = 404;
-  next(err);
+  return res.sendStatus(404);
 }
 
 function serverError(err, req, res, next) {
