@@ -4,6 +4,7 @@ import NProgress from 'nprogress';
 
 import Home from '@client/views/Home';
 import LoginPage from '@client/views/Login';
+import AuthorsPage from '@client/views/Authors';
 import PageNotFound from '@client/views/PageNotFound';
 import store from '@client/store';
 
@@ -24,6 +25,11 @@ const router = new Router({
       meta: {
         guest: true
       }
+    },
+    {
+      path: '/authors',
+      name: 'authors',
+      component: AuthorsPage
     },
     {
       path: '404',

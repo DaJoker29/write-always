@@ -23,7 +23,11 @@
     <nav class="nav">
       <ul>
         <!-- Link to profile/account page should go here -->
-        <li><a href="/authors"> Authors </a></li>
+        <li>
+          <RouterLink :to="{ name: 'authors' }" @click.native="closeNav">
+            Authors
+          </RouterLink>
+        </li>
         <li><a href="/stories"> Stories </a></li>
         <li><a href="/contact"> Contact </a></li>
         <li v-if="!isLoggedIn">
