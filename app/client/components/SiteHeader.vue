@@ -184,3 +184,47 @@ export default {
   padding: var(--spacing);
 }
 </style>
+
+<style>
+/* Loading Bar Styles (NProgress) */
+
+/* Make clicks pass-through */
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  background: var(--color-black);
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  top: auto;
+  width: 100%;
+  height: 2px;
+  z-index: 12;
+}
+
+/* Fancy blur effect */
+#nprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0px;
+  width: 100px;
+  height: 100%;
+  box-shadow: 0 0 10px #29d, 0 0 5px #29d;
+  opacity: 1;
+
+  -webkit-transform: rotate(3deg) translate(0px, -4px);
+  -ms-transform: rotate(3deg) translate(0px, -4px);
+  transform: rotate(3deg) translate(0px, -4px);
+}
+
+.nprogress-custom-parent {
+  overflow: hidden;
+  position: relative;
+}
+
+.nprogress-custom-parent #nprogress .bar {
+  position: absolute;
+}
+</style>

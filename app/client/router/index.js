@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import NProgress from 'nprogress';
 
 import Home from '@client/views/Home';
 import LoginPage from '@client/views/Login';
@@ -44,6 +45,15 @@ router.beforeEach((to, from, next) => {
   } else {
     next();
   }
+});
+
+router.beforeResolve((to, from, next) => {
+  NProgress.start();
+  next();
+});
+
+router.afterEach((to, from) => {
+  NProgress.done();
 });
 
 export default router;

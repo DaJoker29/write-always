@@ -11,10 +11,17 @@
 <script>
 import { mapState } from 'vuex';
 import SiteHeader from '@client/components/SiteHeader';
+import NProgress from 'nprogress';
 
 export default {
   components: {
     SiteHeader
+  },
+  mounted() {
+    NProgress.done();
+  },
+  created() {
+    NProgress.start();
   },
   computed: mapState(['isSearchOpen', 'isNavOpen'])
 };
