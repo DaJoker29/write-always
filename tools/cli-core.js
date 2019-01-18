@@ -2,8 +2,8 @@ import program from 'commander';
 import Models from '@server/models';
 import base32 from 'thirty-two';
 import encodeurl from 'encodeurl';
-import config from '@app/config';
-import db from '@app/db_connect';
+import config from '@config';
+import db from '@server/db_connect';
 import notp from 'notp';
 
 const { User } = Models;

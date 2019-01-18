@@ -5,18 +5,17 @@ import bodyParser from 'body-parser';
 import methodOverride from 'method-override';
 import passport from 'passport';
 import helmet from 'helmet';
-import VError from 'verror';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import history from 'connect-history-api-fallback';
 
-import { updateLastLogin } from '@server/middleware/user'; // need to rethink indexify
+import { updateLastLogin } from '@server/middleware/user';
+import Errors from '@server/middleware/errors';
 import Routes from '@server/routes';
 import config from '@config';
 import Log from '@tools/log';
 
-const errLog = Log('error');
 const wpLog = Log('webpack');
 
 const isProd = config.env === 'production';
@@ -39,7 +38,7 @@ app.use(history());
 app.use(passport.initialize());
 
 // configure passport
-import './passport';
+import auth from './authentication';
 
 if (!isProd) {
   const compiler = webpack(config.webpack);
@@ -58,39 +57,11 @@ if (!isProd) {
   );
 } else {
   // serve compiled assets in production mode
-  app.get('/', landing);
+  app.get('/', function(req, res) {
+    return res.sendFile(__dirname + '/dist/index.html');
+  });
 }
 
-app.use('/auth', Routes.Auth);
-app.use('/api', updateLastLogin, Routes.User);
-// app.use('/api', Routes.Posts);
-// app.use('/api', Routes.Authors);
-// app.use('/api', Routes.Categories);
-
-/**
- * app.use('/protected-endpoint', passport.authenticate('jwt', { session: false }, Routes))
- */
-
-// error-handling routes
-app.use('/fail', forceFailure);
-app.use(pageNotFound);
-app.use(serverError);
-
-function landing(req, res) {
-  return res.sendFile(__dirname + '/dist/index.html');
-}
-
-function forceFailure(req, res, next) {
-  const err = new VError('Intentionally Triggered Error');
-  next(err);
-}
-
-function pageNotFound(req, res, next) {
-  return res.sendStatus(404);
-}
-
-function serverError(err, req, res, next) {
-  const error = new VError(err, 'Unhandled Server Error');
-  errLog(error.stack);
-  return res.sendStatus(500);
-}
+app.use('/auth', auth);
+app.use('/api', updateLastLogin, Routes());
+app.use(Errors());
