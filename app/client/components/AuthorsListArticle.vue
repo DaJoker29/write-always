@@ -1,14 +1,36 @@
 <template>
-  <article>{{ author }}</article>
+  <article>
+    <RouterLink :to="author.profileURL">
+      <h3>{{ author.displayName }}</h3>
+    </RouterLink>
+    <p v-if="activeNow()">Online now!</p>
+    <p>Joined {{ moment(author.dateJoined).fromNow() }}</p>
+    <p>{{ author.location }}</p>
+  </article>
 </template>
 
 <script>
 export default {
   props: {
     author: {
-      type: Array,
+      type: Object,
       required: true
+    }
+  },
+  methods: {
+    activeNow() {
+      const now = this.moment();
+      const lastLogin = this.moment(this.author.dateLastLogin);
+      return now.diff(lastLogin, 'minutes') < 15;
     }
   }
 };
 </script>
+
+<style scoped>
+article {
+  margin: var(--spacing);
+  flex: 1 1 var(--bp-1);
+  text-align: center;
+}
+</style>

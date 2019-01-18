@@ -23,7 +23,6 @@ export default {
   },
   mounted: async function() {
     this.authors = await this.fetchAuthors();
-    console.log(this.authors);
   },
   methods: {
     fetchAuthors: async function() {
@@ -33,3 +32,10 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+main {
+  display: flex;
+  flex-flow: row wrap;
+}
+</style>

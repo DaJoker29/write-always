@@ -1,11 +1,13 @@
 import Vue from 'vue';
 import NProgress from 'nprogress';
 import axios from 'axios';
+import moment from 'moment';
 import store from './store';
 import App from './App';
 import router from './router';
 
 Vue.config.productionTip = false;
+Vue.prototype.moment = moment;
 
 export default new Vue({
   store,

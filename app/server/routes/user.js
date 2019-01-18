@@ -11,13 +11,7 @@ export default router;
 
 async function fetchAllUsers(req, res, next) {
   try {
-    const users = await User.find();
-    res.json(users);
-    // Info needed to attach:
-    // Display Name - (Done)
-    // Location
-    // dateJoined
-    // Story Count / Critique Count
+    res.json(await User.find().lean({ virtuals: true }));
   } catch (e) {
     next(e);
   }
