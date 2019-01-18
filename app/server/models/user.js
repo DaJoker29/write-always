@@ -13,7 +13,10 @@ const userSchema = new Schema(
     dateLastLogin: { type: Date, default: Date.now },
     email: { type: String, required: true, select: false },
     displayName: { type: String, default: 'New School Hipsteracho' },
-    location: { type: String, default: 'Narnia', required: true }
+    location: { type: String, default: 'Narnia', required: true },
+    books: [{ type: String, select: false }],
+    url: { type: String },
+    bio: { type: String }
   },
   { versionKey: false }
 );
