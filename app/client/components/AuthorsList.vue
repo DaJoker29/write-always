@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import http from '@client/http-common';
 import AuthorsListArticle from './AuthorsListArticle';
 
 export default {
@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     fetchAuthors: async function() {
-      const response = await axios.get('/api/users');
+      const response = await http.get('/api/users');
       return response.data;
     }
   }

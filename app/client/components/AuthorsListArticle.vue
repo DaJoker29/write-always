@@ -3,7 +3,7 @@
     <RouterLink :to="author.profileURL">
       <h3>{{ author.displayName }}</h3>
     </RouterLink>
-    <p v-if="activeNow()">Online now!</p>
+    <p v-if="activeNow()" class="active-now">Online now!</p>
     <p>Joined {{ moment(author.dateJoined).fromNow() }}</p>
     <p>{{ author.location }}</p>
   </article>
@@ -32,5 +32,10 @@ article {
   margin: var(--spacing);
   flex: 1 1 var(--bp-1);
   text-align: center;
+}
+
+.active-now {
+  color: var(--color-red);
+  font-weight: bold;
 }
 </style>

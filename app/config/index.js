@@ -1,5 +1,4 @@
 import merge from 'deepmerge';
-import VError from 'verror';
 import pkg from '@root/package.json';
 import Log from '@tools/log';
 import options from '@root/config';

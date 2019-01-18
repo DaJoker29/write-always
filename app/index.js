@@ -11,6 +11,7 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import history from 'connect-history-api-fallback';
 
+import { updateLastLogin } from '@server/middleware/user'; // need to rethink indexify
 import Routes from '@server/routes';
 import config from '@config';
 import Log from '@tools/log';
@@ -61,7 +62,7 @@ if (!isProd) {
 }
 
 app.use('/auth', Routes.Auth);
-app.use('/api', Routes.User);
+app.use('/api', updateLastLogin, Routes.User);
 // app.use('/api', Routes.Posts);
 // app.use('/api', Routes.Authors);
 // app.use('/api', Routes.Categories);

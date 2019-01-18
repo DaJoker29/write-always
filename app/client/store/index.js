@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import axios from 'axios';
 
 Vue.use(Vuex);
 
@@ -53,12 +52,10 @@ export default new Vuex.Store({
       commit('closeNav');
     },
     login({ commit }, { username, token }) {
-      axios.defaults.headers.common['Authorization'] = `bearer ${token}`;
       commit('setUsername', username);
       commit('setToken', token);
     },
     logout({ commit }) {
-      delete axios.defaults.headers.common['Authorization'];
       commit('logout');
     }
   }

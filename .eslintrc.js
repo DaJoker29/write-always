@@ -30,12 +30,13 @@ module.exports = {
     semi: ['error', 'always'],
     'import-order-autofix/order': 1,
     'no-multi-assign': 0,
-    'no-unused-vars': 1,
+    'no-unused-vars': ['error', { args: 'none' }],
     'no-use-before-define': ['error', 'nofunc'],
     'no-console': 0,
     'import/no-extraneous-dependencies': 0,
     'import/no-unresolved': ['error'],
-    'import/first': 0
+    'import/first': 0,
+    'import/prefer-default-export': 1
   },
   settings: {
     'import/resolver': {

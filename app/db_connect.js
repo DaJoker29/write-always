@@ -11,7 +11,7 @@ const {
 log(`Database: ${db}`);
 mongoose.connect(
   db,
-  { useNewUrlParser: true, useCreateIndex: true }
+  { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false }
 );
 
 mongoose.connection.on('error', err => {
