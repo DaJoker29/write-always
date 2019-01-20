@@ -17,6 +17,7 @@ import config from '@config';
 import Log from '@tools/log';
 
 const wpLog = Log('webpack');
+const historyLog = Log('history');
 
 const isProd = config.env === 'production';
 const app = express();
@@ -34,7 +35,12 @@ app.use(bodyParser.urlencoded({ extended: 'true' }));
 app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(helmet());
-app.use(history());
+app.use(
+  history({
+    logger: historyLog,
+    rewrites: [{ from: /\/*\/bundle.js/, to: '/bundle.js' }]
+  })
+);
 app.use(passport.initialize());
 
 // configure passport
