@@ -4,9 +4,16 @@ import token from 'random-token';
 import uniqueValidator from 'mongoose-unique-validator';
 import mongooseLeanVirtuals from 'mongoose-lean-virtuals';
 
+const prefix = 'us';
+
 const userSchema = new Schema(
   {
-    uid: { type: String, required: true, default: generate, unique: true },
+    uid: {
+      type: String,
+      required: true,
+      default: () => `${prefix}${generate()}`,
+      unique: true
+    },
     username: { type: String, required: true, unique: true, select: false },
     token: { type: String, default: token(128), select: false },
     dateJoined: { type: Date, default: Date.now },

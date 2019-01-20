@@ -23,11 +23,10 @@ program
     // Create User
     if ('create' === cmd) {
       const { username, email, displayName } = options;
-      console.log(options);
 
       try {
-        await User.create({ username, email, displayName });
-        console.log(await User.find());
+        const user = await User.create({ username, email, displayName });
+        console.log(user);
       } catch (e) {
         console.error(e.message);
       }
