@@ -21,7 +21,6 @@ const userSchema = new Schema(
     email: { type: String, required: true, select: false },
     displayName: { type: String, default: 'New School Hipsteracho' },
     location: { type: String, default: 'Narnia', required: true },
-    books: [{ type: String, select: false }],
     url: { type: String },
     bio: { type: String }
   },
@@ -33,6 +32,10 @@ userSchema.plugin(mongooseLeanVirtuals);
 
 userSchema.virtual('profileURL').get(function() {
   return `/author/${this.uid}`;
+});
+
+userSchema.virtual('/notebooksURL').get(function() {
+  return `/notebooks?ID=${this.uid}`;
 });
 
 export default model('User', userSchema);

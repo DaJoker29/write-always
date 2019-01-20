@@ -6,6 +6,7 @@ import Home from '@client/views/Home';
 import LoginPage from '@client/views/Login';
 import AuthorsPage from '@client/views/Authors';
 import PageNotFound from '@client/views/PageNotFound';
+import SingleAuthorPage from '@client/views/SingleAuthor';
 import store from '@client/store';
 
 Vue.use(Router);
@@ -30,6 +31,11 @@ const router = new Router({
       path: '/authors',
       name: 'authors',
       component: AuthorsPage
+    },
+    {
+      path: '/author/:authorID',
+      name: 'author',
+      component: SingleAuthorPage
     },
     {
       path: '404',
