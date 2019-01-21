@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { generate } from 'shortid';
 import uniqueValidator from 'mongoose-unique-validator';
+import mongooseLeanVirtuals from 'mongoose-lean-virtuals';
 
 const prefix = 'nb';
 
@@ -21,5 +22,10 @@ const notebookSchema = new Schema(
 );
 
 notebookSchema.plugin(uniqueValidator);
+notebookSchema.plugin(mongooseLeanVirtuals);
+
+notebookSchema.virtual('notebookURL').get(function() {
+  return `/notebook/${this.uid}`;
+});
 
 export default model('Notebook', notebookSchema);

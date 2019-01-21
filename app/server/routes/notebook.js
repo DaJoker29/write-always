@@ -6,9 +6,26 @@ const { Notebook, User } = Models;
 const router = Router();
 
 router.get('/notebooks', fetchAllNotebooks);
+router.get('/notebook/:notebookID', fetchNotebook);
 router.post('/notebook/create', createNotebook);
 
 export default router;
+
+async function fetchNotebook(req, res, next) {
+  const { notebookID: uid, id } = req.params;
+
+  try {
+    const notebook = await Notebook.findOne({ uid }).populate('owner');
+
+    if (notebook.isPrivate && notebook.owner._id !== id) {
+      res.sendStatus(404);
+    } else {
+      res.json(notebook);
+    }
+  } catch (e) {
+    next(e);
+  }
+}
 
 async function createNotebook(req, res, next) {
   const { id, username, ...data } = req.body;
@@ -29,7 +46,9 @@ async function createNotebook(req, res, next) {
 
 async function fetchAllNotebooks(req, res, next) {
   try {
-    res.json(await Notebook.find({ isPrivate: false }));
+    res.json(
+      await Notebook.find({ isPrivate: false }).lean({ virtuals: true })
+    );
   } catch (e) {
     next(e);
   }
