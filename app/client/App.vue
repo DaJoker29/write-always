@@ -134,7 +134,8 @@ a:active,
   color: var(--color-red);
 }
 
-input {
+input,
+textarea {
   margin: var(--spacing) 0;
   padding: var(--spacing-half) var(--spacing);
   display: inline-block;
@@ -143,6 +144,7 @@ input {
   background: var(--color-black);
   color: var(--color-cream);
   font-size: var(--h4);
+  resize: none;
 }
 
 input:focus {

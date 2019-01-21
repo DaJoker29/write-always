@@ -14,6 +14,11 @@ export async function updateLastLogin(req, res, next) {
     try {
       const header = req.headers.authorization.replace(/bearer /gi, '');
       const decoded = verify(header, secret);
+
+      if (req.body) {
+        req.body = Object.assign(req.body, { id: decoded.id });
+      }
+
       const user = await User.findOneAndUpdate(
         { _id: decoded.id },
         {
