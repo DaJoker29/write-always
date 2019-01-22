@@ -19,7 +19,7 @@ export default {
   },
   methods: {
     fetchNotebooks: async function() {
-      return (await this.$http.get('/api/notebooks')).data;
+      return (await this.$http.get('/notebooks')).data;
     }
   }
 };

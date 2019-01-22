@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import http from '@client/http-common';
 import { mapState } from 'vuex';
 
 export default {
@@ -33,7 +32,7 @@ export default {
         isShared,
         owner: this.username
       };
-      const response = await http.post('/api/notebook/create', data);
+      const response = await this.$http.post('/notebook/create', data);
       console.log(response);
     }
   }

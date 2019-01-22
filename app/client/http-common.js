@@ -1,7 +1,9 @@
 import axios from 'axios';
 import NProgress from 'nprogress';
 
-const http = axios.create();
+const http = axios.create({
+  baseURL: '/api/'
+});
 
 http.interceptors.request.use(config => {
   NProgress.start();

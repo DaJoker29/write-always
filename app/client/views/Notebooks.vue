@@ -4,7 +4,6 @@
 
 <script>
 import NotebookList from '@client/components/NotebookList';
-import http from '@client/http-common';
 
 export default {
   components: {
@@ -20,7 +19,7 @@ export default {
   },
   methods: {
     fetchNotebooks: async function() {
-      return (await http.get('/api/notebooks')).data;
+      return (await this.$http.get('/notebooks')).data;
     }
   }
 };

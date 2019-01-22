@@ -29,7 +29,7 @@ export default {
         body,
         notebook
       };
-      const entry = await this.$http.post('/api/entry/create', data);
+      const entry = await this.$http.post('/entry/create', data);
       console.log(entry);
     }
   }

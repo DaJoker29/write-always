@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import http from '@client/http-common';
 import AuthorsListArticle from './AuthorsListArticle';
 
 export default {
@@ -26,8 +25,7 @@ export default {
   },
   methods: {
     fetchAuthors: async function() {
-      const response = await http.get('/api/users');
-      return response.data;
+      return (await this.$http.get('/users')).data;
     }
   }
 };

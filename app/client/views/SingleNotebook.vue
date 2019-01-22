@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import http from '@client/http-common';
 import NotebookPage from '@client/components/NotebookPage';
 
 export default {
@@ -28,9 +27,8 @@ export default {
   },
   methods: {
     updateNotebook: async function(notebookID) {
-      const notebook = (await http.get(`/api/notebook/${notebookID}`)).data;
-      const entries = (await this.$http.get(`/api/entries?n=${notebookID}`))
-        .data;
+      const notebook = (await this.$http.get(`/notebook/${notebookID}`)).data;
+      const entries = (await this.$http.get(`/entries?n=${notebookID}`)).data;
       return Object.assign(notebook, { entries });
     }
   }

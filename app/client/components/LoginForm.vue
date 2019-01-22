@@ -17,7 +17,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import axios from 'axios';
 
 export default {
   data: function() {
@@ -34,11 +33,17 @@ export default {
     ...mapActions(['login']),
     authenticate: async function() {
       try {
-        const response = await axios.post('/auth/login', {
+        const request = { baseURL: '/auth/' };
+        const params = {
           username: this.inputUser,
           password: this.inputPass
-        });
-        const { token, username } = response.data;
+        };
+        const { token, username } = (await this.$http.post(
+          '/login',
+          params,
+          request
+        )).data;
+
         this.login({ token, username });
         this.$router.push('/');
       } catch (e) {

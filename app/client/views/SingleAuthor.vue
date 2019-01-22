@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import http from '@client/http-common';
 import AuthorPage from '@client/components/AuthorPage';
 
 export default {
@@ -25,8 +24,8 @@ export default {
   },
   methods: {
     updateAuthor: async function(authorID) {
-      const author = (await http.get(`/api/user/${authorID}`)).data;
-      const notebooks = (await http.get(`/api/notebooks?u=${authorID}`)).data;
+      const author = (await this.$http.get(`/user/${authorID}`)).data;
+      const notebooks = (await this.$http.get(`/notebooks?u=${authorID}`)).data;
       return Object.assign(author, { notebooks });
     }
   }
