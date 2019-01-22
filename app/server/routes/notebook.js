@@ -15,7 +15,9 @@ async function fetchNotebook(req, res, next) {
   const { notebookID: uid, id } = req.params;
 
   try {
-    const notebook = await Notebook.findOne({ uid }).populate('owner');
+    const notebook = await Notebook.findOne({ uid })
+      .populate('owner')
+      .lean({ virtuals: true });
 
     if (notebook.isPrivate && notebook.owner._id !== id) {
       res.sendStatus(404);

@@ -10,6 +10,7 @@ import PageNotFound from '@client/views/PageNotFound';
 import SingleAuthorPage from '@client/views/SingleAuthor';
 import SingleNotebookPage from '@client/views/SingleNotebook';
 import CreateNotebookPage from '@client/views/CreateNotebook';
+import CreateEntryPage from '@client/views/CreateEntry';
 import store from '@client/store';
 
 Vue.use(Router);
@@ -54,6 +55,14 @@ const router = new Router({
       path: '/notebook/create',
       name: 'createNotebook',
       component: CreateNotebookPage,
+      meta: {
+        user: true
+      }
+    },
+    {
+      path: '/entry/create',
+      name: 'createEntry',
+      component: CreateEntryPage,
       meta: {
         user: true
       }

@@ -28,4 +28,8 @@ notebookSchema.virtual('notebookURL').get(function() {
   return `/notebook/${this.uid}`;
 });
 
+notebookSchema.virtual('createEntryURL').get(function() {
+  return `/entry/create?n=${this.uid}`;
+});
+
 export default model('Notebook', notebookSchema);

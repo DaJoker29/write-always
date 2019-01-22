@@ -1,5 +1,8 @@
 <template>
-  <NotebookPage :notebook="notebook" />
+  <main>
+    <NotebookPage v-if="notebook && notebook.owner" :notebook="notebook" />
+    <h2 v-else>Loading...</h2>
+  </main>
 </template>
 
 <script>
@@ -26,7 +29,9 @@ export default {
   methods: {
     updateNotebook: async function(notebookID) {
       const notebook = (await http.get(`/api/notebook/${notebookID}`)).data;
-      return notebook;
+      const entries = (await this.$http.get(`/api/entries?n=${notebookID}`))
+        .data;
+      return Object.assign(notebook, { entries });
     }
   }
 };

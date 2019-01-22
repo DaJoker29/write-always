@@ -1,5 +1,5 @@
-module.exports = (function assignTitleCase() {
-  // eslint-disable-next-line no-extend-native
+module.exports = (function() {
+  // eslint-disable no-extend-native
   String.prototype.toTitleCase =
     String.prototype.toTitleCase ||
     function toTitleCase() {
@@ -8,4 +8,16 @@ module.exports = (function assignTitleCase() {
         t => t.charAt(0).toUpperCase() + t.slice(1)
       );
     };
+
+  // Object.prototype.isObjEmpty =
+  //   Object.prototype.isObjEmpty ||
+  //   function isObjEmpty() {
+  //     for (const key in this) {
+  //       if (this.hasOwnProperty(key)) {
+  //         return false;
+  //       }
+  //     }
+  //     return true;
+  //   };
+  // eslint-enable no-extend-native
 })();

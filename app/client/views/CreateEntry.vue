@@ -1,22 +1,43 @@
 <template>
   <main>
     <textarea
-      id="entry-field"
+      ref="entry"
+      v-model="body"
+      v-autosize="body"
       placeholder="Start typing here"
-      @keyup="autosize(document.querySelector('#entry-field'))"
     ></textarea>
+    <button @click="submit">Add Entry to {{ notebook }}</button>
   </main>
 </template>
 
 <script>
-export default {};
+export default {
+  data: function() {
+    return {
+      body: ''
+    };
+  },
+  computed: {
+    notebook() {
+      return this.$route.query.n;
+    }
+  },
+  methods: {
+    async submit() {
+      const { body, notebook } = this;
+      const data = {
+        body,
+        notebook
+      };
+      const entry = await this.$http.post('/api/entry/create', data);
+      console.log(entry);
+    }
+  }
+};
 </script>
 
 <style scoped>
 textarea {
-  margin: 0;
-  height: auto;
-  box-sizing: border-box;
-  width: 100%;
+  margin: var(--spacing) auto;
 }
 </style>
