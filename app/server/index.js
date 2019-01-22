@@ -6,12 +6,12 @@ import methodOverride from 'method-override';
 import passport from 'passport';
 import helmet from 'helmet';
 import webpack from 'webpack';
+import VError from 'verror';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import history from 'connect-history-api-fallback';
 
 import { updateLastLogin } from '@server/middleware/user';
-import Errors from '@server/middleware/errors';
 import Routes from '@server/routes';
 import config from '@config';
 import Log from '@tools/log';
@@ -19,6 +19,7 @@ import { AuthRoutes, initAuth } from './authentication';
 
 const wpLog = Log('webpack');
 const historyLog = Log('history');
+const errLog = Log('error');
 
 const isProd = config.env === 'production';
 const app = express();
@@ -70,4 +71,10 @@ if (!isProd) {
 
 app.use('/auth', AuthRoutes);
 app.use('/api', updateLastLogin, Routes());
-app.use(Errors());
+app.use(serverError);
+
+function serverError(err, req, res, next) {
+  const error = new VError(err, 'Unhandled Server Error');
+  errLog(error.stack);
+  return res.sendStatus(500);
+}
