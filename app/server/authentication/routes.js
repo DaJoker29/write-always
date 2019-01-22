@@ -3,7 +3,7 @@ import Log from '@tools/log';
 import jwt from 'jsonwebtoken';
 import passport from 'passport';
 
-const log = Log();
+const errLog = Log('login-error');
 const router = Router();
 
 router.post('/login', loginHandler);
@@ -14,7 +14,7 @@ function loginHandler(req, res) {
   passport.authenticate('local', { session: false }, function(err, user, info) {
     if (err || !user) {
       if (err) {
-        log(err);
+        errLog(err);
       }
 
       return res.status(400).json({

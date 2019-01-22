@@ -1,9 +1,4 @@
-import './passport';
-import Log from '@tools/log';
-import Routes from './routes';
+import initAuth from './passport';
+import AuthRoutes from './routes';
 
-const log = Log('auth');
-
-log('Authentication System Loaded');
-
-export default Routes;
+export { AuthRoutes, initAuth };

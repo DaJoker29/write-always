@@ -12,7 +12,7 @@ export default function() {
 
   routes.forEach(route => {
     const module = route.slice(0, -3);
-    log(`Loaded ${module.toTitleCase()} Routes`);
+    log(`Found ${module.toTitleCase()}`);
     /* eslint-disable-next-line import/no-dynamic-require */
     router.use('/', require(`./${module}`).default);
   });

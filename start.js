@@ -31,7 +31,7 @@ function uncaughtException(err) {
 }
 
 function onError(e) {
-  console.error(new VError(e, 'Problem launching server'));
+  error(new VError(e, 'Problem launching server'));
 }
 
 function onListen() {

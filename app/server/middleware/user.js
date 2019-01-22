@@ -7,6 +7,10 @@ const log = Log('middleware');
 
 const { User } = Models;
 
+export default {
+  updateLastLogin
+};
+
 export async function updateLastLogin(req, res, next) {
   if (req.headers.authorization === undefined) {
     next();

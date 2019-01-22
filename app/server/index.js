@@ -15,6 +15,7 @@ import Errors from '@server/middleware/errors';
 import Routes from '@server/routes';
 import config from '@config';
 import Log from '@tools/log';
+import { AuthRoutes, initAuth } from './authentication';
 
 const wpLog = Log('webpack');
 const historyLog = Log('history');
@@ -42,11 +43,10 @@ app.use(
   })
 );
 app.use(passport.initialize());
-
-// configure passport
-import auth from './authentication';
+initAuth();
 
 if (!isProd) {
+  wpLog('Configuring Webpack Dev Middleware');
   const compiler = webpack(config.webpack);
 
   app.use(
@@ -68,6 +68,6 @@ if (!isProd) {
   });
 }
 
-app.use('/auth', auth);
+app.use('/auth', AuthRoutes);
 app.use('/api', updateLastLogin, Routes());
 app.use(Errors());
