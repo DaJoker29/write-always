@@ -1,20 +1,14 @@
 <template>
-  <main>
-    <NotebookListing
-      v-for="notebook in notebooks"
-      :key="notebook.uid"
-      :notebook="notebook"
-    />
-  </main>
+  <main><NotebookList :notebooks="notebooks" /></main>
 </template>
 
 <script>
-import NotebookListing from '@client/components/NotebookListing';
+import NotebookList from '@client/components/NotebookList';
 import http from '@client/http-common';
 
 export default {
   components: {
-    NotebookListing
+    NotebookList
   },
   data: function() {
     return {
@@ -26,9 +20,7 @@ export default {
   },
   methods: {
     fetchNotebooks: async function() {
-      const notebooks = (await http.get('/api/notebooks')).data;
-      console.log(notebooks);
-      return notebooks;
+      return (await http.get('/api/notebooks')).data;
     }
   }
 };

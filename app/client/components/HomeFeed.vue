@@ -1,38 +1,32 @@
 <template>
-  <main class="home-feed">
-    <Article
-      v-for="(post, index) in posts"
-      :key="`post-${index}`"
-      :post="post"
-    />
-  </main>
+  <main><NotebookList :notebooks="notebooks" /></main>
 </template>
 
 <script>
-import Article from './HomeFeedArticle';
-
-const post = {
-  title: 'Some kind of title goes here',
-  author: 'Some Author',
-  content:
-    'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus omnis reprehenderit modi voluptas nihil, quas accusantium ducimus ut ipsam autem nesciunt consequuntur explicabo unde, itaque eius cumque ipsum commodi a.',
-  pubDate: Date.now()
-};
+import NotebookList from './NotebookList';
 
 export default {
   components: {
-    Article
+    NotebookList
   },
   data: function() {
     return {
-      posts: [post, post, post, post]
+      notebooks: []
     };
+  },
+  created: async function() {
+    this.notebooks = await this.fetchNotebooks();
+  },
+  methods: {
+    fetchNotebooks: async function() {
+      return (await this.$http.get('/api/notebooks')).data;
+    }
   }
 };
 </script>
 
 <style scoped>
-.home-feed {
+main {
   display: flex;
   flex-flow: row wrap;
 }
