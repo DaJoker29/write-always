@@ -1,5 +1,5 @@
 <template>
-  <LoginForm />
+  <main><LoginForm /></main>
 </template>
 
 <script>

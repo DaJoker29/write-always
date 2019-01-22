@@ -78,13 +78,10 @@ program
 
     if (!cmd || 'list' === cmd) {
       try {
-        const users = await User.find(
-          {},
-          { email: 1, token: 1, displayName: 1 }
-        );
+        const users = await User.find({}, { email: 1, token: 1, username: 1 });
         users.forEach(user => {
           console.log(
-            `${user.displayName} - ${user.email}\n Access Code: ${notp.totp.gen(
+            `${user.username} - ${user.email}\n Access Code: ${notp.totp.gen(
               user.token
             )}\n`
           );

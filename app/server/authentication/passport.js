@@ -16,7 +16,7 @@ export default function() {
       try {
         const user = await User.findOne(
           { username },
-          { token: 1, username: 1 }
+          { token: 1, username: 1, uid: 1 }
         );
         const login = notp.totp.verify(password, user.token);
 

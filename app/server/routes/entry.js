@@ -14,7 +14,9 @@ async function fetchEntries(req, res, next) {
   const { n: uid } = req.query;
   try {
     const notebook = await Notebook.findOne({ uid });
-    const entries = await Entry.find({ notebook: notebook._id }).lean();
+    const entries = await Entry.find({ notebook: notebook._id })
+      .populate('notebook author')
+      .lean();
     res.json(entries);
   } catch (e) {
     next(e);
@@ -31,6 +33,7 @@ async function createEntry(req, res, next) {
       data.author = user.id;
       data.notebook = notebook.id;
       const entry = await Entry.create(data);
+      await Notebook.findOneAndUpdate({ uid }, { updatedAt: new Date() });
       res.json(entry);
     } else {
       res.sendStatus(401);

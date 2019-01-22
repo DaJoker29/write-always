@@ -1,23 +1,23 @@
 <template>
   <section>
-    <h2>Notebooks ({{ notebooks.length }})</h2>
-    <NotebookListing
-      v-for="notebook in notebooks"
-      :key="notebook.uid"
-      :notebook="notebook"
+    <h3>Entries ({{ entries.length }})</h3>
+    <EntryListArticle
+      v-for="entry in entries"
+      :key="entry.uid"
+      :entry="entry"
     />
   </section>
 </template>
 
 <script>
-import NotebookListing from '@client/components/NotebookListing';
+import EntryListArticle from './EntryListArticle';
 
 export default {
   components: {
-    NotebookListing
+    EntryListArticle
   },
   props: {
-    notebooks: {
+    entries: {
       type: Array,
       required: true
     }
@@ -27,16 +27,17 @@ export default {
 
 <style scoped>
 section {
+  margin: var(--spacing-double);
   display: flex;
   flex-flow: row wrap;
 }
 
-h2 {
+h3 {
   flex: 100%;
 }
 
 /deep/ article {
-  flex: 1 25%;
   padding: var(--spacing);
+  flex: 1 1 100%;
 }
 </style>

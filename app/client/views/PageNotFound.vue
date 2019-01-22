@@ -1,5 +1,5 @@
 <template>
-  <div><h2>That Page Don't Exist Playboi</h2></div>
+  <main><h2>That Page Don't Exist Playboi</h2></main>
 </template>
 
 <style scoped>

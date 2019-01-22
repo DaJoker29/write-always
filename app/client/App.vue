@@ -160,4 +160,12 @@ input:focus {
   filter: grayscale(1) blur(var(--spacing-half));
   z-index: -1;
 }
+
+strong {
+  font-weight: bolder;
+}
+
+main {
+  margin: var(--spacing-double);
+}
 </style>

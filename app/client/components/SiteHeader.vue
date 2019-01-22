@@ -29,11 +29,6 @@
           </RouterLink>
         </li>
         <li>
-          <RouterLink :to="{ name: 'notebooks' }" @click.native="closeNav">
-            Notebooks
-          </RouterLink>
-        </li>
-        <li>
           <RouterLink :to="{ name: 'createNotebook' }" @click.native="closeNav">
             Create Notebook
           </RouterLink>

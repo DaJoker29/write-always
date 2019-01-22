@@ -1,36 +1,44 @@
 <template>
   <main>
-    <NotebookPage v-if="notebook && notebook.owner" :notebook="notebook" />
-    <h2 v-else>Loading...</h2>
+    <SingleNotebookHeader v-if="notebook.owner" :notebook="notebook" />
+    <EntryList :entries="entries" />
   </main>
 </template>
 
 <script>
-import NotebookPage from '@client/components/NotebookPage';
+import SingleNotebookHeader from '@client/components/SingleNotebookHeader';
+import EntryList from '@client/components/EntryList';
 
 export default {
   components: {
-    NotebookPage
+    SingleNotebookHeader,
+    EntryList
   },
   data: function() {
     return {
-      notebook: {}
+      notebook: {},
+      entries: []
     };
   },
   watch: {
     $route: async function(to, from) {
       this.notebook = await this.updateNotebook(to.params.notebookID);
+      this.entries = await this.updateEntries(to.params.notebookID);
     }
   },
   created: async function() {
     this.notebook = await this.updateNotebook(this.$route.params.notebookID);
+    this.entries = await this.updateEntries(this.$route.params.notebookID);
   },
   methods: {
     updateNotebook: async function(notebookID) {
-      const notebook = (await this.$http.get(`/notebook/${notebookID}`)).data;
-      const entries = (await this.$http.get(`/entries?n=${notebookID}`)).data;
-      return Object.assign(notebook, { entries });
+      return (await this.$http.get(`/notebook/${notebookID}`)).data;
+    },
+    updateEntries: async function(notebookID) {
+      return (await this.$http.get(`/entries?n=${notebookID}`)).data;
     }
   }
 };
 </script>
+
+<style scoped></style>

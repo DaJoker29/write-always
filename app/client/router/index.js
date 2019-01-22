@@ -5,7 +5,6 @@ import NProgress from 'nprogress';
 import Home from '@client/views/Home';
 import LoginPage from '@client/views/Login';
 import AuthorsPage from '@client/views/Authors';
-import NotebooksPage from '@client/views/Notebooks';
 import PageNotFound from '@client/views/PageNotFound';
 import SingleAuthorPage from '@client/views/SingleAuthor';
 import SingleNotebookPage from '@client/views/SingleNotebook';
@@ -35,11 +34,6 @@ const router = new Router({
       path: '/authors',
       name: 'authors',
       component: AuthorsPage
-    },
-    {
-      path: '/notebooks',
-      name: 'notebooks',
-      component: NotebooksPage
     },
     {
       path: '/author/:authorID',

@@ -28,12 +28,6 @@ export default {
 </script>
 
 <style scoped>
-article {
-  margin: var(--spacing);
-  flex: 1 1 var(--bp-1);
-  text-align: center;
-}
-
 .active-now {
   color: var(--color-red);
   font-weight: bold;

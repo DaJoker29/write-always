@@ -21,7 +21,9 @@ export async function updateLastLogin(req, res, next) {
 
       if (req.body) {
         req.body = Object.assign(req.body, { id: decoded.id });
-      } else if (req.params) {
+      }
+
+      if (req.params) {
         req.params = Object.assign(req.params, { id: decoded.id });
       }
 

@@ -1,5 +1,5 @@
 <template>
-  <main class="login-form">
+  <form class="login-form">
     <h3>Log in</h3>
     <h4 v-if="message.length">{{ message }}</h4>
     <input v-model="inputUser" type="text" placeholder="Enter username..." />
@@ -12,7 +12,7 @@
         @keyup.enter="authenticate"
       />
     </Transition>
-  </main>
+  </form>
 </template>
 
 <script>
@@ -38,13 +38,13 @@ export default {
           username: this.inputUser,
           password: this.inputPass
         };
-        const { token, username } = (await this.$http.post(
+        const { token, username, uid } = (await this.$http.post(
           '/login',
           params,
           request
         )).data;
 
-        this.login({ token, username });
+        this.login({ token, username, uid });
         this.$router.push('/');
       } catch (e) {
         this.inputUser = '';
