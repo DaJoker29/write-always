@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import http from '@client/http-common';
+import moment from 'moment';
 
 Vue.use(Vuex);
 
@@ -14,14 +15,27 @@ export default new Vuex.Store({
     allUsers: JSON.parse(localStorage.getItem('allUsers')) || [],
     allNotebooks: JSON.parse(localStorage.getItem('allNotebooks')) || [],
     isSearchOpen: false,
-    isNavOpen: false
+    isNavOpen: false,
+    sort: {
+      authors: {
+        orderBy: 'date'
+      },
+      notebooks: {
+        orderBy: 'date',
+        filter: ''
+      },
+      entries: {
+        filter: ''
+      }
+    }
   },
   getters: {
+    sort: state => state.sort,
     isLoggedIn: state => state.token !== '',
     isSearchOpen: state => state.isSearchOpen,
     isNavOpen: state => state.isNavOpen,
     currentUser: state => state.currentUser,
-    allNotebooks: state => state.allNotebooks,
+    allNotebooks: state => sortNotebooks(state),
     allUsers: state => state.allUsers
   },
   mutations: {
@@ -65,6 +79,16 @@ export default new Vuex.Store({
     updateAllNotebooks(state, payload) {
       state.allNotebooks = payload;
       localStorage.setItem('allNotebooks', JSON.stringify(payload));
+    },
+    updateSort(state, payload) {
+      const { type, order, filter } = payload;
+      if (order) {
+        state.sort[type].orderBy = order;
+      }
+
+      if (filter) {
+        state.sort[type].filter = filter;
+      }
     }
   },
   actions: {
@@ -85,6 +109,9 @@ export default new Vuex.Store({
     logout({ commit }) {
       commit('logout');
     },
+    setSort({ commit }, payload) {
+      commit('updateSort', payload);
+    },
     async fetchUser({ commit }) {
       commit(
         'updateCurrentUser',
@@ -99,3 +126,35 @@ export default new Vuex.Store({
     }
   }
 });
+
+function dateCompare(a, b) {
+  return moment(a).diff(moment(b));
+}
+
+function sortNotebooks(state) {
+  const { orderBy } = state.sort.notebooks;
+  // const notebooks = state.allNotebooks;
+
+  if (orderBy === 'date') {
+    state.allNotebooks.sort((a, b) => dateCompare(a.createdAt, b.createdAt));
+  } else if (orderBy === 'alphabetical') {
+    state.allNotebooks.sort((a, b) => {
+      return textCompare(a.title, b.title);
+    });
+  } else if (orderBy === 'recent') {
+    state.allNotebooks.sort((a, b) => dateCompare(b.updatedAt, a.updatedAt));
+  }
+  return state.allNotebooks;
+}
+
+function textCompare(a, b) {
+  const first = a.trim().toUpperCase();
+  const second = b.trim().toUpperCase();
+  if (first < second) {
+    return -1;
+  }
+  if (first > second) {
+    return 1;
+  }
+  return 0;
+}

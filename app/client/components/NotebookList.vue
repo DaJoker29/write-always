@@ -1,6 +1,7 @@
 <template>
   <section>
     <h2>Notebooks ({{ notebooks.length }})</h2>
+    <SortNotebooks />
     <NotebookListing
       v-for="notebook in notebooks"
       :key="notebook.uid"
@@ -11,10 +12,12 @@
 
 <script>
 import NotebookListing from '@client/components/NotebookListing';
+import SortNotebooks from '@client/components/SortNotebooks';
 
 export default {
   components: {
-    NotebookListing
+    NotebookListing,
+    SortNotebooks
   },
   props: {
     notebooks: {
