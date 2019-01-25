@@ -25,6 +25,7 @@ export default new Vuex.Store({
         filter: ''
       },
       entries: {
+        orderBy: 'newest',
         filter: ''
       }
     }
