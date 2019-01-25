@@ -36,7 +36,7 @@ export default new Vuex.Store({
     isNavOpen: state => state.isNavOpen,
     currentUser: state => state.currentUser,
     allNotebooks: state => sortNotebooks(state),
-    allUsers: state => state.allUsers
+    allUsers: state => sortUsers(state)
   },
   mutations: {
     toggleSearch(state) {
@@ -145,6 +145,23 @@ function sortNotebooks(state) {
     state.allNotebooks.sort((a, b) => dateCompare(b.updatedAt, a.updatedAt));
   }
   return state.allNotebooks;
+}
+
+function sortUsers(state) {
+  const { orderBy } = state.sort.authors;
+
+  if (orderBy === 'date') {
+    state.allUsers.sort((a, b) => dateCompare(a.dateJoined, b.dateJoined));
+  } else if (orderBy === 'alphabetical') {
+    state.allUsers.sort((a, b) => {
+      return textCompare(a.displayName, b.displayName);
+    });
+  } else if (orderBy === 'recent') {
+    state.allUsers.sort((a, b) =>
+      dateCompare(b.dateLastLogin, a.dateLastLogin)
+    );
+  }
+  return state.allUsers;
 }
 
 function textCompare(a, b) {

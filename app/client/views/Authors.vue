@@ -1,5 +1,6 @@
 <template>
   <main>
+    <SortAuthors />
     <AuthorsListArticle
       v-for="author in allUsers"
       :key="author.uid"
@@ -10,11 +11,13 @@
 
 <script>
 import AuthorsListArticle from '@client/components/AuthorsListArticle';
+import SortAuthors from '@client/components/SortAuthors';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
   components: {
-    AuthorsListArticle
+    AuthorsListArticle,
+    SortAuthors
   },
   computed: {
     ...mapGetters(['allUsers'])
