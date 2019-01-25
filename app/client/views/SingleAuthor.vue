@@ -8,6 +8,7 @@
 <script>
 import SingleAuthorHeader from '@client/components/SingleAuthorHeader';
 import NotebookList from '@client/components/NotebookList';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -16,26 +17,31 @@ export default {
   },
   data: function() {
     return {
-      author: {},
-      notebooks: []
+      author: {}
     };
+  },
+  computed: {
+    ...mapGetters(['allNotebooks']),
+    notebooks: function() {
+      return this.allNotebooks.filter(
+        notebook => notebook.owner.uid === this.$route.params.authorID
+      );
+    }
   },
   watch: {
     $route: async function(to, from) {
       this.author = await this.updateAuthor(to.params.authorID);
-      this.notebooks = await this.updateNotebooks(to.params.authorID);
+      this.fetchAllNotebooks();
     }
   },
   created: async function() {
     this.author = await this.updateAuthor(this.$route.params.authorID);
-    this.notebooks = await this.updateNotebooks(this.$route.params.authorID);
+    this.fetchAllNotebooks();
   },
   methods: {
+    ...mapActions(['fetchAllNotebooks']),
     updateAuthor: async function(authorID) {
       return (await this.$http.get(`/user/${authorID}`)).data;
-    },
-    updateNotebooks: async function(authorID) {
-      return (await this.$http.get(`/notebooks?u=${authorID}`)).data;
     }
   }
 };

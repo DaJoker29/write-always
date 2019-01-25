@@ -29,6 +29,7 @@ export default {
 section {
   display: flex;
   flex-flow: row wrap;
+  padding: var(--spacing);
 }
 
 h2 {

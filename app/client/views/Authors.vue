@@ -1,7 +1,7 @@
 <template>
   <main>
     <AuthorsListArticle
-      v-for="author in authors"
+      v-for="author in allUsers"
       :key="author.uid"
       :author="author"
     />
@@ -10,23 +10,20 @@
 
 <script>
 import AuthorsListArticle from '@client/components/AuthorsListArticle';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   components: {
     AuthorsListArticle
   },
-  data: function() {
-    return {
-      authors: []
-    };
+  computed: {
+    ...mapGetters(['allUsers'])
   },
   mounted: async function() {
-    this.authors = await this.fetchAuthors();
+    this.fetchAllUsers();
   },
   methods: {
-    fetchAuthors: async function() {
-      return (await this.$http.get('/users')).data;
-    }
+    ...mapActions(['fetchAllUsers'])
   }
 };
 </script>

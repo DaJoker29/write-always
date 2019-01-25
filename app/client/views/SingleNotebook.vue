@@ -1,6 +1,6 @@
 <template>
   <main>
-    <SingleNotebookHeader v-if="notebook.owner" :notebook="notebook" />
+    <SingleNotebookHeader :notebook="notebook(notebookID)" />
     <EntryList :entries="entries" />
   </main>
 </template>
@@ -8,6 +8,7 @@
 <script>
 import SingleNotebookHeader from '@client/components/SingleNotebookHeader';
 import EntryList from '@client/components/EntryList';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   components: {
@@ -16,26 +17,31 @@ export default {
   },
   data: function() {
     return {
-      notebook: {},
-      entries: []
+      entries: [],
+      notebookID: this.$route.params.notebookID || ''
     };
+  },
+  computed: {
+    ...mapGetters(['allNotebooks'])
   },
   watch: {
     $route: async function(to, from) {
-      this.notebook = await this.updateNotebook(to.params.notebookID);
+      this.fetchAllNotebooks();
+      this.notebookID = to.params.notebookID;
       this.entries = await this.updateEntries(to.params.notebookID);
     }
   },
   created: async function() {
-    this.notebook = await this.updateNotebook(this.$route.params.notebookID);
+    this.fetchAllNotebooks();
     this.entries = await this.updateEntries(this.$route.params.notebookID);
   },
   methods: {
-    updateNotebook: async function(notebookID) {
-      return (await this.$http.get(`/notebook/${notebookID}`)).data;
-    },
+    ...mapActions(['fetchAllNotebooks']),
     updateEntries: async function(notebookID) {
       return (await this.$http.get(`/entries?n=${notebookID}`)).data;
+    },
+    notebook(uid) {
+      return this.allNotebooks.find(e => e.uid === uid);
     }
   }
 };

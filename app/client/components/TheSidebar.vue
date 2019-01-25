@@ -1,16 +1,15 @@
 <template>
   <aside>
-    <h3>Welcome back, {{ user.displayName }}!</h3>
+    <h3>Welcome back, {{ currentUser.displayName }}!</h3>
   </aside>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
-  props: {
-    user: {
-      type: Object,
-      required: true
-    }
+  computed: {
+    ...mapGetters(['currentUser'])
   }
 };
 </script>
@@ -19,5 +18,6 @@ export default {
 aside {
   background-color: var(--color-black);
   color: var(--color-white);
+  padding: var(--spacing);
 }
 </style>

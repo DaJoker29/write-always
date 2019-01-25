@@ -29,7 +29,11 @@
           </RouterLink>
         </li>
         <li>
-          <RouterLink :to="{ name: 'createNotebook' }" @click.native="closeNav">
+          <RouterLink
+            v-if="isLoggedIn"
+            :to="{ name: 'createNotebook' }"
+            @click.native="closeNav"
+          >
             Create Notebook
           </RouterLink>
         </li>

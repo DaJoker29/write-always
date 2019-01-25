@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import http from '@client/http-common';
 
 Vue.use(Vuex);
 
@@ -9,14 +10,19 @@ export default new Vuex.Store({
     username: localStorage.getItem('username') || '',
     token: localStorage.getItem('token') || '',
     uid: localStorage.getItem('uid') || '',
+    currentUser: JSON.parse(localStorage.getItem('currentUser')) || {},
+    allUsers: JSON.parse(localStorage.getItem('allUsers')) || [],
+    allNotebooks: JSON.parse(localStorage.getItem('allNotebooks')) || [],
     isSearchOpen: false,
     isNavOpen: false
   },
   getters: {
-    isLoggedIn: state =>
-      state.username !== '' && state.token !== '' && state.uid !== '',
+    isLoggedIn: state => state.token !== '',
     isSearchOpen: state => state.isSearchOpen,
-    isNavOpen: state => state.isNavOpen
+    isNavOpen: state => state.isNavOpen,
+    currentUser: state => state.currentUser,
+    allNotebooks: state => state.allNotebooks,
+    allUsers: state => state.allUsers
   },
   mutations: {
     toggleSearch(state) {
@@ -47,6 +53,18 @@ export default new Vuex.Store({
       localStorage.removeItem('token');
       localStorage.removeItem('username');
       localStorage.removeItem('uid');
+    },
+    updateCurrentUser(state, payload) {
+      state.currentUser = payload;
+      localStorage.setItem('currentUser', JSON.stringify(payload));
+    },
+    updateAllUsers(state, payload) {
+      state.allUsers = payload;
+      localStorage.setItem('allUsers', JSON.stringify(payload));
+    },
+    updateAllNotebooks(state, payload) {
+      state.allNotebooks = payload;
+      localStorage.setItem('allNotebooks', JSON.stringify(payload));
     }
   },
   actions: {
@@ -66,6 +84,18 @@ export default new Vuex.Store({
     },
     logout({ commit }) {
       commit('logout');
+    },
+    async fetchUser({ commit }) {
+      commit(
+        'updateCurrentUser',
+        (await http.get(`/user/${localStorage.getItem('uid')}`)).data
+      );
+    },
+    async fetchAllUsers({ commit }) {
+      commit('updateAllUsers', (await http.get('/users')).data);
+    },
+    async fetchAllNotebooks({ commit }) {
+      commit('updateAllNotebooks', (await http.get('/notebooks')).data);
     }
   }
 });

@@ -1,29 +1,38 @@
 <template>
   <body :class="{ 'search-open': isSearchOpen, 'nav-open': isNavOpen }">
-    <SiteHeader />
+    <TheSiteHeader />
 
     <div class="container" @click="isSearchOpen === true ? toggleSearch : null">
+      <TheSidebar v-if="isLoggedIn" />
       <Transition name="fade" mode="out-in"> <RouterView /> </Transition>
     </div>
   </body>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import SiteHeader from '@client/components/SiteHeader';
+import { mapActions, mapGetters } from 'vuex';
+import TheSiteHeader from '@client/components/TheSiteHeader';
+import TheSidebar from '@client/components/TheSidebar';
 import NProgress from 'nprogress';
 
 export default {
   components: {
-    SiteHeader
+    TheSiteHeader,
+    TheSidebar
+  },
+  computed: {
+    ...mapGetters(['isLoggedIn', 'isSearchOpen', 'isNavOpen', 'currentUser'])
+  },
+  created() {
+    NProgress.start();
+    this.fetchUser();
   },
   mounted() {
     NProgress.done();
   },
-  created() {
-    NProgress.start();
-  },
-  computed: mapState(['isSearchOpen', 'isNavOpen'])
+  methods: {
+    ...mapActions(['fetchUser'])
+  }
 };
 </script>
 
@@ -154,6 +163,8 @@ input:focus {
 .container {
   margin-top: calc(var(--spacing-half) * 3 + var(--h2) * var(--line-height));
   transition: var(--transition-long);
+  display: flex;
+  flex-flow: row wrap;
 }
 
 .search-open .container {
@@ -167,5 +178,14 @@ strong {
 
 main {
   margin: var(--spacing-double);
+}
+
+.container > aside {
+  flex: 1;
+  min-height: 100vh;
+}
+
+.container > main {
+  flex: 4;
 }
 </style>
