@@ -23,6 +23,12 @@
     "@server": "./app/server/",
     "@config": "./app/config/"
   },
+  "standard-version": {
+    "scripts": {
+      "prerelease": "git checkout master; git pull origin master",
+      "postrelease": "git push --follow-tags origin master"
+    }
+  },
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
