@@ -28,7 +28,6 @@ module.exports = {
     'linebreak-style': ['error', 'unix'],
     quotes: ['error', 'single'],
     semi: ['error', 'always'],
-    'import-order-autofix/order': 1,
     'no-multi-assign': 0,
     'no-unused-vars': ['error', { args: 'none' }],
     'no-use-before-define': ['error', 'nofunc'],
@@ -56,5 +55,5 @@ module.exports = {
       }
     }
   },
-  plugins: ['prettier', 'vue', 'json', 'import', 'import-order-autofix']
+  plugins: ['prettier', 'vue', 'json', 'import']
 };
