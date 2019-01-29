@@ -1,0 +1,14 @@
+{
+  "verbose": true,
+  "env": {
+    "NODE_ENV": "development",
+    "DEBUG": "write-always*"
+  },
+  "ext": "js json",
+  "watch": [
+    "./app/server/**/*.js",
+    "./app/config/**/*.js",
+    "./app/*.js",
+    "./start.js"
+  ]
+}
