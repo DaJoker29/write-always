@@ -1,11 +1,13 @@
 <template>
   <section>
     <SortNotebooks />
-    <NotebookListing
-      v-for="notebook in notebooks"
-      :key="notebook.uid"
-      :notebook="notebook"
-    />
+    <TransitionGroup name="notebook-list" tag="div" class="notebook-list">
+      <NotebookListing
+        v-for="notebook in notebooks"
+        :key="notebook.uid"
+        :notebook="notebook"
+      />
+    </TransitionGroup>
   </section>
 </template>
 
@@ -28,20 +30,17 @@ export default {
 </script>
 
 <style scoped>
-section {
+.notebook-list {
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 
 h2 {
   flex: 100%;
 }
 
-/deep/ article {
-  flex: 0 1 auto;
-  margin-right: var(--spacing-double);
-  margin-bottom: var(--spacing-double);
-  padding-right: var(--spacing-double);
+.notebook-list-move {
+  transition: transform var(--transition-long);
 }
 </style>
