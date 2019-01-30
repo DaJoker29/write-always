@@ -1,9 +1,8 @@
 <template>
   <article>
     <RouterLink :to="notebook.notebookURL">
-      <h2>
-        <strong v-if="recentUpdate(notebook)" class="recent">*</strong
-        >{{ notebook.title }}
+      <h2 :class="{ recent: recentUpdate(notebook) }">
+        <span>{{ notebook.title }}</span>
       </h2>
     </RouterLink>
     <p>
@@ -53,7 +52,14 @@ export default {
 </script>
 
 <style scoped>
-.recent {
+h2 {
+  text-align: center;
+}
+h2 > span {
+  text-decoration: underline;
+}
+.recent::before {
+  content: '*';
   color: var(--color-red);
 }
 </style>

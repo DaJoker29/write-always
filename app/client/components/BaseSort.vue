@@ -1,22 +1,7 @@
 <template>
   <aside>
-    <h3>Order and Filter ({{ type }})</h3>
-    <!--     <p
-      v-for="(filter, index) in sort.filter"
-      v-if="sort.filter.length"
-      :key="index"
-    >
-      <input
-        id="filter.value"
-        v-model="checkedFilter"
-        type="checkbox"
-        value="filter.value"
-      />
-      <label for="filter.value">{{ filter.label }}</label>
-    </p>
- -->
     <div v-if="orderBy.length" class="order-rules">
-      <p v-for="rule in orderBy" :key="rule[0]">
+      <p v-for="rule in orderBy" :key="rule[0]" class>
         <input
           :id="rule[0]"
           v-model="selectedOrder"
@@ -42,15 +27,10 @@ export default {
     orderBy: {
       type: Array,
       default: () => []
-    },
-    filter: {
-      type: Array,
-      default: () => []
     }
   },
   data: function() {
     return {
-      checkedFilter: '',
       selectedOrder: ''
     };
   },
@@ -59,7 +39,6 @@ export default {
   },
   created() {
     this.selectedOrder = this.sort[this.type].orderBy || '';
-    this.checkedFilter = this.sort[this.type].filter || '';
   },
   methods: {
     ...mapActions(['setSort'])
@@ -73,20 +52,43 @@ aside {
 }
 
 input {
-  width: auto;
+  width: var(--small);
+  height: var(--small);
+  background-color: var(--color-grey);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+input,
+label {
+  display: inline-block;
+  vertical-align: middle;
   padding: 0;
   margin: 0;
+  cursor: pointer;
+}
+
+label {
+  font-size: var(--small);
+}
+
+input:focus {
+  box-shadow: none;
+}
+
+input:checked {
+  background-color: var(--color-black);
 }
 
 .order-rules {
   display: flex;
-  flex-flow: column wrap;
-  justify-content: flex-start;
-  align-items: flex-start;
-  align-content: flex-start;
+  flex-flow: row wrap;
+  justify-content: flex-end;
 }
 
 .order-rules > p {
-  flex: 1;
+  flex: 0 1 auto;
+  margin-right: var(--spacing);
 }
 </style>

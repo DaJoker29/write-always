@@ -1,6 +1,5 @@
 <template>
   <section>
-    <h2>Notebooks ({{ notebooks.length }})</h2>
     <SortNotebooks />
     <NotebookListing
       v-for="notebook in notebooks"
@@ -32,7 +31,7 @@ export default {
 section {
   display: flex;
   flex-flow: row wrap;
-  padding: var(--spacing);
+  justify-content: space-evenly;
 }
 
 h2 {
@@ -40,7 +39,9 @@ h2 {
 }
 
 /deep/ article {
-  flex: 1 25%;
-  padding: var(--spacing);
+  flex: 0 1 auto;
+  margin-right: var(--spacing-double);
+  margin-bottom: var(--spacing-double);
+  padding-right: var(--spacing-double);
 }
 </style>

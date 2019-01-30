@@ -1,6 +1,5 @@
 <template>
   <section>
-    <h3>Entries ({{ allEntries.length }})</h3>
     <SortEntries />
     <EntryListArticle
       v-for="entry in allEntries"

@@ -18,15 +18,13 @@ export default new Vuex.Store({
     isNavOpen: false,
     sort: {
       authors: {
-        orderBy: 'date'
+        orderBy: 'joined'
       },
       notebooks: {
-        orderBy: 'date',
-        filter: ''
+        orderBy: 'updated'
       },
       entries: {
-        orderBy: 'newest',
-        filter: ''
+        orderBy: 'newest'
       }
     }
   },
@@ -82,13 +80,9 @@ export default new Vuex.Store({
       localStorage.setItem('allNotebooks', JSON.stringify(payload));
     },
     updateSort(state, payload) {
-      const { type, order, filter } = payload;
+      const { type, order } = payload;
       if (order) {
         state.sort[type].orderBy = order;
-      }
-
-      if (filter) {
-        state.sort[type].filter = filter;
       }
     }
   },
@@ -134,15 +128,16 @@ function dateCompare(a, b) {
 
 function sortNotebooks(state) {
   const { orderBy } = state.sort.notebooks;
-  // const notebooks = state.allNotebooks;
 
-  if (orderBy === 'date') {
+  if (orderBy === 'oldest') {
     state.allNotebooks.sort((a, b) => dateCompare(a.createdAt, b.createdAt));
+  } else if (orderBy === 'newest') {
+    state.allNotebooks.sort((a, b) => dateCompare(b.createdAt, a.createdAt));
   } else if (orderBy === 'alphabetical') {
     state.allNotebooks.sort((a, b) => {
       return textCompare(a.title, b.title);
     });
-  } else if (orderBy === 'recent') {
+  } else if (orderBy === 'updated') {
     state.allNotebooks.sort((a, b) => dateCompare(b.updatedAt, a.updatedAt));
   }
   return state.allNotebooks;
@@ -151,13 +146,13 @@ function sortNotebooks(state) {
 function sortUsers(state) {
   const { orderBy } = state.sort.authors;
 
-  if (orderBy === 'date') {
+  if (orderBy === 'joined') {
     state.allUsers.sort((a, b) => dateCompare(a.dateJoined, b.dateJoined));
   } else if (orderBy === 'alphabetical') {
     state.allUsers.sort((a, b) => {
       return textCompare(a.displayName, b.displayName);
     });
-  } else if (orderBy === 'recent') {
+  } else if (orderBy === 'active') {
     state.allUsers.sort((a, b) =>
       dateCompare(b.dateLastLogin, a.dateLastLogin)
     );
