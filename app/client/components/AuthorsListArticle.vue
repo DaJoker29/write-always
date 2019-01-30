@@ -1,10 +1,11 @@
 <template>
   <article>
     <RouterLink :to="author.profileURL">
-      <h3>{{ author.displayName }}</h3>
+      <h3>
+        <i :class="['fa', activeNow() ? 'fa-podcast' : 'fa-user']"></i>
+        <span>{{ author.displayName }}</span>
+      </h3>
     </RouterLink>
-    <p v-if="activeNow()" class="active-now">Online now!</p>
-    <p>Joined {{ moment(author.dateJoined).fromNow() }}</p>
     <p>{{ author.location }}</p>
   </article>
 </template>
@@ -28,8 +29,18 @@ export default {
 </script>
 
 <style scoped>
-.active-now {
+.fa-podcast {
   color: var(--color-red);
-  font-weight: bold;
+}
+
+h3 > span {
+  text-decoration: underline;
+}
+
+article {
+  flex: 1 1 auto;
+  margin-right: var(--spacing-double);
+  margin-bottom: var(--spacing-double);
+  padding-right: var(--spacing-double);
 }
 </style>

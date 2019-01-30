@@ -1,11 +1,13 @@
 <template>
   <main>
     <SortAuthors />
-    <AuthorsListArticle
-      v-for="author in allUsers"
-      :key="author.uid"
-      :author="author"
-    />
+    <TransitionGroup name="author-list" class="author-list" tag="div">
+      <AuthorsListArticle
+        v-for="author in allUsers"
+        :key="author.uid"
+        :author="author"
+      />
+    </TransitionGroup>
   </main>
 </template>
 
@@ -32,13 +34,13 @@ export default {
 </script>
 
 <style scoped>
-main {
+.author-list {
   display: flex;
   flex-flow: row wrap;
+  justify-content: space-between;
 }
 
-/deep/ article {
-  padding: var(--spacing);
-  flex: 1 25%;
+.author-list-move {
+  transition: transform var(--transition-long);
 }
 </style>
