@@ -1,6 +1,7 @@
 <template>
   <main>
-    <SortAuthors />
+    <SortAuthors v-if="allUsers.length" />
+    <p v-else>No authors yet.</p>
     <TransitionGroup name="author-list" class="author-list" tag="div">
       <AuthorsListArticle
         v-for="author in allUsers"

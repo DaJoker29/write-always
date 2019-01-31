@@ -1,9 +1,15 @@
 <template>
   <section>
-    <h2>{{ notebook.title }} by {{ notebook.owner.displayName }}</h2>
-    <RouterLink v-if="canEdit(notebook)" :to="notebook.createEntryURL"
-      >Create new Entry</RouterLink
+    <RouterLink
+      v-if="canEdit(notebook)"
+      class="create-new"
+      :to="notebook.createEntryURL"
+      >Write New Entry</RouterLink
     >
+    <h2>
+      <span> {{ notebook.title }} </span>
+    </h2>
+    <h4>{{ notebook.owner.displayName }}</h4>
   </section>
 </template>
 
@@ -31,3 +37,16 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+h2,
+h4 {
+  text-align: center;
+  font-weight: bold;
+  clear: both;
+}
+
+.create-new {
+  float: right;
+}
+</style>

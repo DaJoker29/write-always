@@ -16,7 +16,7 @@ async function fetchEntries(req, res, next) {
     const notebook = await Notebook.findOne({ uid });
     const entries = await Entry.find({ notebook: notebook._id })
       .populate('notebook author')
-      .lean();
+      .lean({ virtuals: true });
     res.json(entries);
   } catch (e) {
     next(e);

@@ -1,6 +1,7 @@
 <template>
   <section>
-    <SortNotebooks />
+    <SortNotebooks v-if="notebooks.length" />
+    <p v-else>No notebooks yet.</p>
     <TransitionGroup name="notebook-list" tag="div" class="notebook-list">
       <NotebookListing
         v-for="notebook in notebooks"
