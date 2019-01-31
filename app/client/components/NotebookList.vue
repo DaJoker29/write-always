@@ -1,12 +1,14 @@
 <template>
   <section>
-    <h2>Notebooks ({{ notebooks.length }})</h2>
-    <SortNotebooks />
-    <NotebookListing
-      v-for="notebook in notebooks"
-      :key="notebook.uid"
-      :notebook="notebook"
-    />
+    <SortNotebooks v-if="notebooks.length" />
+    <p v-else>No notebooks yet.</p>
+    <TransitionGroup name="notebook-list" tag="div" class="notebook-list">
+      <NotebookListing
+        v-for="notebook in notebooks"
+        :key="notebook.uid"
+        :notebook="notebook"
+      />
+    </TransitionGroup>
   </section>
 </template>
 
@@ -29,18 +31,17 @@ export default {
 </script>
 
 <style scoped>
-section {
+.notebook-list {
   display: flex;
   flex-flow: row wrap;
-  padding: var(--spacing);
+  justify-content: space-between;
 }
 
 h2 {
   flex: 100%;
 }
 
-/deep/ article {
-  flex: 1 25%;
-  padding: var(--spacing);
+.notebook-list-move {
+  transition: transform var(--transition-long);
 }
 </style>

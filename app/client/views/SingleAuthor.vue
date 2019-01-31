@@ -1,7 +1,7 @@
 <template>
   <main>
     <SingleAuthorHeader :author="author" />
-    <NotebookList v-show="notebooks.length > 0" :notebooks="notebooks" />
+    <NotebookList :notebooks="notebooks" />
   </main>
 </template>
 

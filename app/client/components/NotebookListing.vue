@@ -1,23 +1,21 @@
 <template>
   <article>
     <RouterLink :to="notebook.notebookURL">
-      <h2>
-        <strong v-if="recentUpdate(notebook)" class="recent">*</strong
-        >{{ notebook.title }}
+      <h2 :class="{ recent: recentUpdate(notebook) }">
+        <i v-if="notebook.isPrivate" class="fa fa-lock"></i>
+        <i v-else-if="notebook.isShared" class="fa fa-users"></i>
+        <i
+          v-else
+          :class="['fa', canEdit(notebook) ? 'fa-edit' : 'fa-book']"
+        ></i>
+        <span>{{ notebook.title }}</span>
       </h2>
     </RouterLink>
     <p>
+      <i class="fa fa-address-card"></i>
       <RouterLink :to="notebook.owner.profileURL">{{
         notebook.owner.displayName
       }}</RouterLink>
-    </p>
-    <p v-if="notebook.isPrivate"><strong>Private</strong></p>
-    <p v-if="notebook.isShared"><strong>Shared</strong></p>
-    <p>Started {{ moment(notebook.createdAt).fromNow() }}</p>
-    <p>
-      <RouterLink v-if="canEdit(notebook)" :to="notebook.createEntryURL"
-        ><i class="fa fa-plus"></i> Add New Entry</RouterLink
-      >
     </p>
   </article>
 </template>
@@ -53,7 +51,22 @@ export default {
 </script>
 
 <style scoped>
-.recent {
+h2 > span {
+  text-decoration: underline;
+}
+.recent::after {
+  content: '*';
   color: var(--color-red);
+}
+
+h2 > .fa {
+  color: var(--color-black);
+}
+
+article {
+  flex: 1 1 auto;
+  margin-right: var(--spacing-double);
+  margin-bottom: var(--spacing-double);
+  padding-right: var(--spacing-double);
 }
 </style>

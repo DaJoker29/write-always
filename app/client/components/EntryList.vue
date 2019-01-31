@@ -1,12 +1,14 @@
 <template>
   <section>
-    <h3>Entries ({{ allEntries.length }})</h3>
-    <SortEntries />
-    <EntryListArticle
-      v-for="entry in allEntries"
-      :key="entry.uid"
-      :entry="entry"
-    />
+    <SortEntries v-if="entries.length" />
+    <p v-else>No entries yet.</p>
+    <TransitionGroup name="entry-list" class="entry-list" tag="div">
+      <EntryListArticle
+        v-for="entry in allEntries"
+        :key="entry.uid"
+        :entry="entry"
+      />
+    </TransitionGroup>
   </section>
 </template>
 
@@ -64,7 +66,7 @@ export default {
 </script>
 
 <style scoped>
-section {
+.entry-list {
   margin: var(--spacing-double);
   display: flex;
   flex-flow: row wrap;
@@ -74,8 +76,7 @@ h3 {
   flex: 100%;
 }
 
-/deep/ article {
-  padding: var(--spacing);
-  flex: 1 1 100%;
+.entry-list-move {
+  transition: transform var(--transition-long);
 }
 </style>

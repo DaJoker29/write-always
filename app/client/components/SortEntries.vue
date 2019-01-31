@@ -12,7 +12,7 @@ export default {
   data: function() {
     return {
       type: 'entries',
-      orderBy: [['newest', 'Newest First'], ['oldest', 'Oldest First']]
+      orderBy: [['newest', 'Newest'], ['oldest', 'Oldest']]
     };
   }
 };

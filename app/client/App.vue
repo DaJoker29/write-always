@@ -138,8 +138,7 @@ a:visited {
 
 a:focus,
 a:hover,
-a:active,
-.active {
+a:active {
   color: var(--color-red);
 }
 

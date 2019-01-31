@@ -1,5 +1,5 @@
 <template>
-  <BaseSort :type="type" :filters="filters" :order-by="orderBy" />
+  <BaseSort :type="type" :order-by="orderBy" />
 </template>
 
 <script>
@@ -12,10 +12,10 @@ export default {
   data: function() {
     return {
       type: 'notebooks',
-      filters: [['author', 'Author']],
       orderBy: [
-        ['date', 'Date Created'],
-        ['recent', 'Date of Last Update'],
+        ['updated', 'Last Updated'],
+        ['oldest', 'Oldest'],
+        ['newest', 'Newest'],
         ['alphabetical', 'A-Z']
       ]
     };

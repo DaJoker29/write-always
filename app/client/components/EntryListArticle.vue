@@ -1,10 +1,15 @@
 <template>
   <article>
-    <h2>
-      {{ moment(entry.createdAt).format('LL') }} --
-      {{ moment(entry.createdAt).format('LT') }}
-    </h2>
-    <h4>{{ entry.author.displayName }}</h4>
+    <h3>
+      {{ moment(entry.createdAt).format('LL') }}
+
+      ({{ moment(entry.createdAt).format('LT') }})
+      <span>
+        <RouterLink :to="entry.author.profileURL">
+          {{ entry.author.displayName }}
+        </RouterLink>
+      </span>
+    </h3>
     <p>{{ entry.body }}</p>
   </article>
 </template>
@@ -21,10 +26,18 @@ export default {
 </script>
 
 <style scoped>
-h2,
-h4,
-.edited {
-  text-align: center;
+article {
+  padding: var(--spacing);
+  flex: 1 1 100%;
+}
+
+h3 > span {
+  margin-left: var(--spacing);
+  font-size: var(--font-size);
+  font-weight: bold;
+}
+
+p {
   font-weight: bold;
 }
 </style>

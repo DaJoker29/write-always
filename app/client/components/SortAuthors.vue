@@ -13,8 +13,8 @@ export default {
     return {
       type: 'authors',
       orderBy: [
-        ['date', 'Date Joined'],
-        ['recent', 'Date of Last Activity'],
+        ['joined', 'Date Joined'],
+        ['active', 'Last Active'],
         ['alphabetical', 'A-Z']
       ]
     };
