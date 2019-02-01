@@ -65,3 +65,6 @@ public/
 
 # Deployment specific configuration
 config.js
+
+# SSL Certs
+*.pem

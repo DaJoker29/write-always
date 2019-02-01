@@ -1,4 +1,5 @@
-import { createServer } from 'http';
+import { createServer } from 'https';
+import { readFileSync } from 'fs';
 import VError from 'verror';
 
 import config from '@config';
@@ -9,7 +10,12 @@ import Log from '@tools/log';
 const log = Log();
 const error = Log('error');
 
-const server = createServer(Server);
+const credentials = {
+  key: readFileSync('./key.pem'),
+  cert: readFileSync('./cert.pem')
+};
+
+const server = createServer(credentials, Server);
 
 server.on('error', onError);
 server.on('listening', onListen);
@@ -35,7 +41,7 @@ function onError(e) {
 }
 
 function onListen() {
-  log(`${config.app.name} has spun up @ http://localhost:${config.env.port}`);
+  log(`${config.app.name} has spun up @ https://localhost:${config.env.port}`);
 }
 
 function gracefulExit(code = 0) {
