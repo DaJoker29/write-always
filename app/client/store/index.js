@@ -63,9 +63,11 @@ export default new Vuex.Store({
       state.username = '';
       state.token = '';
       state.uid = '';
+      state.currentUser = {};
       localStorage.removeItem('token');
       localStorage.removeItem('username');
       localStorage.removeItem('uid');
+      localStorage.removeItem('currentUser');
     },
     updateCurrentUser(state, payload) {
       state.currentUser = payload;
@@ -96,13 +98,16 @@ export default new Vuex.Store({
     closeNav({ commit }) {
       commit('closeNav');
     },
-    login({ commit }, { username, token, uid }) {
+    login({ commit, dispatch }, { username, token, uid }) {
       commit('setUsername', username);
       commit('setToken', token);
       commit('setUID', uid);
+      dispatch('fetchUser');
+      dispatch('fetchAllNotebooks');
     },
-    logout({ commit }) {
+    logout({ commit, dispatch }) {
       commit('logout');
+      dispatch('fetchAllNotebooks');
     },
     setSort({ commit }, payload) {
       commit('updateSort', payload);
