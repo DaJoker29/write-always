@@ -29,6 +29,7 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    config: state => state.config,
     sort: state => state.sort,
     isLoggedIn: state => state.token !== '',
     isSearchOpen: state => state.isSearchOpen,
