@@ -9,7 +9,6 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     config: process.env.SITE_CONFIG,
-    facebookUserID: localStorage.getItem('facebookUserID') || '',
     token: localStorage.getItem('token') || '',
     currentUser: JSON.parse(localStorage.getItem('currentUser')) || {},
     allUsers: JSON.parse(localStorage.getItem('allUsers')) || [],
@@ -29,7 +28,6 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    facebookUserID: state => state.facebookUserID,
     config: state => state.config,
     sort: state => state.sort,
     isLoggedIn: state =>
@@ -51,10 +49,6 @@ export default new Vuex.Store({
     closeNav(state) {
       state.isNavOpen = false;
     },
-    setFacebookUser(state, payload) {
-      state.facebookUserID = payload;
-      localStorage.setItem('facebookUserID', payload);
-    },
     setToken(state, payload) {
       state.token = payload;
       localStorage.setItem('token', payload);
@@ -62,10 +56,8 @@ export default new Vuex.Store({
     logout(state) {
       state.token = '';
       state.currentUser = {};
-      state.facebookUserID = '';
       localStorage.removeItem('token');
       localStorage.removeItem('currentUser');
-      localStorage.removeItem('facebookUserID');
     },
     updateCurrentUser(state, payload) {
       state.currentUser = payload;
@@ -96,30 +88,37 @@ export default new Vuex.Store({
     closeNav({ commit }) {
       commit('closeNav');
     },
-    login({ commit, dispatch }, { method, auth }) {
-      if (method === 'fb') {
-        commit('setFacebookUser', auth.userID);
-      }
-      dispatch('fetchToken', { method, id: auth.userID });
-      dispatch('fetchAllNotebooks');
+    fbLogin({ dispatch }, id) {
+      dispatch('fetchToken', { method: 'fb', id });
     },
     logout({ commit, dispatch }) {
+      window.FB.logout();
       commit('logout');
       dispatch('fetchAllNotebooks');
     },
     setSort({ commit }, payload) {
       commit('updateSort', payload);
     },
+    checkFBStatus({ dispatch }) {
+      window.FB.getLoginStatus(({ status, authResponse: { userID } }) => {
+        if (status === 'connected') {
+          // Log in user
+          dispatch('fbLogin', userID);
+        } else {
+          // Request to log the user in
+          dispatch('logout');
+        }
+      });
+    },
     async fetchToken({ commit, dispatch }, payload) {
       commit('setToken', (await axios.post('/auth/login', payload)).data);
       dispatch('fetchUser');
+      dispatch('fetchAllNotebooks');
     },
-    async fetchUser({ commit }) {
+    async fetchUser({ commit, state }) {
       commit(
         'updateCurrentUser',
-        (await http.post('/user/login', {
-          token: localStorage.getItem('token')
-        })).data
+        (await http.post('/user/token', { token: state.token })).data
       );
     },
     async fetchAllUsers({ commit }) {

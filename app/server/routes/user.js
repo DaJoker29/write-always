@@ -7,7 +7,7 @@ const router = Router();
 
 router.get('/users', fetchAllUsers);
 router.get('/user/:userID', fetchSingleUser);
-router.post('/user/login', fetchCurrentUser);
+router.post('/user/token', fetchCurrentUser);
 
 export default router;
 

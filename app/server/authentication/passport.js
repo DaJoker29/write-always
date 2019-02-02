@@ -1,5 +1,6 @@
 import passport from 'passport';
 import Models from '@server/models';
+import VError from 'verror';
 import config from '@config';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt';
@@ -15,12 +16,20 @@ export default function() {
       {
         usernameField: 'method',
         passwordField: 'id',
-        passReqToCallback: true,
         session: false
       },
-      async function(req, username, password, cb) {
+      async function(method, id, cb) {
         try {
-          const user = await User.findOne({ fbUserID: password });
+          const options = {};
+
+          if (method === 'fb') {
+            options.fbUserID = id;
+          } else {
+            throw new VError('No method specified');
+          }
+
+          const user = await User.findOne(options);
+
           if (user) {
             return cb(null, user, { message: 'Login was successful' });
           }
