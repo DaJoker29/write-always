@@ -5,6 +5,9 @@ module.exports = {
     browser: true,
     es6: true
   },
+  globals: {
+    FB: 'readable'
+  },
   extends: [
     'airbnb',
     'eslint:recommended',

@@ -1,5 +1,4 @@
 import passport from 'passport';
-import notp from 'notp';
 import Models from '@server/models';
 import config from '@config';
 import { Strategy as LocalStrategy } from 'passport-local';
@@ -12,22 +11,25 @@ const {
 
 export default function() {
   passport.use(
-    new LocalStrategy(async function(username, password, cb) {
-      try {
-        const user = await User.findOne(
-          { username },
-          { token: 1, username: 1, uid: 1 }
-        );
-        const login = notp.totp.verify(password, user.token);
-
-        if (login) {
-          return cb(null, user, { message: 'Login was successful' });
+    new LocalStrategy(
+      {
+        usernameField: 'method',
+        passwordField: 'id',
+        passReqToCallback: true,
+        session: false
+      },
+      async function(req, username, password, cb) {
+        try {
+          const user = await User.findOne({ fbUserID: password });
+          if (user) {
+            return cb(null, user, { message: 'Login was successful' });
+          }
+          return cb(null, false, { message: 'No user found' });
+        } catch (e) {
+          return cb(e, null, { message: 'There was an error' });
         }
-        return cb(null, false, { message: 'No user found' });
-      } catch (e) {
-        return cb(e, null, { message: 'There was an error' });
       }
-    })
+    )
   );
 
   passport.use(

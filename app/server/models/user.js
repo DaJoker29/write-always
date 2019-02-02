@@ -22,7 +22,8 @@ const userSchema = new Schema(
     displayName: { type: String, default: 'New School Hipsteracho' },
     location: { type: String, default: 'Narnia', required: true },
     url: { type: String },
-    bio: { type: String }
+    bio: { type: String },
+    fbUserID: { type: String, unique: true, select: false }
   },
   { versionKey: false }
 );

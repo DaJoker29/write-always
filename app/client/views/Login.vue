@@ -1,42 +1,43 @@
 <template>
   <main>
-    <FacebookLogin
-      class="button"
-      :app-id="config.app.fbAppID"
-      @login="getUserData"
-      @get-initial-status="getUserData"
-    >
-    </FacebookLogin>
-    <!--     <VFacebookLogin app-id="config.app.fbAppID"></VFacebookLogin>
- -->
+    <div
+      class="fb-login-button"
+      data-size="large"
+      data-button-type="continue_with"
+      data-auto-logout-link="true"
+      data-use-continue-as="true"
+    ></div>
   </main>
 </template>
 
 <script>
-// import LoginForm from '@client/components/LoginForm';
-// import { VFBLogin as VFacebookLogin } from 'vue-facebook-login-component';
-import { mapGetters } from 'vuex';
-import FacebookLogin from 'facebook-login-vuejs';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  components: {
-    // LoginForm,
-    // VFacebookLogin
-    FacebookLogin
-  },
   computed: {
     ...mapGetters(['config'])
   },
   created() {
+    const config = this.config;
+    const login = this.login;
     window.fbAsyncInit = function() {
       FB.init({
-        appId: this.config.app.fbAppID,
+        appId: config.app.fbAppID,
         cookie: true,
         xfbml: true,
-        version: this.config.app.fbAppVersion
+        version: config.app.fbAppVersion
       });
 
       FB.AppEvents.logPageView();
+
+      FB.getLoginStatus(({ status, authResponse }) => {
+        if (status === 'connected') {
+          // Log in user
+          login({ method: 'fb', auth: authResponse });
+        } else {
+          // Request to log the user in
+        }
+      });
     };
 
     (function(d, s, id) {
@@ -52,9 +53,7 @@ export default {
     })(document, 'script', 'facebook-jssdk');
   },
   methods: {
-    getUserData(data) {
-      console.log(data);
-    }
+    ...mapActions(['login'])
   }
 };
 </script>

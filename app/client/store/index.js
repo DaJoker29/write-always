@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import http from '@client/http-common';
+import axios from 'axios';
 import moment from 'moment';
 
 Vue.use(Vuex);
@@ -8,9 +9,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     config: process.env.SITE_CONFIG,
-    username: localStorage.getItem('username') || '',
+    facebookUserID: localStorage.getItem('facebookUserID') || '',
     token: localStorage.getItem('token') || '',
-    uid: localStorage.getItem('uid') || '',
     currentUser: JSON.parse(localStorage.getItem('currentUser')) || {},
     allUsers: JSON.parse(localStorage.getItem('allUsers')) || [],
     allNotebooks: JSON.parse(localStorage.getItem('allNotebooks')) || [],
@@ -29,9 +29,12 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    facebookUserID: state => state.facebookUserID,
     config: state => state.config,
     sort: state => state.sort,
-    isLoggedIn: state => state.token !== '',
+    isLoggedIn: state =>
+      Object.keys(state.currentUser).length !== 0 &&
+      state.currentUser.constructor === Object,
     isSearchOpen: state => state.isSearchOpen,
     isNavOpen: state => state.isNavOpen,
     currentUser: state => state.currentUser,
@@ -48,27 +51,21 @@ export default new Vuex.Store({
     closeNav(state) {
       state.isNavOpen = false;
     },
-    setUsername(state, payload) {
-      state.username = payload;
-      localStorage.setItem('username', payload);
+    setFacebookUser(state, payload) {
+      state.facebookUserID = payload;
+      localStorage.setItem('facebookUserID', payload);
     },
     setToken(state, payload) {
       state.token = payload;
       localStorage.setItem('token', payload);
     },
-    setUID(state, payload) {
-      state.uid = payload;
-      localStorage.setItem('uid', payload);
-    },
     logout(state) {
-      state.username = '';
       state.token = '';
-      state.uid = '';
       state.currentUser = {};
+      state.facebookUserID = '';
       localStorage.removeItem('token');
-      localStorage.removeItem('username');
-      localStorage.removeItem('uid');
       localStorage.removeItem('currentUser');
+      localStorage.removeItem('facebookUserID');
     },
     updateCurrentUser(state, payload) {
       state.currentUser = payload;
@@ -99,11 +96,11 @@ export default new Vuex.Store({
     closeNav({ commit }) {
       commit('closeNav');
     },
-    login({ commit, dispatch }, { username, token, uid }) {
-      commit('setUsername', username);
-      commit('setToken', token);
-      commit('setUID', uid);
-      dispatch('fetchUser');
+    login({ commit, dispatch }, { method, auth }) {
+      if (method === 'fb') {
+        commit('setFacebookUser', auth.userID);
+      }
+      dispatch('fetchToken', { method, id: auth.userID });
       dispatch('fetchAllNotebooks');
     },
     logout({ commit, dispatch }) {
@@ -113,10 +110,16 @@ export default new Vuex.Store({
     setSort({ commit }, payload) {
       commit('updateSort', payload);
     },
+    async fetchToken({ commit, dispatch }, payload) {
+      commit('setToken', (await axios.post('/auth/login', payload)).data);
+      dispatch('fetchUser');
+    },
     async fetchUser({ commit }) {
       commit(
         'updateCurrentUser',
-        (await http.get(`/user/${localStorage.getItem('uid')}`)).data
+        (await http.post('/user/login', {
+          token: localStorage.getItem('token')
+        })).data
       );
     },
     async fetchAllUsers({ commit }) {

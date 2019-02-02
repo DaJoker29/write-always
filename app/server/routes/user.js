@@ -7,8 +7,19 @@ const router = Router();
 
 router.get('/users', fetchAllUsers);
 router.get('/user/:userID', fetchSingleUser);
+router.post('/user/login', fetchCurrentUser);
 
 export default router;
+
+async function fetchCurrentUser(req, res, next) {
+  const { id } = req.body;
+
+  try {
+    res.json(await User.findOne({ _id: id }));
+  } catch (e) {
+    next(e);
+  }
+}
 
 async function fetchSingleUser(req, res, next) {
   const { userID: uid } = req.params;
