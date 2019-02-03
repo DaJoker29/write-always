@@ -1,6 +1,6 @@
 import passport from 'passport';
-import notp from 'notp';
 import Models from '@server/models';
+import VError from 'verror';
 import config from '@config';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt';
@@ -12,22 +12,50 @@ const {
 
 export default function() {
   passport.use(
-    new LocalStrategy(async function(username, password, cb) {
-      try {
-        const user = await User.findOne(
-          { username },
-          { token: 1, username: 1, uid: 1 }
-        );
-        const login = notp.totp.verify(password, user.token);
+    new LocalStrategy(
+      {
+        usernameField: 'method',
+        passwordField: 'email',
+        passReqToCallback: true,
+        session: false
+      },
+      async function(req, method, email, cb) {
+        try {
+          const options = {};
 
-        if (login) {
-          return cb(null, user, { message: 'Login was successful' });
+          if (method === 'fb') {
+            options.email = email;
+          } else {
+            throw new VError('No method specified');
+          }
+
+          const user = await User.findOne(options);
+
+          if (user) {
+            // Return user if they exist
+            return cb(null, user, { message: 'Login was successful' });
+          } else {
+            // Otherwise, create new user
+            const {
+              name: displayName,
+              userID: fbUserID,
+              accessToken: fbUserAccess
+            } = req.body.response;
+            const query = {
+              email,
+              displayName,
+              fbUserID,
+              fbUserAccess
+            };
+
+            const newUser = await User.create(query);
+            return cb(null, newUser, { message: 'New account created' });
+          }
+        } catch (e) {
+          return cb(e, null, { message: 'There was an error' });
         }
-        return cb(null, false, { message: 'No user found' });
-      } catch (e) {
-        return cb(e, null, { message: 'There was an error' });
       }
-    })
+    )
   );
 
   passport.use(
@@ -38,7 +66,7 @@ export default function() {
       },
       async function(payload, cb) {
         try {
-          const user = await User.findOne({ _id: payload.id });
+          const user = await User.findOne({ _email: payload.email });
           return cb(null, user);
         } catch (e) {
           return cb(e);

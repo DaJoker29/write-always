@@ -21,17 +21,46 @@ export default {
     TheSidebar
   },
   computed: {
-    ...mapGetters(['isLoggedIn', 'isSearchOpen', 'isNavOpen', 'currentUser'])
+    ...mapGetters([
+      'config',
+      'isLoggedIn',
+      'isSearchOpen',
+      'isNavOpen',
+      'currentUser'
+    ])
   },
   created() {
     NProgress.start();
-    this.fetchUser();
+    const vm = this;
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId: vm.config.app.fbAppID,
+        xfbml: false,
+        version: vm.config.app.fbAppVersion
+      });
+
+      FB.AppEvents.logPageView();
+
+      vm.checkFBStatus();
+    };
+
+    (function(d, s, id) {
+      var js,
+        fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {
+        return;
+      }
+      js = d.createElement(s);
+      js.id = id;
+      js.src = 'https://connect.facebook.net/en_US/sdk.js';
+      fjs.parentNode.insertBefore(js, fjs);
+    })(document, 'script', 'facebook-jssdk');
   },
   mounted() {
     NProgress.done();
   },
   methods: {
-    ...mapActions(['fetchUser'])
+    ...mapActions(['checkFBStatus'])
   }
 };
 </script>

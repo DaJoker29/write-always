@@ -2,6 +2,7 @@ import merge from 'deepmerge';
 import pkg from '@root/package.json';
 import Log from '@tools/log';
 import options from '@root/config';
+import VError from 'verror';
 import defaults from './defaults';
 import Webpack from './webpack';
 import production from './production';
@@ -29,5 +30,11 @@ log(`Mode: ${config.env.mode}`);
 log(`Version: ${config.pkg.version}`);
 log(`Author: ${config.pkg.author}`);
 log(`Repo: ${config.pkg.repository.url}`);
+
+if (app.fbAppID && app.fbAppVersion) {
+  log('API Found: Facebook');
+} else {
+  throw new VError("Can't find Facebook App ID or Version.");
+}
 
 export default config;

@@ -5,6 +5,9 @@ module.exports = {
     browser: true,
     es6: true
   },
+  globals: {
+    FB: 'readable'
+  },
   extends: [
     'airbnb',
     'eslint:recommended',
@@ -26,7 +29,7 @@ module.exports = {
     'prettier/prettier': ['error', { singleQuote: true }],
     indent: ['error', 2],
     'linebreak-style': ['error', 'unix'],
-    quotes: ['error', 'single'],
+    quotes: ['error', 'single', { avoidEscape: true }],
     semi: ['error', 'always'],
     'no-multi-assign': 0,
     'no-unused-vars': ['error', { args: 'none' }],

@@ -4,7 +4,6 @@ import base32 from 'thirty-two';
 import encodeurl from 'encodeurl';
 import config from '@config';
 import db from '@server/db_connect';
-import notp from 'notp';
 
 const { User } = Models;
 
@@ -57,35 +56,6 @@ program
         console.log(
           `QR Code: https://chart.googleapis.com/chart?chs=166x166&chld=L|0&cht=qr&chl=${encoded}`
         );
-      } catch (e) {
-        console.error(e);
-      }
-    }
-
-    // Print totp
-    if ('totp' === cmd) {
-      const { username } = options;
-
-      try {
-        const user = await User.findOne({ username }, { token: 1 });
-        console.log(
-          `Access Code (valid for 30sec): ${notp.totp.gen(user.token)}`
-        );
-      } catch (e) {
-        console.error(e.message);
-      }
-    }
-
-    if (!cmd || 'list' === cmd) {
-      try {
-        const users = await User.find({}, { email: 1, token: 1, username: 1 });
-        users.forEach(user => {
-          console.log(
-            `${user.username} - ${user.email}\n Access Code: ${notp.totp.gen(
-              user.token
-            )}\n`
-          );
-        });
       } catch (e) {
         console.error(e);
       }

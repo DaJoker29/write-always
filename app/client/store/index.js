@@ -1,16 +1,16 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import http from '@client/http-common';
+import axios from 'axios';
 import moment from 'moment';
+import merge from 'deepmerge';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     config: process.env.SITE_CONFIG,
-    username: localStorage.getItem('username') || '',
     token: localStorage.getItem('token') || '',
-    uid: localStorage.getItem('uid') || '',
     currentUser: JSON.parse(localStorage.getItem('currentUser')) || {},
     allUsers: JSON.parse(localStorage.getItem('allUsers')) || [],
     allNotebooks: JSON.parse(localStorage.getItem('allNotebooks')) || [],
@@ -29,8 +29,11 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    config: state => state.config,
     sort: state => state.sort,
-    isLoggedIn: state => state.token !== '',
+    isLoggedIn: state =>
+      Object.keys(state.currentUser).length !== 0 &&
+      state.currentUser.constructor === Object,
     isSearchOpen: state => state.isSearchOpen,
     isNavOpen: state => state.isNavOpen,
     currentUser: state => state.currentUser,
@@ -47,25 +50,15 @@ export default new Vuex.Store({
     closeNav(state) {
       state.isNavOpen = false;
     },
-    setUsername(state, payload) {
-      state.username = payload;
-      localStorage.setItem('username', payload);
-    },
     setToken(state, payload) {
       state.token = payload;
       localStorage.setItem('token', payload);
     },
-    setUID(state, payload) {
-      state.uid = payload;
-      localStorage.setItem('uid', payload);
-    },
     logout(state) {
-      state.username = '';
       state.token = '';
-      state.uid = '';
+      state.currentUser = {};
       localStorage.removeItem('token');
-      localStorage.removeItem('username');
-      localStorage.removeItem('uid');
+      localStorage.removeItem('currentUser');
     },
     updateCurrentUser(state, payload) {
       state.currentUser = payload;
@@ -96,21 +89,67 @@ export default new Vuex.Store({
     closeNav({ commit }) {
       commit('closeNav');
     },
-    login({ commit }, { username, token, uid }) {
-      commit('setUsername', username);
-      commit('setToken', token);
-      commit('setUID', uid);
+    fbLogin({ dispatch }, { email, ...response }) {
+      dispatch('fetchToken', { method: 'fb', email, response });
     },
-    logout({ commit }) {
+    logout({ commit, dispatch }) {
+      window.FB.logout();
       commit('logout');
+      dispatch('fetchAllNotebooks');
     },
     setSort({ commit }, payload) {
       commit('updateSort', payload);
     },
-    async fetchUser({ commit }) {
+    async updateFBToken({ dispatch }, payload) {
+      await http.post('/user/fb', payload);
+      dispatch('fetchUser');
+    },
+    loginToFacebook({ dispatch }) {
+      window.FB.login(
+        loginResponse => {
+          if (loginResponse.authResponse) {
+            window.FB.api('/me', { fields: 'name, email' }, response => {
+              const payload = merge.all([
+                JSON.parse(JSON.stringify(loginResponse.authResponse)),
+                JSON.parse(JSON.stringify(response))
+              ]);
+              dispatch('fbLogin', payload);
+            });
+          } else {
+            console.log('User cancelled login or did not fully authorize');
+          }
+        },
+        { scope: 'email' }
+      );
+    },
+    checkFBStatus({ dispatch, state }) {
+      window.FB.getLoginStatus(
+        ({ status, authResponse: { userID, accessToken } }) => {
+          if (status === 'connected') {
+            if (state.token) {
+              dispatch('updateFBToken', { userID, accessToken });
+            }
+          } else if (status === 'authorization_expired') {
+            console.log('authorization_expired');
+            dispatch('logout');
+          } else if (status === 'not_authorized') {
+            console.log('not_authorized');
+            dispatch('logout');
+          } else {
+            dispatch('logout');
+          }
+        }
+      );
+    },
+    async fetchToken({ commit, dispatch }, payload) {
+      commit('setToken', (await axios.post('/auth/login', payload)).data);
+      dispatch('fetchUser');
+      dispatch('fetchAllNotebooks');
+    },
+    async fetchUser({ commit, state }) {
       commit(
         'updateCurrentUser',
-        (await http.get(`/user/${localStorage.getItem('uid')}`)).data
+        (await http.post('/user/token', { token: state.token })).data
       );
     },
     async fetchAllUsers({ commit }) {

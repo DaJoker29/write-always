@@ -1,13 +1,17 @@
 <template>
-  <main><LoginForm /></main>
+  <main><button @click="facebookLogin">Facebook Sign-in</button></main>
 </template>
 
 <script>
-import LoginForm from '@client/components/LoginForm';
+import { mapActions } from 'vuex';
 
 export default {
-  components: {
-    LoginForm
+  methods: {
+    ...mapActions(['loginToFacebook']),
+    facebookLogin() {
+      this.loginToFacebook();
+      this.$router.push('/');
+    }
   }
 };
 </script>
