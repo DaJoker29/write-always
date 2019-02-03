@@ -32,8 +32,10 @@ export default function() {
           const user = await User.findOne(options);
 
           if (user) {
+            // Return user if they exist
             return cb(null, user, { message: 'Login was successful' });
           } else {
+            // Otherwise, create new user
             const {
               name: displayName,
               userID: fbUserID,

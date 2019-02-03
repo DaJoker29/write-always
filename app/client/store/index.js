@@ -108,8 +108,6 @@ export default new Vuex.Store({
       window.FB.login(
         loginResponse => {
           if (loginResponse.authResponse) {
-            console.log('Successfully authenticated');
-
             window.FB.api('/me', { fields: 'name, email' }, response => {
               const payload = merge.all([
                 JSON.parse(JSON.stringify(loginResponse.authResponse)),
@@ -131,16 +129,13 @@ export default new Vuex.Store({
             if (state.token) {
               dispatch('updateFBToken', { userID, accessToken });
             }
-            // if state.token exists, update fbAccess
-            // else do nothing.
-
-            // Log in user
           } else if (status === 'authorization_expired') {
             console.log('authorization_expired');
+            dispatch('logout');
           } else if (status === 'not_authorized') {
             console.log('not_authorized');
+            dispatch('logout');
           } else {
-            // Request to log the user in
             dispatch('logout');
           }
         }
