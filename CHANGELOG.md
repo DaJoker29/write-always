@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/DaJoker29/write-always/compare/v0.1.3...v0.2.0) (2019-02-03)
+
+
+### Bug Fixes
+
+* **client:** facebook login events ([1b2153a](https://github.com/DaJoker29/write-always/commit/1b2153a)), closes [#35](https://github.com/DaJoker29/write-always/issues/35) [#36](https://github.com/DaJoker29/write-always/issues/36)
+* **client:** logout/login hide and display all data properly ([62cedd7](https://github.com/DaJoker29/write-always/commit/62cedd7))
+* **ui:** fixed order styles and design ([02ee794](https://github.com/DaJoker29/write-always/commit/02ee794)), closes [#28](https://github.com/DaJoker29/write-always/issues/28)
+
+
+### Features
+
+* facebook authentication/registration ([8dc6f51](https://github.com/DaJoker29/write-always/commit/8dc6f51))
+* social sign in (facebook) ([1b34270](https://github.com/DaJoker29/write-always/commit/1b34270)), closes [#33](https://github.com/DaJoker29/write-always/issues/33)
+* users can now register through facebook ([3d28e72](https://github.com/DaJoker29/write-always/commit/3d28e72)), closes [#37](https://github.com/DaJoker29/write-always/issues/37)
+
+
+
 <a name="0.1.3"></a>
 ## [0.1.3](https://github.com/DaJoker29/write-always/compare/v0.1.2...v0.1.3) (2019-01-29)
 
