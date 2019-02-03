@@ -7,12 +7,10 @@ import { mapActions } from 'vuex';
 
 export default {
   methods: {
-    ...mapActions(['checkFBStatus']),
+    ...mapActions(['loginToFacebook']),
     facebookLogin() {
-      window.FB.login(response => {
-        this.checkFBStatus();
-        this.$router.push('/');
-      });
+      this.loginToFacebook();
+      this.$router.push('/');
     }
   }
 };

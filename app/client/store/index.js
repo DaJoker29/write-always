@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import http from '@client/http-common';
 import axios from 'axios';
 import moment from 'moment';
+import merge from 'deepmerge';
 
 Vue.use(Vuex);
 
@@ -88,8 +89,8 @@ export default new Vuex.Store({
     closeNav({ commit }) {
       commit('closeNav');
     },
-    fbLogin({ dispatch }, id) {
-      dispatch('fetchToken', { method: 'fb', id });
+    fbLogin({ dispatch }, { email, ...response }) {
+      dispatch('fetchToken', { method: 'fb', email, response });
     },
     logout({ commit, dispatch }) {
       window.FB.logout();
@@ -99,16 +100,51 @@ export default new Vuex.Store({
     setSort({ commit }, payload) {
       commit('updateSort', payload);
     },
-    checkFBStatus({ dispatch }) {
-      window.FB.getLoginStatus(({ status, authResponse: { userID } }) => {
-        if (status === 'connected') {
-          // Log in user
-          dispatch('fbLogin', userID);
-        } else {
-          // Request to log the user in
-          dispatch('logout');
+    async updateFBToken({ dispatch }, payload) {
+      await http.post('/user/fb', payload);
+      dispatch('fetchUser');
+    },
+    loginToFacebook({ dispatch }) {
+      window.FB.login(
+        loginResponse => {
+          if (loginResponse.authResponse) {
+            console.log('Successfully authenticated');
+
+            window.FB.api('/me', { fields: 'name, email' }, response => {
+              const payload = merge.all([
+                JSON.parse(JSON.stringify(loginResponse.authResponse)),
+                JSON.parse(JSON.stringify(response))
+              ]);
+              dispatch('fbLogin', payload);
+            });
+          } else {
+            console.log('User cancelled login or did not fully authorize');
+          }
+        },
+        { scope: 'email' }
+      );
+    },
+    checkFBStatus({ dispatch, state }) {
+      window.FB.getLoginStatus(
+        ({ status, authResponse: { userID, accessToken } }) => {
+          if (status === 'connected') {
+            if (state.token) {
+              dispatch('updateFBToken', { userID, accessToken });
+            }
+            // if state.token exists, update fbAccess
+            // else do nothing.
+
+            // Log in user
+          } else if (status === 'authorization_expired') {
+            console.log('authorization_expired');
+          } else if (status === 'not_authorized') {
+            console.log('not_authorized');
+          } else {
+            // Request to log the user in
+            dispatch('logout');
+          }
         }
-      });
+      );
     },
     async fetchToken({ commit, dispatch }, payload) {
       commit('setToken', (await axios.post('/auth/login', payload)).data);

@@ -15,15 +15,16 @@ export default function() {
     new LocalStrategy(
       {
         usernameField: 'method',
-        passwordField: 'id',
+        passwordField: 'email',
+        passReqToCallback: true,
         session: false
       },
-      async function(method, id, cb) {
+      async function(req, method, email, cb) {
         try {
           const options = {};
 
           if (method === 'fb') {
-            options.fbUserID = id;
+            options.email = email;
           } else {
             throw new VError('No method specified');
           }
@@ -32,8 +33,22 @@ export default function() {
 
           if (user) {
             return cb(null, user, { message: 'Login was successful' });
+          } else {
+            const {
+              name: displayName,
+              userID: fbUserID,
+              accessToken: fbUserAccess
+            } = req.body.response;
+            const query = {
+              email,
+              displayName,
+              fbUserID,
+              fbUserAccess
+            };
+
+            const newUser = await User.create(query);
+            return cb(null, newUser, { message: 'New account created' });
           }
-          return cb(null, false, { message: 'No user found' });
         } catch (e) {
           return cb(e, null, { message: 'There was an error' });
         }
@@ -49,7 +64,7 @@ export default function() {
       },
       async function(payload, cb) {
         try {
-          const user = await User.findOne({ _id: payload.id });
+          const user = await User.findOne({ _email: payload.email });
           return cb(null, user);
         } catch (e) {
           return cb(e);

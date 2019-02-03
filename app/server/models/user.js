@@ -14,16 +14,17 @@ const userSchema = new Schema(
       default: () => `${prefix}${generate()}`,
       unique: true
     },
-    username: { type: String, required: true, unique: true, select: false },
+    username: { type: String, unique: true, select: false },
     token: { type: String, default: token(128), select: false },
     dateJoined: { type: Date, default: Date.now },
     dateLastLogin: { type: Date, default: Date.now },
-    email: { type: String, required: true, select: false },
+    email: { type: String, required: true, unique: true, select: false },
     displayName: { type: String, default: 'New School Hipsteracho' },
     location: { type: String, default: 'Narnia', required: true },
     url: { type: String },
     bio: { type: String },
-    fbUserID: { type: String, unique: true, select: false }
+    fbUserID: { type: String, unique: true, select: false },
+    fbUserAccess: { type: String, select: false }
   },
   { versionKey: false }
 );
