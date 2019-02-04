@@ -24,14 +24,14 @@ export default {
     }
   },
   computed: {
-    ...mapState(['uid']),
+    ...mapState(['currentUser']),
     ...mapGetters(['isLoggedIn'])
   },
   methods: {
     canEdit(notebook) {
       return (
         this.isLoggedIn &&
-        (notebook.isShared || notebook.owner.uid === this.uid)
+        (notebook.isShared || notebook.owner.uid === this.currentUser.uid)
       );
     }
   }

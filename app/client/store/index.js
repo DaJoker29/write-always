@@ -14,6 +14,7 @@ export default new Vuex.Store({
     currentUser: JSON.parse(localStorage.getItem('currentUser')) || {},
     allUsers: JSON.parse(localStorage.getItem('allUsers')) || [],
     allNotebooks: JSON.parse(localStorage.getItem('allNotebooks')) || [],
+    allEntries: JSON.parse(localStorage.getItem('allEntries')) || [],
     isSearchOpen: false,
     isNavOpen: false,
     sort: {
@@ -38,7 +39,8 @@ export default new Vuex.Store({
     isNavOpen: state => state.isNavOpen,
     currentUser: state => state.currentUser,
     allNotebooks: state => sortNotebooks(state),
-    allUsers: state => sortUsers(state)
+    allUsers: state => sortUsers(state),
+    allEntries: state => sortEntries(state)
   },
   mutations: {
     toggleSearch(state) {
@@ -71,6 +73,14 @@ export default new Vuex.Store({
     updateAllNotebooks(state, payload) {
       state.allNotebooks = payload;
       localStorage.setItem('allNotebooks', JSON.stringify(payload));
+    },
+    updateRecentEntries(state, payload) {
+      state.recentEntries = payload;
+      localStorage.setItem('recentEntries', JSON.stringify(payload));
+    },
+    setAllEntries(state, payload) {
+      state.allEntries = payload;
+      localStorage.setItem('allEntries', JSON.stringify(payload));
     },
     updateSort(state, payload) {
       const { type, order } = payload;
@@ -141,6 +151,21 @@ export default new Vuex.Store({
         }
       );
     },
+    initialFetch({ dispatch }) {
+      dispatch('fetchAllNotebooks');
+      dispatch('fetchRecentEntries');
+    },
+    pushNewEntries({ commit, state }, payload) {
+      commit('setAllEntries', state.allEntries.concat(payload));
+    },
+    async fetchRecentEntries({ commit, state }) {
+      commit(
+        'setAllEntries',
+        (await http.post('/entries/recent', {
+          notebooks: state.allNotebooks.map(e => e._id)
+        })).data
+      );
+    },
     async fetchToken({ commit, dispatch }, payload) {
       commit('setToken', (await axios.post('/auth/login', payload)).data);
       dispatch('fetchUser');
@@ -163,6 +188,20 @@ export default new Vuex.Store({
 
 function dateCompare(a, b) {
   return moment(a).diff(moment(b));
+}
+
+function sortEntries(state) {
+  return state.allEntries.reduce(function(acc, curr) {
+    const id = curr.notebook.uid;
+
+    if (Object.keys(acc).indexOf(id) < 0) {
+      acc[id] = [curr];
+      return acc;
+    } else {
+      acc[id].push(curr);
+      return acc;
+    }
+  }, {});
 }
 
 function sortNotebooks(state) {

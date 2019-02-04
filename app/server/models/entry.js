@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { generate } from 'shortid';
 import uniqueValidator from 'mongoose-unique-validator';
+import mongooseLeanVirtuals from 'mongoose-lean-virtuals';
 
 const prefix = 'en';
 
@@ -20,5 +21,6 @@ const entrySchema = new Schema(
 );
 
 entrySchema.plugin(uniqueValidator);
+entrySchema.plugin(mongooseLeanVirtuals);
 
 export default model('Entry', entrySchema);

@@ -17,11 +17,19 @@
         notebook.owner.displayName
       }}</RouterLink>
     </p>
+    <h4>Latest Entry</h4>
+    <p>
+      {{
+        allEntries[notebook.uid]
+          ? allEntries[notebook.uid][0].body
+          : 'Not found'
+      }}
+    </p>
   </article>
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   props: {
@@ -31,14 +39,13 @@ export default {
     }
   },
   computed: {
-    ...mapState(['uid']),
-    ...mapGetters(['isLoggedIn'])
+    ...mapGetters(['isLoggedIn', 'allEntries', 'currentUser'])
   },
   methods: {
     canEdit(notebook) {
       return (
         this.isLoggedIn &&
-        (notebook.isShared || notebook.owner.uid === this.uid)
+        (notebook.isShared || notebook.owner.uid === this.currentUser.uid)
       );
     },
     recentUpdate(notebook) {
