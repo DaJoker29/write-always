@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/DaJoker29/write-always/compare/v0.2.0...v0.3.0) (2019-02-04)
+
+
+### Bug Fixes
+
+* missing FB auth response and fetching recent entries on page load ([5e7d079](https://github.com/DaJoker29/write-always/commit/5e7d079))
+
+
+### Features
+
+* add entries to store on page load ([7eccacf](https://github.com/DaJoker29/write-always/commit/7eccacf)), closes [#31](https://github.com/DaJoker29/write-always/issues/31)
+* fetch recent posts on page load ([b99fc94](https://github.com/DaJoker29/write-always/commit/b99fc94))
+
+
+### Performance Improvements
+
+* add entries to the store ([de93ed4](https://github.com/DaJoker29/write-always/commit/de93ed4)), closes [#31](https://github.com/DaJoker29/write-always/issues/31)
+
+
+
 <a name="0.2.0"></a>
 # [0.2.0](https://github.com/DaJoker29/write-always/compare/v0.1.3...v0.2.0) (2019-02-03)
 
