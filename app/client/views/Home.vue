@@ -14,10 +14,10 @@ export default {
     ...mapGetters(['allNotebooks'])
   },
   created: async function() {
-    this.fetchAllNotebooks();
+    this.initialFetch();
   },
   methods: {
-    ...mapActions(['fetchAllNotebooks'])
+    ...mapActions(['initialFetch'])
   }
 };
 </script>

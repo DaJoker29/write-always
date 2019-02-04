@@ -15,31 +15,28 @@ export default {
     SingleNotebookHeader,
     EntryList
   },
-  data: function() {
-    return {
-      entries: [],
-      notebookID: this.$route.params.notebookID || ''
-    };
-  },
   computed: {
-    ...mapGetters(['allNotebooks'])
-  },
-  watch: {
-    $route: async function(to, from) {
-      this.fetchAllNotebooks();
-      this.notebookID = to.params.notebookID;
-      this.entries = await this.updateEntries(to.params.notebookID);
+    ...mapGetters(['allNotebooks', 'allEntries']),
+    entries() {
+      if (this.notebookID) {
+        return this.allEntries[this.notebookID] || [];
+      }
+      return [];
+    },
+    notebookID() {
+      return this.$route.params.notebookID || '';
     }
   },
-  created: async function() {
-    this.fetchAllNotebooks();
-    this.entries = await this.updateEntries(this.$route.params.notebookID);
+  watch: {
+    $route() {
+      this.fetchNotebookEntries(this.notebookID);
+    }
+  },
+  created() {
+    this.fetchNotebookEntries(this.notebookID);
   },
   methods: {
-    ...mapActions(['fetchAllNotebooks']),
-    updateEntries: async function(notebookID) {
-      return (await this.$http.get(`/entries?n=${notebookID}`)).data;
-    },
+    ...mapActions(['fetchNotebookEntries']),
     notebook(uid) {
       return this.allNotebooks.find(e => e.uid === uid);
     }
