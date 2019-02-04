@@ -13,6 +13,11 @@ export default {
   computed: {
     ...mapGetters(['allNotebooks'])
   },
+  watch: {
+    $route() {
+      this.initialFetch();
+    }
+  },
   created: async function() {
     this.initialFetch();
   },

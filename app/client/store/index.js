@@ -59,8 +59,12 @@ export default new Vuex.Store({
     logout(state) {
       state.token = '';
       state.currentUser = {};
+      state.allNotebooks = [];
+      state.allEntries = [];
       localStorage.removeItem('token');
       localStorage.removeItem('currentUser');
+      localStorage.removeItem('allNotebooks');
+      localStorage.removeItem('allEntries');
     },
     updateCurrentUser(state, payload) {
       state.currentUser = payload;
@@ -102,10 +106,12 @@ export default new Vuex.Store({
     fbLogin({ dispatch }, { email, ...response }) {
       dispatch('fetchToken', { method: 'fb', email, response });
     },
-    logout({ commit, dispatch }) {
+    fbLogout() {
       window.FB.logout();
+    },
+    logout({ commit, dispatch }) {
       commit('logout');
-      dispatch('fetchAllNotebooks');
+      dispatch('initialFetch');
     },
     setSort({ commit }, payload) {
       commit('updateSort', payload);
@@ -133,27 +139,26 @@ export default new Vuex.Store({
       );
     },
     checkFBStatus({ dispatch, state }) {
-      window.FB.getLoginStatus(
-        ({ status, authResponse: { userID, accessToken } }) => {
-          if (status === 'connected') {
-            if (state.token) {
-              dispatch('updateFBToken', { userID, accessToken });
-            }
-          } else if (status === 'authorization_expired') {
-            console.log('authorization_expired');
-            dispatch('logout');
-          } else if (status === 'not_authorized') {
-            console.log('not_authorized');
-            dispatch('logout');
-          } else {
-            dispatch('logout');
-          }
+      window.FB.getLoginStatus(({ status, authResponse }) => {
+        if (authResponse && status === 'connected' && state.token) {
+          // User authenticated through Facebook and ready to roll
+          const { userID, accessToken } = authResponse;
+          dispatch('updateFBToken', { userID, accessToken });
+        } else if (
+          status === 'authorization_expired' ||
+          status === 'not_authorized'
+        ) {
+          // Problem with facebook authorization. :'(
+          dispatch('fbLogout');
+          dispatch('logout');
+        } else {
+          // What's facebook?
+          dispatch('logout');
         }
-      );
+      });
     },
     initialFetch({ dispatch }) {
       dispatch('fetchAllNotebooks');
-      dispatch('fetchRecentEntries');
     },
     pushNewEntries({ commit, state }, payload) {
       if (payload.length) {
@@ -169,7 +174,6 @@ export default new Vuex.Store({
         commit('setAllEntries', result);
       }
     },
-
     async fetchNotebookEntries({ dispatch }, payload) {
       dispatch('pushNewEntries', (await http.get(`/entries/${payload}`)).data);
     },
@@ -195,8 +199,9 @@ export default new Vuex.Store({
     async fetchAllUsers({ commit }) {
       commit('updateAllUsers', (await http.get('/users')).data);
     },
-    async fetchAllNotebooks({ commit }) {
+    async fetchAllNotebooks({ dispatch, commit }) {
       commit('updateAllNotebooks', (await http.get('/notebooks')).data);
+      dispatch('fetchRecentEntries');
     }
   }
 });
