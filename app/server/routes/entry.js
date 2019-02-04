@@ -7,30 +7,29 @@ const router = Router();
 
 router.post('/entry/create', createEntry);
 router.post('/entries/recent', fetchRecentEntries);
+router.get('/entries/:notebookID', fetchEntries);
 
 export default router;
 
 async function fetchRecentEntries(req, res, next) {
-  const { notebooks, id } = req.body;
+  const { notebooks: notebookIDs, id } = req.body;
   try {
-    const list = notebooks.map(notebookID => {
+    const notebookQueries = notebookIDs.map(notebookID => {
       return Notebook.findById(notebookID).populate('owner');
     });
 
-    const notebookList = (await Promise.all(list)).filter(
+    const notebooks = (await Promise.all(notebookQueries)).filter(
       e => e.owner.id === id || e.isPrivate === false
     );
 
-    const entryList = await Promise.all(
-      notebookList.map(e =>
+    const entries = (await Promise.all(
+      notebooks.map(e =>
         Entry.find({ notebook: e._id })
           .limit(3)
-          .populate('notebook owner')
+          .populate('notebook author')
           .lean({ virtuals: true })
       )
-    );
-
-    const entries = entryList.reduce((acc, curr) => acc.concat(curr), []);
+    )).reduce((acc, curr) => acc.concat(curr), []);
 
     res.json(entries);
   } catch (e) {
@@ -38,18 +37,27 @@ async function fetchRecentEntries(req, res, next) {
   }
 }
 
-// async function fetchEntries(req, res, next) {
-//   const { n: uid } = req.query;
-//   try {
-//     const notebook = await Notebook.findOne({ uid });
-//     const entries = await Entry.find({ notebook: notebook._id })
-//       .populate('notebook author')
-//       .lean({ virtuals: true });
-//     res.json(entries);
-//   } catch (e) {
-//     next(e);
-//   }
-// }
+async function fetchEntries(req, res, next) {
+  const { notebookID } = req.params;
+  const { id } = req.body;
+
+  try {
+    const notebook = await Notebook.findOne({ uid: notebookID }).populate(
+      'owner'
+    );
+
+    if (notebook.isPrivate && notebook.owner.id !== id) {
+      res.sendStatus(404);
+    } else {
+      const entries = await Entry.find({ notebook: notebook._id })
+        .populate('notebook author')
+        .lean({ virtuals: true });
+      res.json(entries);
+    }
+  } catch (e) {
+    next(e);
+  }
+}
 
 async function createEntry(req, res, next) {
   const { id, username, notebook: uid, ...data } = req.body;

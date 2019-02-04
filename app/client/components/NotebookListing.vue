@@ -17,12 +17,13 @@
         notebook.owner.displayName
       }}</RouterLink>
     </p>
-    <h4>Latest Entry</h4>
+    <h4 v-if="sort.entries.orderBy === 'newest'">Latest Entry</h4>
+    <h4 v-else>First Entry</h4>
     <p>
       {{
         allEntries[notebook.uid]
           ? allEntries[notebook.uid][0].body
-          : 'Not found'
+          : 'Nothing found'
       }}
     </p>
   </article>
@@ -39,7 +40,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isLoggedIn', 'allEntries', 'currentUser'])
+    ...mapGetters(['isLoggedIn', 'allEntries', 'currentUser', 'sort'])
   },
   methods: {
     canEdit(notebook) {

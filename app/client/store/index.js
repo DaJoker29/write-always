@@ -156,11 +156,26 @@ export default new Vuex.Store({
       dispatch('fetchRecentEntries');
     },
     pushNewEntries({ commit, state }, payload) {
-      commit('setAllEntries', state.allEntries.concat(payload));
+      if (payload.length) {
+        const a = state.allEntries.slice();
+
+        const result = a.concat(payload).reduce((acc, cur) => {
+          if (acc.findIndex(e => e.uid === cur.uid) === -1) {
+            acc.push(cur);
+          }
+          return acc;
+        }, []);
+
+        commit('setAllEntries', result);
+      }
     },
-    async fetchRecentEntries({ commit, state }) {
-      commit(
-        'setAllEntries',
+
+    async fetchNotebookEntries({ dispatch }, payload) {
+      dispatch('pushNewEntries', (await http.get(`/entries/${payload}`)).data);
+    },
+    async fetchRecentEntries({ dispatch, state }) {
+      dispatch(
+        'pushNewEntries',
         (await http.post('/entries/recent', {
           notebooks: state.allNotebooks.map(e => e._id)
         })).data
@@ -191,17 +206,30 @@ function dateCompare(a, b) {
 }
 
 function sortEntries(state) {
-  return state.allEntries.reduce(function(acc, curr) {
-    const id = curr.notebook.uid;
+  const { orderBy } = state.sort.entries;
 
-    if (Object.keys(acc).indexOf(id) < 0) {
-      acc[id] = [curr];
-      return acc;
+  // Map entries into object
+  const entries = state.allEntries.reduce(function(acc, cur) {
+    const key = cur.notebook.uid;
+
+    if (Object.keys(acc).indexOf(key) === -1) {
+      acc[key] = [cur];
     } else {
-      acc[id].push(curr);
-      return acc;
+      acc[key].push(cur);
     }
+    return acc;
   }, {});
+
+  // Sort arrays of entries
+  Object.keys(entries).forEach(key => {
+    if (orderBy === 'oldest') {
+      entries[key].sort((a, b) => dateCompare(a.createdAt, b.createdAt));
+    } else {
+      entries[key].sort((a, b) => dateCompare(b.createdAt, a.createdAt));
+    }
+  });
+
+  return entries;
 }
 
 function sortNotebooks(state) {
