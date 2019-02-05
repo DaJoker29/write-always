@@ -207,6 +207,58 @@ db.on('connected', function() {
         });
       });
     });
+
+    describe('Authentication', function() {
+      describe('POST /login', function() {
+        it('should return token if user is found', function(done) {
+          const user = testUsers[0];
+          const params = {
+            method: 'fb',
+            email: 'test1@test.org'
+          };
+
+          request(Server)
+            .post('/auth/login')
+            .send(params)
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(function(err, { body }) {
+              if (err) return done(err);
+              assert.ok(body);
+              assert.typeOf(body, 'string');
+              done();
+            });
+        });
+        it('should return new user token, if no user found', function(done) {
+          const user = testUsers[0];
+          const params = {
+            method: 'fb',
+            email: 'test4@test.org',
+            response: {
+              name: 'test4',
+              accessToken: 'test4',
+              userID: 'test4'
+            }
+          };
+
+          request(Server)
+            .post('/auth/login')
+            .send(params)
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(function(err, { body }) {
+              if (err) return done(err);
+              assert.ok(body);
+              assert.typeOf(body, 'string');
+              done();
+            });
+        });
+        it('should 400 if no email is provided');
+        it('should 404 if improper arguments are provided');
+      });
+    });
   });
 });
 
