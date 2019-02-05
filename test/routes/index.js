@@ -1,0 +1,191 @@
+import '@config';
+import db from '@server/db_connect';
+import Server from '@server';
+import request from 'supertest';
+import Models from '@server/models';
+import { assert } from 'chai';
+
+const { User } = Models;
+
+async function generateTestUsers() {
+  return Promise.all([
+    await User.create({
+      username: 'test1',
+      fbUserID: 'test1',
+      email: 'test1@test.org'
+    }),
+    await User.create({
+      username: 'test2',
+      fbUserID: 'test2',
+      email: 'test2@test.org'
+    }),
+    await User.create({
+      username: 'test3',
+      fbUserID: 'test3',
+      email: 'test3@test.org'
+    })
+  ]);
+}
+
+db.on('connected', function() {
+  let testUsers = [];
+
+  describe('API Routes', function() {
+    before(async function() {
+      testUsers = await generateTestUsers();
+    });
+
+    after(async function() {
+      await db.dropDatabase();
+      await db.close();
+    });
+
+    describe('Users', function() {
+      describe('GET /users', function() {
+        it('should return a list of users', function(done) {
+          request(Server)
+            .get('/api/users')
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(function(err, { body }) {
+              if (err) return done(err);
+
+              assert.typeOf(body, 'array');
+              assert.lengthOf(body, 3);
+
+              const user = body[0];
+              assert.isOk(user.uid);
+              assert.isOk(user.id);
+              assert.isOk(user.displayName);
+              assert.match(user.displayName, /Hipsteracho/);
+              assert.isOk(user.profileURL);
+              assert.isOk(user.dateJoined);
+              assert.isOk(user.dateLastLogin);
+              assert.isOk(user.location);
+              assert.isNotOk(user.email);
+              assert.isNotOk(user.username);
+              assert.isNotOk(user.token);
+              assert.isNotOk(user.fbUserID);
+              assert.isNotOk(user.fbUserAccess);
+
+              done();
+            });
+        });
+
+        it('should return an empty array if no users found', async function() {
+          await db.dropDatabase();
+          return request(Server)
+            .get('/api/users')
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .then(async ({ body }) => {
+              assert.ok(body);
+              assert.typeOf(body, 'array');
+              assert.lengthOf(body, 0);
+              testUsers = await generateTestUsers();
+            });
+        });
+      });
+
+      describe('POST /user/fb', function() {
+        it('should return 200 when successful', function(done) {
+          const user = testUsers[0];
+          const params = {
+            id: user.id,
+            userID: '123456',
+            accessToken: '123456'
+          };
+
+          request(Server)
+            .post('/api/user/fb')
+            .send(params)
+            .expect(200, done);
+        });
+        it('should return 400 when malformed arguments are provided', function(done) {
+          const user = testUsers[0];
+          const params = {
+            ID: user.id,
+            user: '123456',
+            accessToken: '123456'
+          };
+
+          request(Server)
+            .post('/api/user/fb')
+            .send(params)
+            .expect(400, done);
+        });
+        it('should return 400 when no arguments are provided', function(done) {
+          request(Server)
+            .post('/api/user/fb')
+            .expect(400, done);
+        });
+        it('should return 404 when when matching ID not found', function(done) {
+          const params = {
+            id: 12345645,
+            userID: '123456',
+            accessToken: '123456'
+          };
+
+          request(Server)
+            .post('/api/user/fb')
+            .send(params)
+            .expect(404, done);
+        });
+      });
+
+      describe('POST /user/token', function() {
+        it('should return a specified user based on the ID provided', function(done) {
+          const user = testUsers[1];
+          request(Server)
+            .post('/api/user/token')
+            .send({ id: user.id })
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(function(err, { body }) {
+              if (err) return done(err);
+              const res = JSON.parse(JSON.stringify(body));
+
+              assert.ok(res, "object doesn't exist");
+              assert.typeOf(res, 'object', "response isn't an object");
+
+              assert.equal(user.uid, res.uid, "uid doesn't match");
+              assert.equal(user._id, res._id, '_id does not match');
+              assert.equal(
+                user.displayName,
+                res.displayName,
+                'displayName does not match'
+              );
+
+              assert.isOk(res.email, 'email not found');
+              assert.isOk(res.fbUserID, 'facebook user id not found');
+              assert.isOk(res.token, 'token not found');
+
+              done();
+            });
+        });
+
+        it('should 404 if invalid ID is provided', function(done) {
+          request(Server)
+            .post('/api/user/token')
+            .send({ id: '12345678' })
+            .expect(404, done);
+        });
+
+        it('should 400 if no ID is found', function(done) {
+          request(Server)
+            .post('/api/user/token')
+            .expect(400, done);
+        });
+      });
+    });
+  });
+});
+
+describe('testing', function() {
+  describe('something', function() {
+    it('should return nothing', function() {});
+  });
+});

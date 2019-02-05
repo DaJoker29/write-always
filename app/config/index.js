@@ -7,6 +7,7 @@ import defaults from './defaults';
 import Webpack from './webpack';
 import production from './production';
 import development from './development';
+import test from './test';
 
 const log = Log('config');
 
@@ -15,14 +16,24 @@ const app = merge.all([
   JSON.parse(JSON.stringify(options))
 ]);
 
+let env;
+switch (process.env.NODE_ENV) {
+  case 'test':
+    env = test;
+    break;
+  case 'production':
+    env = production;
+    break;
+  case 'development':
+    env = development;
+    break;
+  default:
+    throw new VError('NODE_ENV not set');
+}
+
 const webpack = Webpack(Object.assign({ pkg, app }));
 
-const config = Object.assign(
-  { env: process.env.NODE_ENV === 'production' ? production : development },
-  { pkg },
-  { app },
-  { webpack }
-);
+const config = Object.assign({ env }, { pkg }, { app }, { webpack });
 
 log(`Application Name: ${config.app.name}`);
 log(`Package Name: ${config.pkg.name}`);

@@ -21,7 +21,7 @@ const wpLog = Log('webpack');
 const historyLog = Log('history');
 const errLog = Log('error');
 
-const isProd = config.env === 'production';
+const isDev = config.env === 'development';
 const app = express();
 
 export default app;
@@ -32,7 +32,7 @@ app.use(
   '/.well-known',
   express.static(path.join(__dirname, '.well-known'), { dotfiles: 'allow' })
 );
-app.use(morganDebug(`${config.pkg.name}-morgan`, isProd ? 'combined' : 'dev'));
+app.use(morganDebug(`${config.pkg.name}-morgan`, isDev ? 'dev' : 'combined'));
 app.use(bodyParser.urlencoded({ extended: 'true' }));
 app.use(bodyParser.json());
 app.use(methodOverride());
@@ -46,7 +46,7 @@ app.use(
 app.use(passport.initialize());
 initAuth();
 
-if (!isProd) {
+if (isDev) {
   wpLog('Configuring Webpack Dev Middleware');
   const compiler = webpack(config.webpack);
 

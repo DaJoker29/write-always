@@ -6,7 +6,7 @@ const { User } = Models;
 const router = Router();
 
 router.get('/users', fetchAllUsers);
-router.get('/user/:userID', fetchSingleUser);
+router.get('/user/:userID', fetchSingleUser); // Remove this route. Issue #43
 router.post('/user/token', fetchCurrentUser);
 router.post('/user/fb', updateFBToken);
 
@@ -15,21 +15,35 @@ export default router;
 async function updateFBToken(req, res, next) {
   const { accessToken: fbUserAccess, userID: fbUserID, id } = req.body;
 
+  if (typeof id === 'undefined') {
+    return res.sendStatus(400);
+  }
+
   try {
     await User.findOneAndUpdate({ _id: id }, { fbUserID, fbUserAccess });
-    res.sendStatus(200);
+    return res.sendStatus(200);
   } catch (e) {
-    next(e);
+    return res.sendStatus(404);
   }
 }
 
 async function fetchCurrentUser(req, res, next) {
   const { id } = req.body;
 
+  if (typeof id === 'undefined') {
+    return res.sendStatus(400);
+  }
+
   try {
-    res.json(await User.findOne({ _id: id }));
+    const user = await User.findOne(
+      { _id: id },
+      '+email +token +fbUserAccess +fbUserID'
+    ).lean({ virtuals: true });
+
+    return res.json(user);
   } catch (e) {
-    next(e);
+    // Error fetching user. Either they don't exist or another problem occured.
+    return res.sendStatus(404);
   }
 }
 
@@ -45,8 +59,9 @@ async function fetchSingleUser(req, res, next) {
 
 async function fetchAllUsers(req, res, next) {
   try {
-    res.json(await User.find().lean({ virtuals: true }));
+    const users = await User.find().lean({ virtuals: true });
+    return res.json(users);
   } catch (e) {
-    next(e);
+    return res.sendStatus(404);
   }
 }
