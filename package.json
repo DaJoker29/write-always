@@ -5,12 +5,21 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test mocha --timeout 15000",
-    "coverage": "NODE_ENV=test nyc mocha --timeout 15000",
+    "coverage": "nyc --check-coverage npm test",
     "start": "nodemon index.js --config nodemon.json",
     "build": "NODE_ENV=production; webpack --progress",
     "lint": "eslint --ext .js,.json,.vue .",
     "fix": "eslint --ext .js,.json,.vue . --fix",
     "release": "standard-version"
+  },
+  "nyc": {
+    "include": [
+      "app/server"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ]
   },
   "bin": {
     "cli": "tools/cli.js"
@@ -32,7 +41,7 @@
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "lint-staged && npm test"
+      "pre-commit": "lint-staged && npm run coverage"
     }
   },
   "lint-staged": {
