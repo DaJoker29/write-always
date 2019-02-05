@@ -3,6 +3,7 @@ import db from '@server/db_connect';
 import Server from '@server';
 import request from 'supertest';
 import Models from '@server/models';
+import jwt from 'jsonwebtoken';
 import { assert } from 'chai';
 
 const { User } = Models;
@@ -178,6 +179,31 @@ db.on('connected', function() {
           request(Server)
             .post('/api/user/token')
             .expect(400, done);
+        });
+      });
+    });
+
+    describe('Middleware', function() {
+      describe('#updateLastLogin()', function() {
+        it('add the user ID to body if a bearer token is found', function(done) {
+          const user = testUsers[0];
+          const token = jwt.sign({ id: user.id }, 'somesecret');
+
+          request(Server)
+            .post('/api/user/token')
+            .set('Authorization', `bearer ${token}`)
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(function(err, { body }) {
+              if (err) return done(err);
+
+              assert.ok(body);
+              assert.typeOf(body, 'object');
+              assert.ok(body.displayName);
+
+              done();
+            });
         });
       });
     });
