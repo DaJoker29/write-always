@@ -21,7 +21,7 @@ const wpLog = Log('webpack');
 const historyLog = Log('history');
 const errLog = Log('error');
 
-const isDev = config.env === 'development';
+const isDev = config.env.mode === 'development';
 const app = express();
 
 export default app;
