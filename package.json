@@ -19,7 +19,8 @@
     "reporter": [
       "lcov",
       "text-summary"
-    ]
+    ],
+    "cache": false
   },
   "bin": {
     "cli": "tools/cli.js"

@@ -40,7 +40,7 @@ async function createNotebook(req, res, next) {
       const notebook = await Notebook.create(data);
       res.json(notebook);
     } else {
-      res.sendStatus(401);
+      res.sendStatus(400);
     }
   } catch (e) {
     next(e);
