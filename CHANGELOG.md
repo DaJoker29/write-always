@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/DaJoker29/write-always/compare/v0.3.0...v0.4.0) (2019-02-06)
+
+
+### Bug Fixes
+
+* move config variables to environment variables ([d437e11](https://github.com/DaJoker29/write-always/commit/d437e11))
+* remove user queries from notebooks ([71bfd05](https://github.com/DaJoker29/write-always/commit/71bfd05)), closes [#47](https://github.com/DaJoker29/write-always/issues/47)
+* typo in main server file ([f2a6749](https://github.com/DaJoker29/write-always/commit/f2a6749))
+
+
+### Features
+
+* add integration tests to server routes ([d25bb15](https://github.com/DaJoker29/write-always/commit/d25bb15)), closes [#21](https://github.com/DaJoker29/write-always/issues/21) [#24](https://github.com/DaJoker29/write-always/issues/24) [#39](https://github.com/DaJoker29/write-always/issues/39)
+* add test and continuous deployment ([15aa71b](https://github.com/DaJoker29/write-always/commit/15aa71b))
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://github.com/DaJoker29/write-always/compare/v0.2.0...v0.3.0) (2019-02-04)
 
