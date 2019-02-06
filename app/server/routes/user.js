@@ -6,7 +6,6 @@ const { User } = Models;
 const router = Router();
 
 router.get('/users', fetchAllUsers);
-router.get('/user/:userID', fetchSingleUser); // Remove this route. Issue #43
 router.post('/user/token', fetchCurrentUser);
 router.post('/user/fb', updateFBToken);
 
@@ -44,16 +43,6 @@ async function fetchCurrentUser(req, res, next) {
   } catch (e) {
     // Error fetching user. Either they don't exist or another problem occured.
     return res.sendStatus(404);
-  }
-}
-
-async function fetchSingleUser(req, res, next) {
-  const { userID: uid } = req.params;
-
-  try {
-    res.json(await User.findOne({ uid }));
-  } catch (e) {
-    next(e);
   }
 }
 
