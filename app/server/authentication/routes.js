@@ -25,12 +25,12 @@ function loginHandler(req, res) {
 
     req.login(user, { session: false }, err => {
       if (err) {
-        res.send(err);
+        errLog(err);
       }
 
       const { _id: id } = user;
 
-      const token = jwt.sign({ id }, 'somesecret');
+      const token = jwt.sign({ id }, process.env.JWT_SECRET);
 
       return res.json(token);
     });

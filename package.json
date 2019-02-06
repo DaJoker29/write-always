@@ -4,13 +4,24 @@
   "description": "A community built around creative writing and sharing stories.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
-    "coverage": "nyc mocha",
+    "test": "NODE_ENV=test mocha --timeout 15000",
+    "coverage": "nyc --check-coverage npm test",
     "start": "nodemon index.js --config nodemon.json",
     "build": "NODE_ENV=production; webpack --progress",
     "lint": "eslint --ext .js,.json,.vue .",
     "fix": "eslint --ext .js,.json,.vue . --fix",
     "release": "standard-version"
+  },
+  "nyc": {
+    "include": [
+      "app/server/routes",
+      "app/server/middleware",
+      "app/server/authentication"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ]
   },
   "bin": {
     "cli": "tools/cli.js"
@@ -32,7 +43,7 @@
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged && npm run coverage"
     }
   },
   "lint-staged": {
@@ -66,11 +77,13 @@
     "axios": "0.18.0",
     "babel-eslint": "10.0.1",
     "callsite": "1.0.0",
+    "chai": "4.2.0",
     "connect-history-api-fallback": "1.6.0",
     "core-js": "2.6.2",
     "css-loader": "2.1.0",
     "debug": "4.1.1",
     "deepmerge": "3.0.0",
+    "dotenv": "6.2.0",
     "encodeurl": "1.0.2",
     "eslint": "5.11.0",
     "eslint-config-airbnb": "17.1.0",
@@ -107,6 +120,7 @@
     "random-token": "0.0.8",
     "shortid": "2.2.14",
     "standard-version": "4.4.0",
+    "supertest": "3.4.2",
     "thirty-two": "1.0.2",
     "verror": "1.10.0",
     "vue": "2.5.21",

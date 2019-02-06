@@ -1,14 +1,10 @@
 import passport from 'passport';
 import Models from '@server/models';
 import VError from 'verror';
-import config from '@config';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt';
 
 const { User } = Models;
-const {
-  app: { secret: secretOrKey }
-} = config;
 
 export default function() {
   passport.use(
@@ -62,7 +58,7 @@ export default function() {
     new JWTStrategy(
       {
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-        secretOrKey
+        secretOrKey: process.env.JWT_SECRET
       },
       async function(payload, cb) {
         try {
