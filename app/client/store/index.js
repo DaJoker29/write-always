@@ -58,12 +58,8 @@ export default new Vuex.Store({
     logout(state) {
       state.token = '';
       state.currentUser = {};
-      state.allNotebooks = [];
-      state.allEntries = [];
       localStorage.removeItem('token');
       localStorage.removeItem('currentUser');
-      localStorage.removeItem('allNotebooks');
-      localStorage.removeItem('allEntries');
     },
     updateCurrentUser(state, payload) {
       state.currentUser = payload;

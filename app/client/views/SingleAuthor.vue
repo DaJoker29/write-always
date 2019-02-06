@@ -15,11 +15,6 @@ export default {
     SingleAuthorHeader,
     NotebookList
   },
-  data: function() {
-    return {
-      author: {}
-    };
-  },
   computed: {
     ...mapGetters(['allNotebooks', 'allUsers']),
     notebooks: function() {
