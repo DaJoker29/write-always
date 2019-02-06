@@ -14,7 +14,9 @@
   },
   "nyc": {
     "include": [
-      "app/server"
+      "app/server/routes",
+      "app/server/middleware",
+      "app/server/authentication"
     ],
     "reporter": [
       "lcov",

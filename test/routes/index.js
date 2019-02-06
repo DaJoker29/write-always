@@ -508,7 +508,7 @@ db.on('connected', function() {
         });
       });
       describe('GET /notebooks', function() {
-        it('should return an array of notebooks', function(done) {
+        it('should return an array of notebooks (with id)', function(done) {
           const user = testUsers[0];
           request(Server)
             .get('/api/notebooks')
@@ -521,6 +521,20 @@ db.on('connected', function() {
               assert.ok(body);
               assert.typeOf(body, 'array');
               assert.lengthOf(body, 7);
+              done();
+            });
+        });
+        it('should return an array of notebooks (without id)', function(done) {
+          request(Server)
+            .get('/api/notebooks')
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(function(err, { body }) {
+              if (err) return done(err);
+              assert.ok(body);
+              assert.typeOf(body, 'array');
+              assert.lengthOf(body, 6);
               done();
             });
         });

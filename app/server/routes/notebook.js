@@ -48,9 +48,9 @@ async function createNotebook(req, res, next) {
 }
 
 async function fetchAllNotebooks(req, res, next) {
-  const { u } = req.query;
-  const id = req.body.id ? req.body.id : req.params.id;
+  const { id } = req.body;
   const queries = [{ isPrivate: false }];
+
   if (id) {
     queries.push({ owner: id });
   }
@@ -60,7 +60,8 @@ async function fetchAllNotebooks(req, res, next) {
       .or(queries)
       .populate('owner')
       .lean({ virtuals: true });
-    res.json(u ? notebooks.filter(e => e.owner.uid === u) : notebooks);
+
+    res.json(notebooks);
   } catch (e) {
     next(e);
   }
