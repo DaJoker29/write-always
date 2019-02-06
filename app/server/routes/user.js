@@ -1,8 +1,10 @@
 import { Router } from 'express';
 import Models from '@server/models';
 import asyncHandler from '@server/middleware/async';
+import Log from '@tools/log';
 
 const { User } = Models;
+const log = Log('middleware');
 
 const router = Router();
 
@@ -19,7 +21,8 @@ async function updateFBToken(req, res, next) {
     return res.sendStatus(400);
   }
 
-  await User.findOneAndUpdate({ _id: id }, { fbUserID, fbUserAccess });
+  log(`Updating FB Access Token: ${fbUserID}`);
+  await User.findOneAndUpdate({ _id: id, fbUserID }, { fbUserAccess });
   return res.sendStatus(200);
 }
 
