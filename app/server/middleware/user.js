@@ -1,6 +1,9 @@
 import Models from '@server/models';
 import { verify } from 'jsonwebtoken';
 import Log from '@tools/log';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const log = Log('middleware');
 
