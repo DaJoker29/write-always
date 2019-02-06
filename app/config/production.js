@@ -1,3 +1,5 @@
 export default {
-  mode: 'production'
+  mode: 'production',
+  db: 'mongodb://localhost/write_always',
+  port: process.env.PORT || 2000
 };

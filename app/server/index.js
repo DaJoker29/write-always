@@ -12,6 +12,7 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 import history from 'connect-history-api-fallback';
 
 import { updateLastLogin } from '@server/middleware/user';
+import asyncHandler from '@server/middleware/async';
 import Routes from '@server/routes';
 import config from '@config';
 import Log from '@tools/log';
@@ -21,7 +22,7 @@ const wpLog = Log('webpack');
 const historyLog = Log('history');
 const errLog = Log('error');
 
-const isProd = config.env === 'production';
+const isDev = config.env.mode === 'development';
 const app = express();
 
 export default app;
@@ -32,7 +33,7 @@ app.use(
   '/.well-known',
   express.static(path.join(__dirname, '.well-known'), { dotfiles: 'allow' })
 );
-app.use(morganDebug(`${config.pkg.name}-morgan`, isProd ? 'combined' : 'dev'));
+app.use(morganDebug(`${config.pkg.name}-morgan`, isDev ? 'dev' : 'combined'));
 app.use(bodyParser.urlencoded({ extended: 'true' }));
 app.use(bodyParser.json());
 app.use(methodOverride());
@@ -46,7 +47,7 @@ app.use(
 app.use(passport.initialize());
 initAuth();
 
-if (!isProd) {
+if (isDev) {
   wpLog('Configuring Webpack Dev Middleware');
   const compiler = webpack(config.webpack);
 
@@ -70,7 +71,7 @@ if (!isProd) {
 }
 
 app.use('/auth', AuthRoutes);
-app.use('/api', updateLastLogin, Routes());
+app.use('/api', asyncHandler(updateLastLogin), Routes());
 app.use(serverError);
 
 function serverError(err, req, res, next) {
