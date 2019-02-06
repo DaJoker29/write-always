@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import Models from '@server/models';
 
-const { Notebook, User, Entry } = Models;
+const { Notebook, Entry } = Models;
 
 const router = Router();
 
@@ -41,12 +41,16 @@ async function fetchEntries(req, res, next) {
   const { notebookID } = req.params;
   const { id } = req.body;
 
+  if (typeof notebookID === 'undefined') {
+    return res.sendStatus(400);
+  }
+
   try {
     const notebook = await Notebook.findOne({ uid: notebookID }).populate(
       'owner'
     );
 
-    if (notebook.isPrivate && notebook.owner.id !== id) {
+    if (!notebook || (notebook.isPrivate && notebook.owner.id !== id)) {
       res.sendStatus(404);
     } else {
       const entries = await Entry.find({ notebook: notebook._id })
@@ -60,19 +64,22 @@ async function fetchEntries(req, res, next) {
 }
 
 async function createEntry(req, res, next) {
-  const { id, username, notebook: uid, ...data } = req.body;
-  try {
-    const user = await User.findById(id);
-    const notebook = await Notebook.findOne({ uid });
+  const { id, notebook: uid, ...data } = req.body;
 
-    if (user.username === username) {
-      data.author = user.id;
+  if (!data.body) {
+    return res.sendStatus(400);
+  }
+  try {
+    const notebook = await Notebook.findOne({ uid }).populate('owner');
+
+    if (notebook && (notebook.isShared || notebook.owner.id === id)) {
       data.notebook = notebook.id;
+      data.author = id;
       const entry = await Entry.create(data);
       await Notebook.findOneAndUpdate({ uid }, { updatedAt: new Date() });
       res.json(entry);
     } else {
-      res.sendStatus(401);
+      res.sendStatus(404);
     }
   } catch (e) {
     next(e);

@@ -6,9 +6,13 @@ import Models from '@server/models';
 import jwt from 'jsonwebtoken';
 import { assert } from 'chai';
 
-const { User, Notebook } = Models;
+const { User, Notebook, Entry } = Models;
 
-async function generateTestUsers() {
+/////////////
+// Helpers //
+/////////////
+
+async function populateUsers() {
   return Promise.all([
     await User.create({
       username: 'test1',
@@ -28,9 +32,10 @@ async function generateTestUsers() {
   ]);
 }
 
-function populateNotebooks(users) {
+async function populateNotebooks(users) {
   const notebooks = [];
-  users.forEach(async user => {
+
+  users.forEach(async function(user) {
     const first = {
       title: 'first',
       owner: user._id
@@ -48,15 +53,39 @@ function populateNotebooks(users) {
       isShared: true
     };
 
-    notebooks.push([
-      await Notebook.create(first),
-      await Notebook.create(second),
-      await Notebook.create(third)
-    ]);
+    notebooks.push(Notebook.create(first));
+    notebooks.push(Notebook.create(second));
+    notebooks.push(Notebook.create(third));
   });
 
-  return notebooks;
+  return Promise.all(notebooks);
 }
+
+async function populateEntries(notebooks) {
+  const entries = [];
+
+  notebooks.forEach(async function(notebook) {
+    const first = {
+      body: 'Some text',
+      author: notebook.owner,
+      notebook: notebook._id
+    };
+    const second = {
+      body: 'Some text',
+      author: notebook.owner,
+      notebook: notebook._id
+    };
+
+    entries.push(Entry.create(first));
+    entries.push(Entry.create(second));
+  });
+
+  return Promise.all(entries);
+}
+
+///////////
+// Start //
+///////////
 
 db.on('connected', function() {
   let testUsers = [];
@@ -64,14 +93,19 @@ db.on('connected', function() {
 
   describe('API Routes', function() {
     before(async function() {
-      testUsers = await generateTestUsers();
-      testNotebooks = populateNotebooks(testUsers);
+      testUsers = await populateUsers();
+      testNotebooks = await populateNotebooks(testUsers);
+      await populateEntries(testNotebooks);
     });
 
     after(async function() {
       await db.dropDatabase();
       await db.close();
     });
+
+    ////////////////
+    // User Tests //
+    ////////////////
 
     describe('Users', function() {
       describe('GET /users', function() {
@@ -117,8 +151,9 @@ db.on('connected', function() {
               assert.ok(body);
               assert.typeOf(body, 'array');
               assert.lengthOf(body, 0);
-              testUsers = await generateTestUsers();
-              testNotebooks = populateNotebooks(testUsers);
+              testUsers = await populateUsers();
+              testNotebooks = await populateNotebooks(testUsers);
+              await populateEntries(testNotebooks);
             });
         });
       });
@@ -216,17 +251,28 @@ db.on('connected', function() {
       });
     });
 
-    describe('Notebooks', function() {
-      describe('POST /notebook/create', function() {
-        it('should return a newly created notebook', function(done) {
+    /////////////////
+    // Entry Tests //
+    /////////////////
+
+    describe('Entries', function() {
+      describe('POST /entries/recent', function() {
+        it('should return a list of recent entries', function(done) {
           const user = testUsers[0];
+
           const params = {
             id: user._id,
-            title: 'Some title'
+            notebooks: [
+              testNotebooks[0]._id,
+              testNotebooks[1]._id,
+              testNotebooks[2]._id,
+              testNotebooks[3]._id,
+              testNotebooks[4]._id // to test private filtering
+            ]
           };
 
           request(Server)
-            .post('/api/notebook/create')
+            .post('/api/entries/recent')
             .send(params)
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
@@ -235,8 +281,167 @@ db.on('connected', function() {
               if (err) return done(err);
 
               assert.ok(body);
+              assert.typeOf(body, 'array');
+              assert.lengthOf(body, 8);
+
+              done();
+            });
+        });
+      });
+
+      describe('GET /entries/:notebookID', function() {
+        it('should return a list of entries (non-private)', function(done) {
+          const user = testUsers[0];
+          const notebook = testNotebooks[0];
+
+          request(Server)
+            .get(`/api/entries/${notebook.uid}`)
+            .send({ id: user._id })
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(function(err, { body }) {
+              if (err) return done(err);
+
+              assert.ok(body);
+              assert.typeOf(body, 'array');
+              assert.lengthOf(body, 2);
+
+              done();
+            });
+        });
+        it('should return private entries if user owns them', function(done) {
+          const user = testUsers[0];
+          const notebook = testNotebooks[1];
+
+          request(Server)
+            .get(`/api/entries/${notebook.uid}`)
+            .send({ id: user._id })
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(function(err, { body }) {
+              if (err) return done(err);
+
+              assert.ok(body);
+              assert.typeOf(body, 'array');
+              assert.lengthOf(body, 2);
+
+              done();
+            });
+        });
+        it('should 404 for private and non-user notebook', function(done) {
+          const user = testUsers[0];
+          const notebook = testNotebooks[4];
+
+          request(Server)
+            .get(`/api/entries/${notebook.uid}`)
+            .send({ id: user._id })
+            .expect(404, done);
+        });
+        it('should 404 if notebook does not exist', function(done) {
+          const user = testUsers[0];
+
+          request(Server)
+            .get('/api/entries/foo')
+            .send({ id: user._id })
+            .expect(404, done);
+        });
+        it('should 400 if no notebook is provided', function(done) {
+          const user = testUsers[0];
+
+          request(Server)
+            .get('/api/entries/')
+            .send({ id: user._id })
+            .expect(404, done);
+        });
+      });
+
+      describe('POST /entry/create', function() {
+        it('should return a newly created notebook if credentials match', function(done) {
+          const user = testUsers[0];
+          const notebook = testNotebooks[0];
+          const params = {
+            id: user._id,
+            notebook: notebook.uid,
+            body: 'Some unique content'
+          };
+
+          request(Server)
+            .post('/api/entry/create')
+            .send(params)
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(async function(err, { body }) {
+              if (err) return done(err);
+
+              assert.ok(body);
+              assert.ok(body.body);
+              assert.typeOf(body, 'object');
+
+              await Entry.deleteOne({ body: params.body });
+
+              done();
+            });
+        });
+        it('should return a 404 if credentials do not match', function(done) {
+          const user = testUsers[1];
+          const notebook = testNotebooks[0];
+          const params = {
+            id: user._id,
+            notebook: notebook.uid,
+            body: 'Some unique content'
+          };
+
+          request(Server)
+            .post('/api/entry/create')
+            .send(params)
+            .expect(404, done);
+        });
+        it('should return a 400 if no body is provided', function(done) {
+          const user = testUsers[0];
+          const notebook = testNotebooks[0];
+          const params = {
+            id: user._id,
+            notebook: notebook.uid
+          };
+
+          request(Server)
+            .post('/api/entry/create')
+            .send(params)
+            .expect(400, done);
+        });
+      });
+    });
+
+    ////////////////////
+    // Notebook Tests //
+    ////////////////////
+
+    describe('Notebooks', function() {
+      describe('POST /notebook/create', function() {
+        it('should return a newly created notebook', function(done) {
+          const user = testUsers[0];
+          const params = {
+            id: user._id,
+            title: 'Some unique title'
+          };
+
+          request(Server)
+            .post('/api/notebook/create')
+            .send(params)
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(async function(err, { body }) {
+              if (err) return done(err);
+
+              assert.ok(body);
               assert.ok(body.title);
               assert.typeOf(body, 'object');
+
+              await Notebook.deleteOne({ title: params.title });
 
               done();
             });
@@ -258,7 +463,7 @@ db.on('connected', function() {
       describe('GET /notebook/:notebookID', function() {
         it('should return a single notebook', function(done) {
           const user = testUsers[0];
-          const notebook = testNotebooks[0][0];
+          const notebook = testNotebooks[0];
 
           request(Server)
             .get(`/api/notebook/${notebook.uid}`)
@@ -276,7 +481,7 @@ db.on('connected', function() {
         });
         it('should 404 for another users private notebook', function(done) {
           const user = testUsers[2];
-          const notebook = testNotebooks[0][1];
+          const notebook = testNotebooks[1];
 
           request(Server)
             .get(`/api/notebook/${notebook.uid}`)
@@ -285,7 +490,7 @@ db.on('connected', function() {
         });
         it('should return a private notebook to the owner', function(done) {
           const user = testUsers[0];
-          const notebook = testNotebooks[0][1];
+          const notebook = testNotebooks[1];
 
           request(Server)
             .get(`/api/notebook/${notebook.uid}`)
@@ -315,11 +520,16 @@ db.on('connected', function() {
               if (err) return done(err);
               assert.ok(body);
               assert.typeOf(body, 'array');
+              assert.lengthOf(body, 7);
               done();
             });
         });
       });
     });
+
+    //////////////////////
+    // Middleware Tests //
+    //////////////////////
 
     describe('Middleware', function() {
       describe('#updateLastLogin()', function() {
@@ -345,6 +555,10 @@ db.on('connected', function() {
         });
       });
     });
+
+    //////////////////////////
+    // Authentication Tests //
+    //////////////////////////
 
     describe('Authentication', function() {
       describe('POST /login', function() {
