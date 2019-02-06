@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.4.1"></a>
+## [0.4.1](https://github.com/DaJoker29/write-always/compare/v0.4.0...v0.4.1) (2019-02-06)
+
+
+### Bug Fixes
+
+* add facebook ID to login request ([eedb5dd](https://github.com/DaJoker29/write-always/commit/eedb5dd)), closes [#46](https://github.com/DaJoker29/write-always/issues/46)
+* fixed disappearing entries on page load ([b1bd183](https://github.com/DaJoker29/write-always/commit/b1bd183))
+* no longer update facebook id when updating token ([30f45b9](https://github.com/DaJoker29/write-always/commit/30f45b9)), closes [#44](https://github.com/DaJoker29/write-always/issues/44)
+* obliterate username data field from the face of the earth ([f337958](https://github.com/DaJoker29/write-always/commit/f337958)), closes [#42](https://github.com/DaJoker29/write-always/issues/42)
+* oldest/newest bug ([18a5c18](https://github.com/DaJoker29/write-always/commit/18a5c18)), closes [#41](https://github.com/DaJoker29/write-always/issues/41)
+* remove params.id branch ([bda421d](https://github.com/DaJoker29/write-always/commit/bda421d)), closes [#45](https://github.com/DaJoker29/write-always/issues/45)
+* remove reference to deleted fetchSingleUser route ([9d87bcf](https://github.com/DaJoker29/write-always/commit/9d87bcf))
+
+
+
 <a name="0.4.0"></a>
 # [0.4.0](https://github.com/DaJoker29/write-always/compare/v0.3.0...v0.4.0) (2019-02-06)
 
