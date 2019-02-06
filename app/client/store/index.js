@@ -3,7 +3,6 @@ import Vuex from 'vuex';
 import http from '@client/http-common';
 import axios from 'axios';
 import moment from 'moment';
-import merge from 'deepmerge';
 
 Vue.use(Vuex);
 
@@ -122,13 +121,19 @@ export default new Vuex.Store({
     },
     loginToFacebook({ dispatch }) {
       window.FB.login(
-        loginResponse => {
-          if (loginResponse.authResponse) {
+        ({ authResponse }) => {
+          if (authResponse) {
             window.FB.api('/me', { fields: 'name, email' }, response => {
-              const payload = merge.all([
-                JSON.parse(JSON.stringify(loginResponse.authResponse)),
-                JSON.parse(JSON.stringify(response))
-              ]);
+              const { name: displayName, id: fbUserID, email } = response;
+              const { accessToken: fbUserAccess } = authResponse;
+
+              const payload = {
+                email,
+                displayName,
+                fbUserID,
+                fbUserAccess
+              };
+
               dispatch('fbLogin', payload);
             });
           } else {
@@ -142,8 +147,8 @@ export default new Vuex.Store({
       window.FB.getLoginStatus(({ status, authResponse }) => {
         if (authResponse && status === 'connected' && state.token) {
           // User authenticated through Facebook and ready to roll
-          const { userID, accessToken } = authResponse;
-          dispatch('updateFBToken', { userID, accessToken });
+          const { userID: fbUserID, accessToken: fbUserAccess } = authResponse;
+          dispatch('updateFBToken', { fbUserID, fbUserAccess });
         } else if (
           status === 'authorization_expired' ||
           status === 'not_authorized'

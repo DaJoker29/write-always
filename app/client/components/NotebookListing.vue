@@ -17,12 +17,11 @@
         notebook.owner.displayName
       }}</RouterLink>
     </p>
-    <h4 v-if="sort.entries.orderBy === 'newest'">Latest Entry</h4>
-    <h4 v-else>First Entry</h4>
+    <h4>Latest Entry</h4>
     <p>
       {{
         allEntries[notebook.uid]
-          ? allEntries[notebook.uid][0].body
+          ? latestEntry(allEntries[notebook.uid]).body
           : 'Nothing found'
       }}
     </p>
@@ -53,6 +52,11 @@ export default {
       const now = this.moment();
       const then = this.moment(notebook.updatedAt);
       return now.diff(then, 'days') < 1;
+    },
+    latestEntry(entries) {
+      return entries.slice().reduce((acc, curr) => {
+        return this.moment(acc).isBefore(curr) ? curr : acc;
+      });
     }
   }
 };

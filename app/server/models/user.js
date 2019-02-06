@@ -14,7 +14,6 @@ const userSchema = new Schema(
       default: () => `${prefix}${generate()}`,
       unique: true
     },
-    username: { type: String, unique: true, select: false },
     token: { type: String, default: token(128), select: false },
     dateJoined: { type: Date, default: Date.now },
     dateLastLogin: { type: Date, default: Date.now },
@@ -23,7 +22,7 @@ const userSchema = new Schema(
     location: { type: String, default: 'Narnia', required: true },
     url: { type: String },
     bio: { type: String },
-    fbUserID: { type: String, unique: true, select: false },
+    fbUserID: { type: String, select: false },
     fbUserAccess: { type: String, select: false }
   },
   { versionKey: false }

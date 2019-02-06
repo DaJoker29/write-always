@@ -21,6 +21,7 @@ export default function() {
 
           if (method === 'fb') {
             options.email = email;
+            options.fbUserID = req.body.response.fbUserID;
           } else {
             throw new VError('No method specified');
           }
@@ -32,11 +33,7 @@ export default function() {
             return cb(null, user, { message: 'Login was successful' });
           } else {
             // Otherwise, create new user
-            const {
-              name: displayName,
-              userID: fbUserID,
-              accessToken: fbUserAccess
-            } = req.body.response;
+            const { displayName, fbUserID, fbUserAccess } = req.body.response;
             const query = {
               email,
               displayName,
