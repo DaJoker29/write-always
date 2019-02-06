@@ -15,17 +15,14 @@ const { User, Notebook, Entry } = Models;
 async function populateUsers() {
   return Promise.all([
     await User.create({
-      username: 'test1',
       fbUserID: 'test1',
       email: 'test1@test.org'
     }),
     await User.create({
-      username: 'test2',
       fbUserID: 'test2',
       email: 'test2@test.org'
     }),
     await User.create({
-      username: 'test3',
       fbUserID: 'test3',
       email: 'test3@test.org'
     })
@@ -131,7 +128,6 @@ db.on('connected', function() {
               assert.isOk(user.dateLastLogin);
               assert.isOk(user.location);
               assert.isNotOk(user.email);
-              assert.isNotOk(user.username);
               assert.isNotOk(user.token);
               assert.isNotOk(user.fbUserID);
               assert.isNotOk(user.fbUserAccess);
@@ -429,17 +425,30 @@ db.on('connected', function() {
               done();
             });
         });
-        it('should 400 if arguments are invalid or already exist', function(done) {
+        it('should 400 if no title is provided', function(done) {
           const user = testUsers[0];
           const params = {
-            id: user._id,
-            username: 'spongebob',
-            title: 'Some title'
+            id: user._id
           };
 
           request(Server)
             .post('/api/notebook/create')
             .send(params)
+            .expect(400, done);
+        });
+        it('should 400 if invalid user ID is provided', function(done) {
+          const params = {
+            title: 'Some unique title'
+          };
+
+          request(Server)
+            .post('/api/notebook/create')
+            .send(params)
+            .expect(400, done);
+        });
+        it('should 400 if no params are provided', function(done) {
+          request(Server)
+            .post('/api/notebook/create')
             .expect(400, done);
         });
       });

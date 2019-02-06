@@ -28,16 +28,15 @@ async function fetchNotebook(req, res, next) {
 }
 
 async function createNotebook(req, res, next) {
-  const { id, username, ...data } = req.body;
+  const { id, ...data } = req.body;
   const user = await User.findById(id);
 
-  if (user.username === username) {
+  if (user && data.title) {
     data.owner = user.id;
     const notebook = await Notebook.create(data);
-    res.json(notebook);
-  } else {
-    res.sendStatus(400);
+    return res.json(notebook);
   }
+  return res.sendStatus(400);
 }
 
 async function fetchAllNotebooks(req, res, next) {
