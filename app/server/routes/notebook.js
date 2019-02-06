@@ -1,13 +1,14 @@
 import { Router } from 'express';
 import Models from '@server/models';
+import asyncHandler from '@server/middleware/async';
 
 const { Notebook, User } = Models;
 
 const router = Router();
 
-router.get('/notebooks', fetchAllNotebooks);
-router.get('/notebook/:notebookID', fetchNotebook);
-router.post('/notebook/create', createNotebook);
+router.get('/notebooks', asyncHandler(fetchAllNotebooks));
+router.get('/notebook/:notebookID', asyncHandler(fetchNotebook));
+router.post('/notebook/create', asyncHandler(createNotebook));
 
 export default router;
 
@@ -15,35 +16,27 @@ async function fetchNotebook(req, res, next) {
   const { notebookID: uid } = req.params;
   const { id } = req.body;
 
-  try {
-    const notebook = await Notebook.findOne({ uid })
-      .populate('owner')
-      .lean({ virtuals: true });
+  const notebook = await Notebook.findOne({ uid })
+    .populate('owner')
+    .lean({ virtuals: true });
 
-    if (notebook.isPrivate && notebook.owner.id !== id) {
-      res.sendStatus(404);
-    } else {
-      res.json(notebook);
-    }
-  } catch (e) {
-    next(e);
+  if (notebook.isPrivate && notebook.owner.id !== id) {
+    res.sendStatus(404);
+  } else {
+    res.json(notebook);
   }
 }
 
 async function createNotebook(req, res, next) {
   const { id, username, ...data } = req.body;
-  try {
-    const user = await User.findById(id);
+  const user = await User.findById(id);
 
-    if (user.username === username) {
-      data.owner = user.id;
-      const notebook = await Notebook.create(data);
-      res.json(notebook);
-    } else {
-      res.sendStatus(400);
-    }
-  } catch (e) {
-    next(e);
+  if (user.username === username) {
+    data.owner = user.id;
+    const notebook = await Notebook.create(data);
+    res.json(notebook);
+  } else {
+    res.sendStatus(400);
   }
 }
 
@@ -55,14 +48,10 @@ async function fetchAllNotebooks(req, res, next) {
     queries.push({ owner: id });
   }
 
-  try {
-    const notebooks = await Notebook.find()
-      .or(queries)
-      .populate('owner')
-      .lean({ virtuals: true });
+  const notebooks = await Notebook.find()
+    .or(queries)
+    .populate('owner')
+    .lean({ virtuals: true });
 
-    res.json(notebooks);
-  } catch (e) {
-    next(e);
-  }
+  res.json(notebooks);
 }

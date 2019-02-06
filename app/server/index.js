@@ -12,6 +12,7 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 import history from 'connect-history-api-fallback';
 
 import { updateLastLogin } from '@server/middleware/user';
+import asyncHandler from '@server/middleware/async';
 import Routes from '@server/routes';
 import config from '@config';
 import Log from '@tools/log';
@@ -70,7 +71,7 @@ if (isDev) {
 }
 
 app.use('/auth', AuthRoutes);
-app.use('/api', updateLastLogin, Routes());
+app.use('/api', asyncHandler(updateLastLogin), Routes());
 app.use(serverError);
 
 function serverError(err, req, res, next) {

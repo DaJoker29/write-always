@@ -4,7 +4,7 @@
   "description": "A community built around creative writing and sharing stories.",
   "main": "index.js",
   "scripts": {
-    "test": "DEBUG=write-always-error NODE_ENV=test mocha --timeout 15000",
+    "test": "NODE_ENV=test mocha --timeout 15000",
     "coverage": "nyc --check-coverage npm test",
     "start": "nodemon index.js --config nodemon.json",
     "build": "NODE_ENV=production; webpack --progress",
@@ -21,8 +21,7 @@
     "reporter": [
       "lcov",
       "text-summary"
-    ],
-    "cache": false
+    ]
   },
   "bin": {
     "cli": "tools/cli.js"

@@ -139,23 +139,6 @@ db.on('connected', function() {
               done();
             });
         });
-
-        it('should return an empty array if no users found', async function() {
-          await db.dropDatabase();
-          return request(Server)
-            .get('/api/users')
-            .set('Accept', 'application/json')
-            .expect('Content-Type', /json/)
-            .expect(200)
-            .then(async ({ body }) => {
-              assert.ok(body);
-              assert.typeOf(body, 'array');
-              assert.lengthOf(body, 0);
-              testUsers = await populateUsers();
-              testNotebooks = await populateNotebooks(testUsers);
-              await populateEntries(testNotebooks);
-            });
-        });
       });
 
       describe('POST /user/fb', function() {
@@ -190,9 +173,9 @@ db.on('connected', function() {
             .post('/api/user/fb')
             .expect(400, done);
         });
-        it('should return 404 when when matching ID not found', function(done) {
+        it('should return 500 when when matching ID not found', function(done) {
           const params = {
-            id: 12345645,
+            id: '12345645',
             userID: '123456',
             accessToken: '123456'
           };
@@ -200,7 +183,7 @@ db.on('connected', function() {
           request(Server)
             .post('/api/user/fb')
             .send(params)
-            .expect(404, done);
+            .expect(500, done);
         });
       });
 
@@ -236,11 +219,11 @@ db.on('connected', function() {
             });
         });
 
-        it('should 404 if invalid ID is provided', function(done) {
+        it('should 500 if invalid ID is provided', function(done) {
           request(Server)
             .post('/api/user/token')
             .send({ id: '12345678' })
-            .expect(404, done);
+            .expect(500, done);
         });
 
         it('should 400 if no ID is found', function(done) {
@@ -619,15 +602,27 @@ db.on('connected', function() {
               done();
             });
         });
-        it('should 400 if no email is provided');
-        it('should 404 if improper arguments are provided');
+        it('should 400 no method specified', function(done) {
+          const params = {
+            email: 'test4@test.org',
+            response: {
+              name: 'test4',
+              accessToken: 'test4',
+              userID: 'test4'
+            }
+          };
+
+          request(Server)
+            .post('/auth/login')
+            .send(params)
+            .expect(400, done);
+        });
+        it('should 400 if no params specified', function(done) {
+          request(Server)
+            .post('/auth/login')
+            .expect(400, done);
+        });
       });
     });
-  });
-});
-
-describe('testing', function() {
-  describe('something', function() {
-    it('should return nothing', function() {});
   });
 });

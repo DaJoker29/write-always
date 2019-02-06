@@ -25,7 +25,7 @@ function loginHandler(req, res) {
 
     req.login(user, { session: false }, err => {
       if (err) {
-        res.send(err);
+        errLog(err);
       }
 
       const { _id: id } = user;
