@@ -571,7 +571,12 @@ db.on('connected', function() {
         it('should return token if user is found', function(done) {
           const params = {
             method: 'fb',
-            email: 'test1@test.org'
+            email: 'test1@test.org',
+            response: {
+              displayName: 'test1',
+              fbUserAccess: 'test1',
+              fbUserID: 'test1'
+            }
           };
 
           request(Server)
@@ -592,9 +597,9 @@ db.on('connected', function() {
             method: 'fb',
             email: 'test4@test.org',
             response: {
-              name: 'test4',
-              accessToken: 'test4',
-              userID: 'test4'
+              displayName: 'test4',
+              fbUserAccess: 'test4',
+              fbUserID: 'test4'
             }
           };
 
@@ -615,9 +620,9 @@ db.on('connected', function() {
           const params = {
             email: 'test4@test.org',
             response: {
-              name: 'test4',
-              accessToken: 'test4',
-              userID: 'test4'
+              displayName: 'test4',
+              fbUserAccess: 'test4',
+              fbUserID: 'test4'
             }
           };
 

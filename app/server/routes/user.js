@@ -15,7 +15,7 @@ router.post('/user/fb', asyncHandler(updateFBToken));
 export default router;
 
 async function updateFBToken(req, res, next) {
-  const { accessToken: fbUserAccess, userID: fbUserID, id } = req.body;
+  const { fbUserAccess, fbUserID, id } = req.body;
 
   if (typeof id === 'undefined') {
     return res.sendStatus(400);
