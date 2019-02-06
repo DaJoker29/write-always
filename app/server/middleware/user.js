@@ -1,5 +1,4 @@
 import Models from '@server/models';
-import { secret } from '@root/config';
 import { verify } from 'jsonwebtoken';
 import Log from '@tools/log';
 
@@ -16,7 +15,7 @@ export async function updateLastLogin(req, res, next) {
     next();
   } else {
     const header = req.headers.authorization.replace(/bearer /gi, '');
-    const decoded = verify(header, secret);
+    const decoded = verify(header, process.env.JWT_SECRET);
 
     if (req.body) {
       req.body = Object.assign(req.body, { id: decoded.id });
