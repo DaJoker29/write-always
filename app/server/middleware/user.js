@@ -24,10 +24,6 @@ export async function updateLastLogin(req, res, next) {
       req.body = Object.assign(req.body, { id: decoded.id });
     }
 
-    if (req.params) {
-      req.params = Object.assign(req.params, { id: decoded.id });
-    }
-
     const user = await User.findOneAndUpdate(
       { _id: decoded.id },
       {
