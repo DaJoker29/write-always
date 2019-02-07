@@ -1,13 +1,18 @@
 <template>
   <aside>
-    <h3>Welcome back, {{ currentUser.displayName }}!</h3>
+    <h4>Welcome back, {{ currentUser.displayName }}!</h4>
+    <TodoList />
   </aside>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import TodoList from './TodoList';
 
 export default {
+  components: {
+    TodoList
+  },
   computed: {
     ...mapGetters(['currentUser'])
   }

@@ -3,10 +3,14 @@ import Vuex from 'vuex';
 import http from '@client/http-common';
 import axios from 'axios';
 import moment from 'moment';
+import todos from './todos';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+  modules: {
+    todos
+  },
   state: {
     config: process.env.SITE_CONFIG,
     token: localStorage.getItem('token') || '',

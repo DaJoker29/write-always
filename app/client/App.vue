@@ -77,6 +77,7 @@ export default {
   --color-blue: #49a5a9;
   --color-red: #ed7a66;
   --color-grey: #757575;
+  --color-green: #98ff7d;
 
   --font-main: open-sans, sans-serif;
   --font-headings: grandma, serif;
@@ -214,6 +215,13 @@ main {
 }
 
 .container > main {
-  flex: 4;
+  flex: 3;
+}
+
+.box-container {
+  box-shadow: inset 0 0 5px black;
+  padding: var(--spacing);
+  border-radius: var(--spacing);
+  margin: var(--spacing-half) 0;
 }
 </style>
