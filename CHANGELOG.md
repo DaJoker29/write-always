@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/DaJoker29/write-always/compare/v0.4.1...v0.5.0) (2019-02-08)
+
+
+### Bug Fixes
+
+* facebook sdk bug ([00e68eb](https://github.com/DaJoker29/write-always/commit/00e68eb))
+
+
+### Features
+
+* add To Do List ([45e31de](https://github.com/DaJoker29/write-always/commit/45e31de)), closes [#34](https://github.com/DaJoker29/write-always/issues/34)
+
+
+
 <a name="0.4.1"></a>
 ## [0.4.1](https://github.com/DaJoker29/write-always/compare/v0.4.0...v0.4.1) (2019-02-06)
 
