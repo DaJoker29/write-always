@@ -2,7 +2,6 @@ import passport from 'passport';
 import Models from '@server/models';
 import VError from 'verror';
 import { Strategy as LocalStrategy } from 'passport-local';
-import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt';
 
 const { User } = Models;
 
@@ -46,23 +45,6 @@ export default function() {
           }
         } catch (e) {
           return cb(e, null, { message: 'There was an error' });
-        }
-      }
-    )
-  );
-
-  passport.use(
-    new JWTStrategy(
-      {
-        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-        secretOrKey: process.env.JWT_SECRET
-      },
-      async function(payload, cb) {
-        try {
-          const user = await User.findOne({ _email: payload.email });
-          return cb(null, user);
-        } catch (e) {
-          return cb(e);
         }
       }
     )

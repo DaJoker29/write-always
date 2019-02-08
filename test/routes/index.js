@@ -425,7 +425,7 @@ db.on('connected', function() {
             .send({ id: user._id })
             .expect(404, done);
         });
-        it('should 400 if no notebook is provided', function(done) {
+        it('should 404 if no notebook is provided', function(done) {
           const user = testUsers[0];
 
           request(Server)
@@ -717,6 +717,22 @@ db.on('connected', function() {
         });
         it('should 400 no method specified', function(done) {
           const params = {
+            email: 'test4@test.org',
+            response: {
+              displayName: 'test4',
+              fbUserAccess: 'test4',
+              fbUserID: 'test4'
+            }
+          };
+
+          request(Server)
+            .post('/auth/login')
+            .send(params)
+            .expect(400, done);
+        });
+        it('should 400 wrong method specified', function(done) {
+          const params = {
+            method: 'bf',
             email: 'test4@test.org',
             response: {
               displayName: 'test4',

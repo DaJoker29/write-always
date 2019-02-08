@@ -38,10 +38,6 @@ async function fetchEntries(req, res, next) {
   const { notebookID } = req.params;
   const { id } = req.body;
 
-  if (typeof notebookID === 'undefined') {
-    return res.sendStatus(400);
-  }
-
   const notebook = await Notebook.findOne({ uid: notebookID }).populate(
     'owner'
   );

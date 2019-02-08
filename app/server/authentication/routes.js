@@ -23,16 +23,10 @@ function loginHandler(req, res) {
       });
     }
 
-    req.login(user, { session: false }, err => {
-      if (err) {
-        errLog(err);
-      }
+    const { _id: id } = user;
 
-      const { _id: id } = user;
+    const token = jwt.sign({ id }, process.env.JWT_SECRET);
 
-      const token = jwt.sign({ id }, process.env.JWT_SECRET);
-
-      return res.json(token);
-    });
+    return res.json(token);
   })(req, res);
 }
