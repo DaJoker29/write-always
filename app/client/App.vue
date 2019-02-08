@@ -32,6 +32,7 @@ export default {
   created() {
     NProgress.start();
     const vm = this;
+
     window.fbAsyncInit = function() {
       FB.init({
         appId: vm.config.app.fbAppID,
@@ -40,7 +41,6 @@ export default {
       });
 
       FB.AppEvents.logPageView();
-
       vm.checkFBStatus();
     };
 
@@ -52,7 +52,7 @@ export default {
       }
       js = d.createElement(s);
       js.id = id;
-      js.src = 'https://connect.facebook.net/en_US/sdk.js';
+      js.src = 'https://connect.facebook.net/en_US/sdk/debug.js';
       fjs.parentNode.insertBefore(js, fjs);
     })(document, 'script', 'facebook-jssdk');
   },
