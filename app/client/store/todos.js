@@ -1,3 +1,5 @@
+import http from '@client/http-common';
+
 const todos = {
   state: {
     todos: JSON.parse(localStorage.getItem('todos')) || []
@@ -6,33 +8,37 @@ const todos = {
     getTodoList: state => state.todos
   },
   mutations: {
-    pushTodo(state, todo) {
-      state.todos.push(todo);
-      localStorage.setItem('todos', JSON.stringify(state.todos));
-    },
-    markCompleted(state, text) {
-      const index = state.todos.findIndex(
-        e => e.text === text && e.completed === false
-      );
-      if (index >= 0) {
-        state.todos[index].completed = true;
-        localStorage.setItem('todos', JSON.stringify(state.todos));
-      }
-    },
-    clearCompleted(state) {
-      state.todos = state.todos.filter(e => e.completed === false);
+    setTodos(state, todos) {
+      state.todos = todos;
       localStorage.setItem('todos', JSON.stringify(state.todos));
     }
   },
   actions: {
-    createTodo({ commit }, text) {
-      commit('pushTodo', { text, completed: false });
+    async fetchTodos({ commit }) {
+      commit('setTodos', (await http.get('/user/todos')).data || []);
     },
-    completeTodo({ commit }, text) {
-      commit('markCompleted', text);
+    async createTodo({ dispatch }, text) {
+      const { status } = await http.post('/user/todos/create', { text });
+
+      if (status === 200) {
+        dispatch('fetchTodos');
+      }
     },
-    clearCompleteTodos({ commit }) {
-      commit('clearCompleted');
+    async completeTodo({ dispatch }, id) {
+      const { status } = await http.post('/user/todos/complete', {
+        todoID: id
+      });
+
+      if (status === 200) {
+        dispatch('fetchTodos');
+      }
+    },
+    async clearTodos({ dispatch }) {
+      const { status } = await http.post('/user/todos/clear');
+
+      if (status === 200) {
+        dispatch('fetchTodos');
+      }
     }
   }
 };

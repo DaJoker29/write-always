@@ -11,8 +11,85 @@ const router = Router();
 router.get('/users', asyncHandler(fetchAllUsers));
 router.post('/user/token', asyncHandler(fetchCurrentUser));
 router.post('/user/fb', asyncHandler(updateFBToken));
+router.post('/user/todos/create', asyncHandler(createTodo));
+router.post('/user/todos/complete', asyncHandler(completeTodo));
+router.post('/user/todos/clear', asyncHandler(clearTodos));
+router.get('/user/todos', asyncHandler(fetchTodos));
 
 export default router;
+
+async function clearTodos(req, res, next) {
+  const { id } = req.body;
+
+  if (typeof id === 'undefined') {
+    return res.sendStatus(400);
+  }
+
+  const user = await User.findOneAndUpdate(
+    { _id: id },
+    { $pull: { todos: { isCompleted: true } } }
+  );
+
+  if (user) {
+    return res.sendStatus(200);
+  }
+  return res.sendStatus(404);
+}
+
+async function completeTodo(req, res, next) {
+  const { id, todoID } = req.body;
+
+  if (typeof id === 'undefined') {
+    return res.sendStatus(400);
+  }
+
+  const user = await User.findOneAndUpdate(
+    { _id: id, 'todos._id': todoID },
+    { $set: { 'todos.$.isCompleted': true } }
+  );
+
+  if (user) {
+    return res.sendStatus(200);
+  }
+  return res.sendStatus(404);
+}
+
+async function createTodo(req, res, next) {
+  const { id, text } = req.body;
+
+  if (typeof id === 'undefined') {
+    return res.sendStatus(400);
+  }
+
+  const todo = {
+    text,
+    isCompleted: false
+  };
+
+  const user = await User.findOneAndUpdate(
+    { _id: id },
+    { $push: { todos: todo } }
+  );
+
+  if (user) {
+    return res.sendStatus(200);
+  }
+  return res.sendStatus(404);
+}
+
+async function fetchTodos(req, res, next) {
+  const { id } = req.body;
+
+  if (typeof id === 'undefined') {
+    return res.sendStatus(400);
+  }
+
+  const user = await User.findOne({ _id: id })
+    .select('todos')
+    .lean();
+
+  return res.json(user.todos);
+}
 
 async function updateFBToken(req, res, next) {
   const { fbUserAccess, fbUserID, id } = req.body;

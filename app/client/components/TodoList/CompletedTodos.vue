@@ -1,11 +1,7 @@
 <template>
   <div v-if="completedTodos.length" class="box-container">
-    <small> <a @click="clearCompleteTodos">Clear Completed</a> </small>
-    <TodoListItem
-      v-for="(todo, index) in completedTodos"
-      :key="index"
-      :todo="todo"
-    />
+    <small> <a @click="clearTodos">Clear Completed</a> </small>
+    <TodoListItem v-for="todo in completedTodos" :key="todo._id" :todo="todo" />
   </div>
 </template>
 
@@ -20,11 +16,11 @@ export default {
   computed: {
     ...mapGetters(['getTodoList']),
     completedTodos() {
-      return this.getTodoList.filter(e => e.completed) || [];
+      return this.getTodoList.filter(e => e.isCompleted) || [];
     }
   },
   methods: {
-    ...mapActions(['clearCompleteTodos'])
+    ...mapActions(['clearTodos'])
   }
 };
 </script>

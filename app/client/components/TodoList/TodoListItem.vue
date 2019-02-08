@@ -1,6 +1,6 @@
 <template>
   <div :class="[todo.completed ? 'completed' : '']">
-    <a v-if="!todo.completed" @click="completeTodo(todo.text)">
+    <a v-if="!todo.completed" @click="completeTodo(todo._id)">
       <i class="fa fa-check"></i>
     </a>
     <span> {{ todo.text }} </span>
@@ -14,12 +14,7 @@ export default {
   props: {
     todo: {
       type: Object,
-      default: () => {
-        return {
-          text: 'Uh oh. Spagettio.',
-          completed: true
-        };
-      }
+      required: true
     }
   },
   methods: {
