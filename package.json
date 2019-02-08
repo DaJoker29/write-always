@@ -20,8 +20,11 @@
     ],
     "reporter": [
       "lcov",
+      "html",
       "text-summary"
-    ]
+    ],
+    "sourceMap": false,
+    "instrument": false
   },
   "bin": {
     "cli": "tools/cli.js"
@@ -76,6 +79,7 @@
     "@commitlint/config-conventional": "7.1.2",
     "axios": "0.18.0",
     "babel-eslint": "10.0.1",
+    "babel-plugin-istanbul": "5.1.0",
     "callsite": "1.0.0",
     "chai": "4.2.0",
     "connect-history-api-fallback": "1.6.0",

@@ -18,46 +18,40 @@ router.get('/user/todos', asyncHandler(fetchTodos));
 
 export default router;
 
-async function clearTodos(req, res, next) {
+export async function clearTodos(req, res, next) {
   const { id } = req.body;
 
   if (typeof id === 'undefined') {
     return res.sendStatus(400);
   }
 
-  const user = await User.findOneAndUpdate(
+  await User.findOneAndUpdate(
     { _id: id },
     { $pull: { todos: { isCompleted: true } } }
   );
 
-  if (user) {
-    return res.sendStatus(200);
-  }
-  return res.sendStatus(404);
+  return res.sendStatus(200);
 }
 
-async function completeTodo(req, res, next) {
+export async function completeTodo(req, res, next) {
   const { id, todoID } = req.body;
 
-  if (typeof id === 'undefined') {
+  if (typeof id === 'undefined' || typeof todoID === 'undefined') {
     return res.sendStatus(400);
   }
 
-  const user = await User.findOneAndUpdate(
+  await User.findOneAndUpdate(
     { _id: id, 'todos._id': todoID },
     { $set: { 'todos.$.isCompleted': true } }
   );
 
-  if (user) {
-    return res.sendStatus(200);
-  }
-  return res.sendStatus(404);
+  return res.sendStatus(200);
 }
 
-async function createTodo(req, res, next) {
+export async function createTodo(req, res, next) {
   const { id, text } = req.body;
 
-  if (typeof id === 'undefined') {
+  if (typeof id === 'undefined' || typeof text === 'undefined') {
     return res.sendStatus(400);
   }
 
@@ -66,18 +60,12 @@ async function createTodo(req, res, next) {
     isCompleted: false
   };
 
-  const user = await User.findOneAndUpdate(
-    { _id: id },
-    { $push: { todos: todo } }
-  );
+  await User.findOneAndUpdate({ _id: id }, { $push: { todos: todo } });
 
-  if (user) {
-    return res.sendStatus(200);
-  }
-  return res.sendStatus(404);
+  return res.sendStatus(200);
 }
 
-async function fetchTodos(req, res, next) {
+export async function fetchTodos(req, res, next) {
   const { id } = req.body;
 
   if (typeof id === 'undefined') {
@@ -91,7 +79,7 @@ async function fetchTodos(req, res, next) {
   return res.json(user.todos);
 }
 
-async function updateFBToken(req, res, next) {
+export async function updateFBToken(req, res, next) {
   const { fbUserAccess, fbUserID, id } = req.body;
 
   if (typeof id === 'undefined') {
@@ -103,7 +91,7 @@ async function updateFBToken(req, res, next) {
   return res.sendStatus(200);
 }
 
-async function fetchCurrentUser(req, res, next) {
+export async function fetchCurrentUser(req, res, next) {
   const { id } = req.body;
 
   if (typeof id === 'undefined') {
@@ -118,7 +106,7 @@ async function fetchCurrentUser(req, res, next) {
   return res.json(user);
 }
 
-async function fetchAllUsers(req, res, next) {
+export async function fetchAllUsers(req, res, next) {
   const users = await User.find().lean({ virtuals: true });
   return res.json(users);
 }
