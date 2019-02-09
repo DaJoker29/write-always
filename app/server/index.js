@@ -23,30 +23,33 @@ const historyLog = Log('history');
 const errLog = Log('error');
 
 export default function() {
-  const isDev = config.env.mode === 'development';
   const app = express();
+  const isDev = config.env.mode === 'development';
+
+  const historyConfig = {
+    logger: historyLog,
+    rewrites: [{ from: /\/*\/bundle.js/, to: '/bundle.js' }]
+  };
+
+  const staticMiddleware = express.static(path.join(__dirname, '../dist'));
+  const wellKnownPath = express.static(path.join(__dirname, '.well-known'), {
+    dotfiles: 'allow'
+  });
 
   // configure express
-  app.use(express.static(path.join(__dirname, '../dist')));
-  app.use(
-    '/.well-known',
-    express.static(path.join(__dirname, '.well-known'), { dotfiles: 'allow' })
-  );
+  app.use(staticMiddleware);
+  app.use('/.well-known', wellKnownPath);
   app.use(morganDebug(`${config.pkg.name}-morgan`, isDev ? 'dev' : 'combined'));
   app.use(bodyParser.urlencoded({ extended: 'true' }));
   app.use(bodyParser.json());
   app.use(methodOverride());
   app.use(helmet());
+  app.use(history(historyConfig));
+  app.use(staticMiddleware);
   app.use(passport.initialize());
   initAuth();
 
   if (isDev) {
-    app.use(
-      history({
-        logger: historyLog,
-        rewrites: [{ from: /\/*\/bundle.js/, to: '/bundle.js' }]
-      })
-    );
     wpLog('Configuring Webpack Dev Middleware');
     const compiler = webpack(config.webpack);
 
@@ -60,15 +63,6 @@ export default function() {
       webpackHotMiddleware(compiler, {
         reload: true, // test this line because I'm not sure it does anything.
         log: wpLog
-      })
-    );
-  } else {
-    app.use(
-      history({
-        logger: historyLog,
-        disableDotRule: true,
-        index: path.resolve(__dirname, '../dist/index.html'),
-        rewrites: [{ from: /\/*\/bundle.js/, to: '/bundle.js' }]
       })
     );
   }
