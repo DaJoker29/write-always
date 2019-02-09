@@ -22,57 +22,63 @@ const wpLog = Log('webpack');
 const historyLog = Log('history');
 const errLog = Log('error');
 
-const isDev = config.env.mode === 'development';
-const app = express();
+export default function() {
+  const isDev = config.env.mode === 'development';
+  const app = express();
 
-export default app;
-
-// configure express
-app.use(express.static(path.join(__dirname, 'dist')));
-app.use(
-  '/.well-known',
-  express.static(path.join(__dirname, '.well-known'), { dotfiles: 'allow' })
-);
-app.use(morganDebug(`${config.pkg.name}-morgan`, isDev ? 'dev' : 'combined'));
-app.use(bodyParser.urlencoded({ extended: 'true' }));
-app.use(bodyParser.json());
-app.use(methodOverride());
-app.use(helmet());
-app.use(
-  history({
-    logger: historyLog,
-    rewrites: [{ from: /\/*\/bundle.js/, to: '/bundle.js' }]
-  })
-);
-app.use(passport.initialize());
-initAuth();
-
-if (isDev) {
-  wpLog('Configuring Webpack Dev Middleware');
-  const compiler = webpack(config.webpack);
-
+  // configure express
+  app.use(express.static(path.join(__dirname, '../dist')));
   app.use(
-    webpackDevMiddleware(compiler, {
-      logLevel: 'warn',
-      publicPath: config.webpack.output.publicPath
-    })
+    '/.well-known',
+    express.static(path.join(__dirname, '.well-known'), { dotfiles: 'allow' })
   );
-  app.use(
-    webpackHotMiddleware(compiler, {
-      reload: true, // test this line because I'm not sure it does anything.
-      log: wpLog
-    })
-  );
-} else {
-  // serve compiled assets in production mode
-  app.get('/', function(req, res) {
-    return res.sendFile(__dirname + '/dist/index.html');
-  });
+  app.use(morganDebug(`${config.pkg.name}-morgan`, isDev ? 'dev' : 'combined'));
+  app.use(bodyParser.urlencoded({ extended: 'true' }));
+  app.use(bodyParser.json());
+  app.use(methodOverride());
+  app.use(helmet());
+  app.use(passport.initialize());
+  initAuth();
+
+  if (isDev) {
+    app.use(
+      history({
+        logger: historyLog,
+        rewrites: [{ from: /\/*\/bundle.js/, to: '/bundle.js' }]
+      })
+    );
+    wpLog('Configuring Webpack Dev Middleware');
+    const compiler = webpack(config.webpack);
+
+    app.use(
+      webpackDevMiddleware(compiler, {
+        logLevel: 'warn',
+        publicPath: config.webpack.output.publicPath
+      })
+    );
+    app.use(
+      webpackHotMiddleware(compiler, {
+        reload: true, // test this line because I'm not sure it does anything.
+        log: wpLog
+      })
+    );
+  } else {
+    app.use(
+      history({
+        logger: historyLog,
+        disableDotRule: true,
+        index: path.resolve(__dirname, '../dist/index.html'),
+        rewrites: [{ from: /\/*\/bundle.js/, to: '/bundle.js' }]
+      })
+    );
+  }
+
+  app.use('/auth', AuthRoutes);
+  app.use('/api', asyncHandler(updateLastLogin), Routes());
+  app.use(serverError);
+
+  return app;
 }
-
-app.use('/auth', AuthRoutes);
-app.use('/api', asyncHandler(updateLastLogin), Routes());
-app.use(serverError);
 
 function serverError(err, req, res, next) {
   const error = new VError(err, 'Unhandled Server Error');

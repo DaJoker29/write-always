@@ -1,11 +1,12 @@
 import { createServer } from 'https';
 import { readFileSync } from 'fs';
 import VError from 'verror';
+import Server from '@server';
 
 import config from '@config';
 import db from '@server/db_connect';
-import Server from '@server';
 import Log from '@tools/log';
+import webpack from 'webpack';
 
 const log = Log();
 const error = Log('error');
@@ -15,21 +16,51 @@ const credentials = {
   cert: readFileSync('./cert.pem')
 };
 
-const server = createServer(credentials, Server);
+db.on('connected', function() {
+  log(`${config.env.mode.toUpperCase()} BUILD`);
+  if (config.env.mode === 'development') {
+    const server = createServer(credentials, Server());
+    launchServer(server);
+  } else {
+    const compiler = webpack(config.webpack);
 
-server.on('error', onError);
-server.on('listening', onListen);
-db.on('connected', launchServer);
+    // Launch server after bundling
+    compiler.run(async (err, stats) => {
+      if (err) {
+        error(err);
+        if (err.details) {
+          error(err.details);
+        }
+        return;
+      }
+
+      const info = stats.toJson();
+
+      if (stats.hasErrors()) {
+        error(info.errors);
+      }
+
+      if (stats.hasWarnings()) {
+        log(info.warnings);
+      }
+
+      const server = createServer(credentials, Server());
+      launchServer(server);
+    });
+  }
+});
+
+function launchServer(server) {
+  log(`Launching server in ${config.env.mode} mode`);
+  server.listen(config.env.port);
+  server.on('error', onError);
+  server.on('listening', onListen);
+}
 
 process.on('SIGINT', gracefulExit);
 process.on('SIGTERM', gracefulExit);
 process.on('SIGUSR2', gracefulExit);
 process.on('uncaughtException', uncaughtException);
-
-function launchServer() {
-  log(`Launching server in ${config.env.mode} mode`);
-  server.listen(config.env.port);
-}
 
 function uncaughtException(err) {
   error(`Error: ${err.message}`);

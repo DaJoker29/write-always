@@ -1,6 +1,7 @@
 module.exports = function(api) {
   api.cache(true);
   const presets = [['@babel/preset-env', { useBuiltIns: 'entry' }]];
+  const plugins = ['@babel/plugin-syntax-dynamic-import'];
 
   return {
     env: {
@@ -8,6 +9,7 @@ module.exports = function(api) {
         plugins: ['istanbul']
       }
     },
+    plugins,
     presets
   };
 };

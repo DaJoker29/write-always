@@ -7,10 +7,13 @@
     "test": "NODE_ENV=test mocha --timeout 15000",
     "coverage": "nyc --check-coverage npm test",
     "start": "nodemon index.js --config nodemon.json",
-    "build": "NODE_ENV=production; webpack --progress",
+    "build": "DEBUG=write-always* NODE_ENV=production node index.js",
     "lint": "eslint --ext .js,.json,.vue .",
     "fix": "eslint --ext .js,.json,.vue . --fix",
     "release": "standard-version"
+  },
+  "engines": {
+    "node": "10.14.2"
   },
   "nyc": {
     "include": [
@@ -72,6 +75,7 @@
   "homepage": "https://github.com/DaJoker29/write-always#readme",
   "dependencies": {
     "@babel/core": "7.2.2",
+    "@babel/plugin-syntax-dynamic-import": "7.2.0",
     "@babel/polyfill": "7.2.5",
     "@babel/preset-env": "7.2.3",
     "@babel/register": "7.0.0",

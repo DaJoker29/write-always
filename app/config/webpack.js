@@ -18,7 +18,7 @@ export default function(config) {
     entry: './app/client/index.js',
     output: {
       filename: 'bundle.js',
-      path: path.resolve(__dirname, 'public')
+      path: path.resolve(__dirname, '../dist')
     },
     resolve: {
       extensions: ['.js', '.vue', '.json'],
