@@ -33,6 +33,7 @@ db.on('connected', function() {
         }
         return;
       }
+      log('Asset bundle compiled successfully');
 
       const info = stats.toJson();
 
