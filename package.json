@@ -1,6 +1,6 @@
 {
   "name": "write-always",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "A community built around creative writing and sharing stories.",
   "main": "index.js",
   "scripts": {
@@ -42,7 +42,7 @@
   },
   "standard-version": {
     "scripts": {
-      "posttag": "git push --follow-tags -u origin new-release"
+      "posttag": "git push --follow-tags -u origin"
     }
   },
   "husky": {
