@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.0"></a>
+# [0.6.0](https://github.com/DaJoker29/write-always/compare/v0.5.1...v0.6.0) (2019-02-10)
+
+
+### Bug Fixes
+
+* production build history api ([3332d5c](https://github.com/DaJoker29/write-always/commit/3332d5c)), closes [#5](https://github.com/DaJoker29/write-always/issues/5)
+
+
+### Features
+
+* build production task ([5004f49](https://github.com/DaJoker29/write-always/commit/5004f49)), closes [#5](https://github.com/DaJoker29/write-always/issues/5)
+
+
+### Performance Improvements
+
+* **cli:** add performance webpack configuration ([2e3f811](https://github.com/DaJoker29/write-always/commit/2e3f811))
+* lazy load vue-router components ([146fde4](https://github.com/DaJoker29/write-always/commit/146fde4))
+
+
+
 <a name="0.5.1"></a>
 ## [0.5.1](https://github.com/DaJoker29/write-always/compare/v0.5.0...v0.5.1) (2019-02-08)
 
