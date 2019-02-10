@@ -12,14 +12,13 @@ import webpack from 'webpack';
 const log = Log();
 const error = Log('error');
 
-const credentials = {
-  key: readFileSync('./key.pem'),
-  cert: readFileSync('./cert.pem')
-};
-
 db.on('connected', function() {
   log(`${config.env.mode.toUpperCase()} BUILD`);
   if (config.env.mode === 'development') {
+    const credentials = {
+      key: readFileSync('./key.pem'),
+      cert: readFileSync('./cert.pem')
+    };
     const server = https.createServer(credentials, Server());
     launchServer(server);
   } else {
