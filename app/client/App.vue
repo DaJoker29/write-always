@@ -11,14 +11,14 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import TheSiteHeader from '@client/components/TheSiteHeader';
-import TheSidebar from '@client/components/TheSidebar';
+// import TheSiteHeader from '@client/components/TheSiteHeader';
+// import TheSidebar from '@client/components/TheSidebar';
 import NProgress from 'nprogress';
 
 export default {
   components: {
-    TheSiteHeader,
-    TheSidebar
+    TheSiteHeader: () => import('@client/components/TheSiteHeader'),
+    TheSidebar: () => import('@client/components/TheSidebar')
   },
   computed: {
     ...mapGetters([

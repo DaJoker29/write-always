@@ -22,57 +22,64 @@ const wpLog = Log('webpack');
 const historyLog = Log('history');
 const errLog = Log('error');
 
-const isDev = config.env.mode === 'development';
-const app = express();
+export default function() {
+  const app = express();
+  const isDev = config.env.mode === 'development';
+  const fromRegex = /\/*\/[a-zA-Z0-9_~.]*\.(js|css|js\.map)/;
+  const toRegex = /[a-zA-Z0-9_-~.]+\.(js|css|js\.map)$/;
 
-export default app;
-
-// configure express
-app.use(express.static(path.join(__dirname, 'dist')));
-app.use(
-  '/.well-known',
-  express.static(path.join(__dirname, '.well-known'), { dotfiles: 'allow' })
-);
-app.use(morganDebug(`${config.pkg.name}-morgan`, isDev ? 'dev' : 'combined'));
-app.use(bodyParser.urlencoded({ extended: 'true' }));
-app.use(bodyParser.json());
-app.use(methodOverride());
-app.use(helmet());
-app.use(
-  history({
+  const historyConfig = {
     logger: historyLog,
-    rewrites: [{ from: /\/*\/bundle.js/, to: '/bundle.js' }]
-  })
-);
-app.use(passport.initialize());
-initAuth();
+    rewrites: [
+      {
+        from: fromRegex,
+        to: context => '/' + context.parsedUrl.pathname.match(toRegex)[0]
+      }
+    ]
+  };
 
-if (isDev) {
-  wpLog('Configuring Webpack Dev Middleware');
-  const compiler = webpack(config.webpack);
-
-  app.use(
-    webpackDevMiddleware(compiler, {
-      logLevel: 'warn',
-      publicPath: config.webpack.output.publicPath
-    })
-  );
-  app.use(
-    webpackHotMiddleware(compiler, {
-      reload: true, // test this line because I'm not sure it does anything.
-      log: wpLog
-    })
-  );
-} else {
-  // serve compiled assets in production mode
-  app.get('/', function(req, res) {
-    return res.sendFile(__dirname + '/dist/index.html');
+  const staticMiddleware = express.static(path.join(__dirname, '../dist'));
+  const wellKnownPath = express.static(path.join(__dirname, '.well-known'), {
+    dotfiles: 'allow'
   });
-}
 
-app.use('/auth', AuthRoutes);
-app.use('/api', asyncHandler(updateLastLogin), Routes());
-app.use(serverError);
+  // configure express
+  app.use(staticMiddleware);
+  app.use('/.well-known', wellKnownPath);
+  app.use(morganDebug(`${config.pkg.name}-morgan`, isDev ? 'dev' : 'combined'));
+  app.use(bodyParser.urlencoded({ extended: 'true' }));
+  app.use(bodyParser.json());
+  app.use(methodOverride());
+  app.use(helmet());
+  app.use(history(historyConfig));
+  app.use(staticMiddleware);
+  app.use(passport.initialize());
+  initAuth();
+
+  if (isDev) {
+    wpLog('Configuring Webpack Dev Middleware');
+    const compiler = webpack(config.webpack);
+
+    app.use(
+      webpackDevMiddleware(compiler, {
+        logLevel: 'warn',
+        publicPath: config.webpack.output.publicPath
+      })
+    );
+    app.use(
+      webpackHotMiddleware(compiler, {
+        reload: true, // test this line because I'm not sure it does anything.
+        log: wpLog
+      })
+    );
+  }
+
+  app.use('/auth', AuthRoutes);
+  app.use('/api', asyncHandler(updateLastLogin), Routes());
+  app.use(serverError);
+
+  return app;
+}
 
 function serverError(err, req, res, next) {
   const error = new VError(err, 'Unhandled Server Error');

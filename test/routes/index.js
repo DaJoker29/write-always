@@ -111,7 +111,7 @@ db.on('connected', function() {
       describe('GET /user/todos', function() {
         it('should return an array of todos for authenticated users', function(done) {
           const user = testUsers[0];
-          request(Server)
+          request(Server())
             .get('/api/user/todos')
             .send({ id: user._id })
             .set('Accept', 'application/json')
@@ -130,7 +130,7 @@ db.on('connected', function() {
             });
         });
         it('should 400 for unauthenticated users', function(done) {
-          request(Server)
+          request(Server())
             .get('/api/user/todos')
             .expect(400, done);
         });
@@ -140,7 +140,7 @@ db.on('connected', function() {
         it('should 200 if successful', function(done) {
           const user = testUsers[0];
 
-          request(Server)
+          request(Server())
             .post('/api/user/todos/create')
             .send({ id: user._id, text: 'Hey, new todo' })
             .expect(200, done);
@@ -148,13 +148,13 @@ db.on('connected', function() {
         it('should 400 if no text is provided', function(done) {
           const user = testUsers[0];
 
-          request(Server)
+          request(Server())
             .post('/api/user/todos/create')
             .send({ id: user._id })
             .expect(400, done);
         });
         it('should 400 if user is not authenticated', function(done) {
-          request(Server)
+          request(Server())
             .post('/api/user/todos/create')
             .send({ text: 'Hey, new todo' })
             .expect(400, done);
@@ -165,7 +165,7 @@ db.on('connected', function() {
         it('should 200 if successful', function(done) {
           const user = testUsers[0];
 
-          request(Server)
+          request(Server())
             .post('/api/user/todos/complete')
             .send({ id: user._id, todoID: user.todos[0]._id })
             .expect(200, done);
@@ -173,14 +173,14 @@ db.on('connected', function() {
         it('should 400 if no text ID is provided', function(done) {
           const user = testUsers[0];
 
-          request(Server)
+          request(Server())
             .post('/api/user/todos/complete')
             .send({ id: user._id })
             .expect(400, done);
         });
         it('should 400 if user is not authenticated', function(done) {
           const user = testUsers[0];
-          request(Server)
+          request(Server())
             .post('/api/user/todos/complete')
             .send({ todoID: user.todos[0]._id })
             .expect(400, done);
@@ -191,14 +191,14 @@ db.on('connected', function() {
         it('should 200 if successful', function(done) {
           const user = testUsers[0];
 
-          request(Server)
+          request(Server())
             .post('/api/user/todos/clear')
             .send({ id: user._id })
             .expect(200, done);
         });
 
         it('should 400 if user is not authenticated', function(done) {
-          request(Server)
+          request(Server())
             .post('/api/user/todos/clear')
             .expect(400, done);
         });
@@ -206,7 +206,7 @@ db.on('connected', function() {
 
       describe('GET /users', function() {
         it('should return a list of users', function(done) {
-          request(Server)
+          request(Server())
             .get('/api/users')
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
@@ -245,7 +245,7 @@ db.on('connected', function() {
             accessToken: '123456'
           };
 
-          request(Server)
+          request(Server())
             .post('/api/user/fb')
             .send(params)
             .expect(200, done);
@@ -258,13 +258,13 @@ db.on('connected', function() {
             accessToken: '123456'
           };
 
-          request(Server)
+          request(Server())
             .post('/api/user/fb')
             .send(params)
             .expect(400, done);
         });
         it('should return 400 when no arguments are provided', function(done) {
-          request(Server)
+          request(Server())
             .post('/api/user/fb')
             .expect(400, done);
         });
@@ -275,7 +275,7 @@ db.on('connected', function() {
             accessToken: '123456'
           };
 
-          request(Server)
+          request(Server())
             .post('/api/user/fb')
             .send(params)
             .expect(500, done);
@@ -285,7 +285,7 @@ db.on('connected', function() {
       describe('POST /user/token', function() {
         it('should return a specified user based on the ID provided', function(done) {
           const user = testUsers[1];
-          request(Server)
+          request(Server())
             .post('/api/user/token')
             .send({ id: user.id })
             .set('Accept', 'application/json')
@@ -315,14 +315,14 @@ db.on('connected', function() {
         });
 
         it('should 500 if invalid ID is provided', function(done) {
-          request(Server)
+          request(Server())
             .post('/api/user/token')
             .send({ id: '12345678' })
             .expect(500, done);
         });
 
         it('should 400 if no ID is found', function(done) {
-          request(Server)
+          request(Server())
             .post('/api/user/token')
             .expect(400, done);
         });
@@ -349,7 +349,7 @@ db.on('connected', function() {
             ]
           };
 
-          request(Server)
+          request(Server())
             .post('/api/entries/recent')
             .send(params)
             .set('Accept', 'application/json')
@@ -372,7 +372,7 @@ db.on('connected', function() {
           const user = testUsers[0];
           const notebook = testNotebooks[0];
 
-          request(Server)
+          request(Server())
             .get(`/api/entries/${notebook.uid}`)
             .send({ id: user._id })
             .set('Accept', 'application/json')
@@ -392,7 +392,7 @@ db.on('connected', function() {
           const user = testUsers[0];
           const notebook = testNotebooks[1];
 
-          request(Server)
+          request(Server())
             .get(`/api/entries/${notebook.uid}`)
             .send({ id: user._id })
             .set('Accept', 'application/json')
@@ -412,7 +412,7 @@ db.on('connected', function() {
           const user = testUsers[0];
           const notebook = testNotebooks[4];
 
-          request(Server)
+          request(Server())
             .get(`/api/entries/${notebook.uid}`)
             .send({ id: user._id })
             .expect(404, done);
@@ -420,7 +420,7 @@ db.on('connected', function() {
         it('should 404 if notebook does not exist', function(done) {
           const user = testUsers[0];
 
-          request(Server)
+          request(Server())
             .get('/api/entries/foo')
             .send({ id: user._id })
             .expect(404, done);
@@ -428,7 +428,7 @@ db.on('connected', function() {
         it('should 404 if no notebook is provided', function(done) {
           const user = testUsers[0];
 
-          request(Server)
+          request(Server())
             .get('/api/entries/')
             .send({ id: user._id })
             .expect(404, done);
@@ -445,7 +445,7 @@ db.on('connected', function() {
             body: 'Some unique content'
           };
 
-          request(Server)
+          request(Server())
             .post('/api/entry/create')
             .send(params)
             .set('Accept', 'application/json')
@@ -472,7 +472,7 @@ db.on('connected', function() {
             body: 'Some unique content'
           };
 
-          request(Server)
+          request(Server())
             .post('/api/entry/create')
             .send(params)
             .expect(404, done);
@@ -485,7 +485,7 @@ db.on('connected', function() {
             notebook: notebook.uid
           };
 
-          request(Server)
+          request(Server())
             .post('/api/entry/create')
             .send(params)
             .expect(400, done);
@@ -506,7 +506,7 @@ db.on('connected', function() {
             title: 'Some unique title'
           };
 
-          request(Server)
+          request(Server())
             .post('/api/notebook/create')
             .send(params)
             .set('Accept', 'application/json')
@@ -530,7 +530,7 @@ db.on('connected', function() {
             id: user._id
           };
 
-          request(Server)
+          request(Server())
             .post('/api/notebook/create')
             .send(params)
             .expect(400, done);
@@ -540,13 +540,13 @@ db.on('connected', function() {
             title: 'Some unique title'
           };
 
-          request(Server)
+          request(Server())
             .post('/api/notebook/create')
             .send(params)
             .expect(400, done);
         });
         it('should 400 if no params are provided', function(done) {
-          request(Server)
+          request(Server())
             .post('/api/notebook/create')
             .expect(400, done);
         });
@@ -556,7 +556,7 @@ db.on('connected', function() {
           const user = testUsers[0];
           const notebook = testNotebooks[0];
 
-          request(Server)
+          request(Server())
             .get(`/api/notebook/${notebook.uid}`)
             .send({ id: user._id })
             .set('Accept', 'application/json')
@@ -574,7 +574,7 @@ db.on('connected', function() {
           const user = testUsers[2];
           const notebook = testNotebooks[1];
 
-          request(Server)
+          request(Server())
             .get(`/api/notebook/${notebook.uid}`)
             .send({ id: user._id })
             .expect(404, done);
@@ -583,7 +583,7 @@ db.on('connected', function() {
           const user = testUsers[0];
           const notebook = testNotebooks[1];
 
-          request(Server)
+          request(Server())
             .get(`/api/notebook/${notebook.uid}`)
             .send({ id: user._id })
             .set('Accept', 'application/json')
@@ -601,7 +601,7 @@ db.on('connected', function() {
       describe('GET /notebooks', function() {
         it('should return an array of notebooks (with id)', function(done) {
           const user = testUsers[0];
-          request(Server)
+          request(Server())
             .get('/api/notebooks')
             .send({ id: user._id })
             .set('Accept', 'application/json')
@@ -616,7 +616,7 @@ db.on('connected', function() {
             });
         });
         it('should return an array of notebooks (without id)', function(done) {
-          request(Server)
+          request(Server())
             .get('/api/notebooks')
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
@@ -642,7 +642,7 @@ db.on('connected', function() {
           const user = testUsers[0];
           const token = jwt.sign({ id: user.id }, 'somesecret');
 
-          request(Server)
+          request(Server())
             .post('/api/user/token')
             .set('Authorization', `bearer ${token}`)
             .set('Accept', 'application/json')
@@ -678,7 +678,7 @@ db.on('connected', function() {
             }
           };
 
-          request(Server)
+          request(Server())
             .post('/auth/login')
             .send(params)
             .set('Accept', 'application/json')
@@ -702,7 +702,7 @@ db.on('connected', function() {
             }
           };
 
-          request(Server)
+          request(Server())
             .post('/auth/login')
             .send(params)
             .set('Accept', 'application/json')
@@ -725,7 +725,7 @@ db.on('connected', function() {
             }
           };
 
-          request(Server)
+          request(Server())
             .post('/auth/login')
             .send(params)
             .expect(400, done);
@@ -741,13 +741,13 @@ db.on('connected', function() {
             }
           };
 
-          request(Server)
+          request(Server())
             .post('/auth/login')
             .send(params)
             .expect(400, done);
         });
         it('should 400 if no params specified', function(done) {
-          request(Server)
+          request(Server())
             .post('/auth/login')
             .expect(400, done);
         });

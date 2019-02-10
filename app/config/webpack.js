@@ -7,7 +7,11 @@ import {
 } from 'webpack';
 import merge from 'webpack-merge';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import CleanWebpackPlugin from 'clean-webpack-plugin';
 import { VueLoaderPlugin } from 'vue-loader';
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 
 /**
  * Common Configuration
@@ -17,8 +21,9 @@ export default function(config) {
   const common = merge({
     entry: './app/client/index.js',
     output: {
-      filename: 'bundle.js',
-      path: path.resolve(__dirname, 'public')
+      path: path.resolve(__dirname, '../dist'),
+      filename: '[name].js',
+      chunkFilename: '[name].[id].js'
     },
     resolve: {
       extensions: ['.js', '.vue', '.json'],
@@ -28,15 +33,36 @@ export default function(config) {
       rules: [
         {
           test: /\.vue$/,
+          exclude: /node_modules/,
           loader: 'vue-loader'
         },
         {
           test: /\.css$/,
-          use: ['vue-style-loader', 'css-loader']
+          exclude: /node_modules/,
+          use: [
+            process.env.NODE_ENV !== 'production'
+              ? 'vue-style-loader'
+              : MiniCssExtractPlugin.loader,
+            'css-loader'
+          ]
+        },
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          loader: 'babel-loader'
+        },
+        {
+          test: /\.bundle\.js$/,
+          exclude: /node_modules/,
+          loader: 'bundle-loader'
         }
       ]
     },
     plugins: [
+      new CleanWebpackPlugin(['dist'], {
+        root: path.resolve(__dirname, '..'),
+        verbose: false
+      }),
       new HtmlWebpackPlugin({
         title: `${config.app.name} - ${config.app.tagline}`,
         meta: {
@@ -60,7 +86,23 @@ export default function(config) {
 
   const production = merge({
     mode: 'production',
-    devtool: 'sourcemap'
+    devtool: 'source-map',
+    optimization: {
+      splitChunks: {
+        chunks: 'all'
+      }
+    },
+    plugins: [
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        sourceMap: true
+      }),
+      new MiniCssExtractPlugin({
+        filename: '[name].css'
+      }),
+      new OptimizeCSSAssetsPlugin({})
+    ]
   });
 
   /**
