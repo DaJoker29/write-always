@@ -11,8 +11,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-// import TheSiteHeader from '@client/components/TheSiteHeader';
-// import TheSidebar from '@client/components/TheSidebar';
 import NProgress from 'nprogress';
 
 export default {

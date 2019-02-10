@@ -13,14 +13,12 @@
 </template>
 
 <script>
-import AuthorsListArticle from '@client/components/AuthorsListArticle';
-import SortAuthors from '@client/components/SortAuthors';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
   components: {
-    AuthorsListArticle,
-    SortAuthors
+    AuthorsListArticle: () => import('@client/components/AuthorsListArticle'),
+    SortAuthors: () => import('@client/components/SortAuthors')
   },
   computed: {
     ...mapGetters(['allUsers'])

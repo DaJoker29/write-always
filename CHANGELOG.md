@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.2"></a>
+## [0.6.2](https://github.com/DaJoker29/write-always/compare/v0.6.0...v0.6.2) (2019-02-10)
+
+
+### Bug Fixes
+
+* add mongoDB to production config ([f2fdc40](https://github.com/DaJoker29/write-always/commit/f2fdc40))
+* adjust build memory usage ([b7247fb](https://github.com/DaJoker29/write-always/commit/b7247fb))
+* correct deployment bug ([f32c64a](https://github.com/DaJoker29/write-always/commit/f32c64a))
+* forgot something ([93b551b](https://github.com/DaJoker29/write-always/commit/93b551b))
+
+
+### Performance Improvements
+
+* **client:** switch views to lazy loading components ([95e2c49](https://github.com/DaJoker29/write-always/commit/95e2c49)), closes [#48](https://github.com/DaJoker29/write-always/issues/48)
+
+
+
+<a name="0.6.1"></a>
+## [0.6.1](https://github.com/DaJoker29/write-always/compare/v0.6.0...v0.6.1) (2019-02-10)
+
+
+### Bug Fixes
+
+* add mongoDB to production config ([f2fdc40](https://github.com/DaJoker29/write-always/commit/f2fdc40))
+* adjust build memory usage ([b7247fb](https://github.com/DaJoker29/write-always/commit/b7247fb))
+* correct deployment bug ([f32c64a](https://github.com/DaJoker29/write-always/commit/f32c64a))
+* forgot something ([93b551b](https://github.com/DaJoker29/write-always/commit/93b551b))
+
+
+### Performance Improvements
+
+* **client:** switch views to lazy loading components ([95e2c49](https://github.com/DaJoker29/write-always/commit/95e2c49)), closes [#48](https://github.com/DaJoker29/write-always/issues/48)
+
+
+
 <a name="0.6.0"></a>
 # [0.6.0](https://github.com/DaJoker29/write-always/compare/v0.5.1...v0.6.0) (2019-02-10)
 

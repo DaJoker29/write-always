@@ -3,12 +3,11 @@
 </template>
 
 <script>
-import NotebookList from '@client/components/NotebookList';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
   components: {
-    NotebookList
+    NotebookList: () => import('@client/components/NotebookList')
   },
   computed: {
     ...mapGetters(['allNotebooks'])

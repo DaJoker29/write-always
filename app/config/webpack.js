@@ -19,11 +19,20 @@ import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 
 export default function(config) {
   const common = merge({
-    entry: './app/client/index.js',
+    entry: {
+      main: '@client/index.js',
+      CreateEntry: '@client/views/CreateEntry',
+      CreateNotebook: '@client/views/CreateNotebook',
+      SingleNotebook: '@client/views/SingleNotebook',
+      Home: '@client/views/Home',
+      Login: '@client/views/Login',
+      PageNotFound: '@client/views/PageNotFound',
+      Authors: '@client/views/Authors',
+      SingleAuthor: '@client/views/SingleAuthor'
+    },
     output: {
       path: path.resolve(__dirname, '../dist'),
-      filename: '[name].js',
-      chunkFilename: '[name].[id].js'
+      filename: '[name].[hash].js'
     },
     resolve: {
       extensions: ['.js', '.vue', '.json'],
