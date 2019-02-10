@@ -6,14 +6,13 @@
 </template>
 
 <script>
-import SingleNotebookHeader from '@client/components/SingleNotebookHeader';
-import EntryList from '@client/components/EntryList';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
   components: {
-    SingleNotebookHeader,
-    EntryList
+    SingleNotebookHeader: () =>
+      import('@client/components/SingleNotebookHeader'),
+    EntryList: () => import('@client/components/EntryList')
   },
   computed: {
     ...mapGetters(['allNotebooks', 'allEntries']),

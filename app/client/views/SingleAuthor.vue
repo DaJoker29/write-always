@@ -6,14 +6,12 @@
 </template>
 
 <script>
-import SingleAuthorHeader from '@client/components/SingleAuthorHeader';
-import NotebookList from '@client/components/NotebookList';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
   components: {
-    SingleAuthorHeader,
-    NotebookList
+    SingleAuthorHeader: () => import('@client/components/SingleAuthorHeader'),
+    NotebookList: () => import('@client/components/NotebookList')
   },
   computed: {
     ...mapGetters(['allNotebooks', 'allUsers']),
