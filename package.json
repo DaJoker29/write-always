@@ -42,7 +42,7 @@
   },
   "standard-version": {
     "scripts": {
-      "posttag": "git push --follow-tags -u origin"
+      "posttag": "git push -u --follow-tags origin HEAD"
     }
   },
   "husky": {
