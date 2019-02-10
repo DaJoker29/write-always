@@ -1,4 +1,5 @@
-import { createServer } from 'https';
+import https from 'https';
+import http from 'http';
 import { readFileSync } from 'fs';
 import VError from 'verror';
 import Server from '@server';
@@ -19,7 +20,7 @@ const credentials = {
 db.on('connected', function() {
   log(`${config.env.mode.toUpperCase()} BUILD`);
   if (config.env.mode === 'development') {
-    const server = createServer(credentials, Server());
+    const server = https.createServer(credentials, Server());
     launchServer(server);
   } else {
     const compiler = webpack(config.webpack);
@@ -45,7 +46,7 @@ db.on('connected', function() {
         log(info.warnings);
       }
 
-      const server = createServer(credentials, Server());
+      const server = http.createServer(Server());
       launchServer(server);
     });
   }
@@ -73,7 +74,11 @@ function onError(e) {
 }
 
 function onListen() {
-  log(`${config.app.name} has spun up @ https://localhost:${config.env.port}`);
+  log(
+    `${config.app.name} has spun up @ http${
+      config.env.mode === 'production' ? '' : 's'
+    }://localhost:${config.env.port}`
+  );
 }
 
 function gracefulExit(code = 0) {
