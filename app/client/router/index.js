@@ -1,16 +1,16 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import NProgress from 'nprogress';
-
-import Home from '@client/views/Home';
-import LoginPage from '@client/views/Login';
-import AuthorsPage from '@client/views/Authors';
-import PageNotFound from '@client/views/PageNotFound';
-import SingleAuthorPage from '@client/views/SingleAuthor';
-import SingleNotebookPage from '@client/views/SingleNotebook';
-import CreateNotebookPage from '@client/views/CreateNotebook';
-import CreateEntryPage from '@client/views/CreateEntry';
 import store from '@client/store';
+
+const Home = () => import('@client/views/Home');
+const LoginPage = () => import('@client/views/Login');
+const AuthorsPage = () => import('@client/views/Authors');
+const PageNotFound = () => import('@client/views/PageNotFound');
+const SingleAuthorPage = () => import('@client/views/SingleAuthor');
+const SingleNotebookPage = () => import('@client/views/SingleNotebook');
+const CreateNotebookPage = () => import('@client/views/CreateNotebook');
+const CreateEntryPage = () => import('@client/views/CreateEntry');
 
 Vue.use(Router);
 

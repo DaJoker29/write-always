@@ -25,10 +25,17 @@ const errLog = Log('error');
 export default function() {
   const app = express();
   const isDev = config.env.mode === 'development';
+  const fromRegex = /\/*\/[a-zA-Z0-9_~.]*\.(js|css|js\.map)/;
+  const toRegex = /[a-zA-Z0-9_-~.]+\.(js|css|js\.map)$/;
 
   const historyConfig = {
     logger: historyLog,
-    rewrites: [{ from: /\/*\/bundle.js/, to: '/bundle.js' }]
+    rewrites: [
+      {
+        from: fromRegex,
+        to: context => '/' + context.parsedUrl.pathname.match(toRegex)[0]
+      }
+    ]
   };
 
   const staticMiddleware = express.static(path.join(__dirname, '../dist'));
