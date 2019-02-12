@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.3"></a>
+## [0.6.3](https://github.com/DaJoker29/write-always/compare/v0.6.2...v0.6.3) (2019-02-12)
+
+
+### Bug Fixes
+
+* add scripts for CD ([4410299](https://github.com/DaJoker29/write-always/commit/4410299)), closes [#54](https://github.com/DaJoker29/write-always/issues/54)
+* the post tag script did not work ([2c83ec5](https://github.com/DaJoker29/write-always/commit/2c83ec5))
+
+
+
 <a name="0.6.2"></a>
 ## [0.6.2](https://github.com/DaJoker29/write-always/compare/v0.6.0...v0.6.2) (2019-02-10)
 
