@@ -1,0 +1,12 @@
+{
+  "apps": [{
+    "name": "write-always",
+    "script": "./index.js",
+    "watch": false,
+    "env": {
+      "NODE_ENV": "production",
+      "DEBUG": "write-always*"
+    },
+    "log_date_format": "YYYY-MM-DD HH:mm:ss.SSSS Z"
+  }]
+}

@@ -8,6 +8,7 @@
     "coverage": "nyc --check-coverage npm test",
     "start": "nodemon index.js --config nodemon.json",
     "build": "DEBUG=write-always* NODE_ENV=production node --max-old-space-size=256 index.js",
+    "deploy-prod": "pm2 start process.json",
     "lint": "eslint --ext .js,.json,.vue .",
     "fix": "eslint --ext .js,.json,.vue . --fix",
     "release": "standard-version"
