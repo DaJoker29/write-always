@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       - image: circleci/node:10.14.2
-      - image: mongo:3.2.17
+      - image: mongo:3.6.10
     steps:
       - checkout
       - run:

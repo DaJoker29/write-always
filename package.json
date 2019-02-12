@@ -1,14 +1,15 @@
 {
   "name": "write-always",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "A community built around creative writing and sharing stories.",
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test mocha --timeout 15000",
     "coverage": "nyc --check-coverage npm test",
     "start": "nodemon index.js --config nodemon.json",
-    "build": "DEBUG=write-always* NODE_ENV=production node --max-old-space-size=256 index.js",
-    "deploy-prod": "pm2 start process.json",
+    "build": "DEBUG=write-always* NODE_ENV=production node index.js",
+    "deploy-prod": "pm2 start production.json",
+    "deploy-staging": "pm2 start staging.json",
     "lint": "eslint --ext .js,.json,.vue .",
     "fix": "eslint --ext .js,.json,.vue . --fix",
     "release": "standard-version"

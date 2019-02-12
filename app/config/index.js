@@ -5,6 +5,7 @@ import VError from 'verror';
 import Webpack from './webpack';
 import production from './production';
 import development from './development';
+import staging from './staging';
 import test from './test';
 
 dotenv.config();
@@ -30,6 +31,9 @@ switch (process.env.NODE_ENV) {
     break;
   case 'development':
     env = development;
+    break;
+  case 'staging':
+    env = staging;
     break;
   default:
     throw new VError('NODE_ENV not set');

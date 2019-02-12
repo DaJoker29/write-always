@@ -25,6 +25,8 @@ const errLog = Log('error');
 export default function() {
   const app = express();
   const isDev = config.env.mode === 'development';
+  const isProd = config.env.mode === 'production';
+
   const fromRegex = /\/*\/[a-zA-Z0-9_~.]*\.(js|css|js\.map)/;
   const toRegex = /[a-zA-Z0-9_-~.]+\.(js|css|js\.map)$/;
 
@@ -43,19 +45,31 @@ export default function() {
     dotfiles: 'allow'
   });
 
-  // configure express
+  // Static Middleware
   app.use(staticMiddleware);
   app.use('/.well-known', wellKnownPath);
-  app.use(morganDebug(`${config.pkg.name}-morgan`, isDev ? 'dev' : 'combined'));
+
+  // Debug
+  const debugLabel = `${config.pkg.name}-morgan`;
+  const debugFormat = isProd ? 'combined' : 'dev';
+
+  app.use(morganDebug(debugLabel, debugFormat));
+
+  // Parsing / Headers
   app.use(bodyParser.urlencoded({ extended: 'true' }));
   app.use(bodyParser.json());
   app.use(methodOverride());
   app.use(helmet());
+
+  // Connect History API
   app.use(history(historyConfig));
   app.use(staticMiddleware);
+
+  // Authethentication
   app.use(passport.initialize());
   initAuth();
 
+  // Webpack Middleware (Dev Only)
   if (isDev) {
     wpLog('Configuring Webpack Dev Middleware');
     const compiler = webpack(config.webpack);
@@ -74,6 +88,7 @@ export default function() {
     );
   }
 
+  // Add Routes
   app.use('/auth', AuthRoutes);
   app.use('/api', asyncHandler(updateLastLogin), Routes());
   app.use(serverError);

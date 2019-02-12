@@ -9,5 +9,5 @@ else
   git pull
   npm install
   npm test
-  npm run reload-staging
+  ./reload-staging.sh
 fi
