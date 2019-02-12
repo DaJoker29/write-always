@@ -14,17 +14,21 @@ const error = Log('error');
 
 db.on('connected', function() {
   log(`${config.env.mode.toUpperCase()} BUILD`);
+
+  // Compile/Launch
   if (config.env.mode === 'development') {
+    // Launch with SSL for local development (FB API won't connect without it)
     const credentials = {
       key: readFileSync('./key.pem'),
       cert: readFileSync('./cert.pem')
     };
+
     const server = https.createServer(credentials, Server());
     launchServer(server);
   } else {
+    // Bundle assets and then launch regularly otherwise.
     const compiler = webpack(config.webpack);
 
-    // Launch server after bundling
     compiler.run(async (err, stats) => {
       if (err) {
         error(err);
@@ -33,8 +37,8 @@ db.on('connected', function() {
         }
         return;
       }
-      log('Asset bundle compiled successfully');
 
+      log('Asset bundle compiled successfully');
       const info = stats.toJson();
 
       if (stats.hasErrors()) {

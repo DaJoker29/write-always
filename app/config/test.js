@@ -1,5 +1,5 @@
 export default {
   mode: 'test',
   db: 'mongodb://localhost/write_always_test',
-  port: process.env.PORT || 2002
+  port: process.env.PORT || 4003
 };
