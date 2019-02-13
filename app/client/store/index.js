@@ -3,12 +3,14 @@ import Vuex from 'vuex';
 import http from '@client/http-common';
 import axios from 'axios';
 import todos from './todos';
+import ui from './ui';
 import sort, { sortEntries, sortNotebooks, sortUsers } from './sort';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
+    ui,
     sort,
     todos
   },
@@ -18,32 +20,20 @@ export default new Vuex.Store({
     currentUser: JSON.parse(localStorage.getItem('currentUser')) || {},
     allUsers: JSON.parse(localStorage.getItem('allUsers')) || [],
     allNotebooks: JSON.parse(localStorage.getItem('allNotebooks')) || [],
-    allEntries: JSON.parse(localStorage.getItem('allEntries')) || [],
-    isSearchOpen: false,
-    isNavOpen: false
+    allEntries: JSON.parse(localStorage.getItem('allEntries')) || []
   },
   getters: {
     config: state => state.config,
     isLoggedIn: state =>
       Object.keys(state.currentUser).length !== 0 &&
       state.currentUser.constructor === Object,
-    isSearchOpen: state => state.isSearchOpen,
-    isNavOpen: state => state.isNavOpen,
+
     currentUser: state => state.currentUser,
     allNotebooks: state => sortNotebooks(state),
     allUsers: state => sortUsers(state),
     allEntries: state => sortEntries(state)
   },
   mutations: {
-    toggleSearch(state) {
-      state.isSearchOpen = !state.isSearchOpen;
-    },
-    toggleNav(state) {
-      state.isNavOpen = !state.isNavOpen;
-    },
-    closeNav(state) {
-      state.isNavOpen = false;
-    },
     setToken(state, payload) {
       state.token = payload;
       localStorage.setItem('token', payload);
@@ -78,15 +68,6 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    toggleSearch({ commit }) {
-      commit('toggleSearch');
-    },
-    toggleNav({ commit }) {
-      commit('toggleNav');
-    },
-    closeNav({ commit }) {
-      commit('closeNav');
-    },
     fbLogin({ dispatch }, { email, ...response }) {
       dispatch('fetchToken', { method: 'fb', email, response });
     },
@@ -97,7 +78,6 @@ export default new Vuex.Store({
       commit('logout');
       dispatch('initialFetch');
     },
-
     async updateFBToken({ dispatch }, payload) {
       await http.post('/user/fb', payload);
       dispatch('fetchUser');
