@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   props: {
@@ -24,8 +24,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['currentUser']),
-    ...mapGetters(['isLoggedIn'])
+    ...mapGetters(['isLoggedIn', 'currentUser'])
   },
   methods: {
     canEdit(notebook) {

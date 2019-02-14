@@ -11,6 +11,10 @@ const todos = {
     setTodos(state, todos) {
       state.todos = todos;
       localStorage.setItem('todos', JSON.stringify(state.todos));
+    },
+    purgeTodos(state) {
+      state.todos = [];
+      localStorage.removeItem('todos');
     }
   },
   actions: {
