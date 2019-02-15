@@ -1,16 +1,19 @@
 <template>
   <main>
+    <h3>Notebook: {{ fetchName(notebookID) }}</h3>
     <textarea
       ref="entry"
       v-model="body"
       v-autosize="body"
       placeholder="Start typing here"
     ></textarea>
-    <button @click="submit">Add Entry to {{ notebook }}</button>
+    <button @click="submit">Send</button>
   </main>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   data: function() {
     return {
@@ -18,19 +21,23 @@ export default {
     };
   },
   computed: {
-    notebook() {
+    ...mapGetters(['allNotebooks']),
+    notebookID() {
       return this.$route.query.n;
     }
   },
   methods: {
     async submit() {
-      const { body, notebook } = this;
+      const { body, notebookID } = this;
       const data = {
         body,
-        notebook
+        notebook: notebookID
       };
-      const entry = await this.$http.post('/entry/create', data);
-      console.log(entry);
+      await this.$http.post('/entry/create', data);
+      this.$router.push({ name: 'notebook', params: { notebookID } });
+    },
+    fetchName(id) {
+      return this.allNotebooks.find(e => e.uid === id).title.toUpperCase();
     }
   }
 };
