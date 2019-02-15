@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import EntryListArticle from './EntryListArticle';
 import SortEntries from './SortEntries';
+import EntryListArticle from './EntryListArticle';
 
 export default {
   components: {

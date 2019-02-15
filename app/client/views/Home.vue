@@ -7,7 +7,7 @@ import { mapActions, mapGetters } from 'vuex';
 
 export default {
   components: {
-    NotebookList: () => import('@client/components/NotebookList')
+    NotebookList: () => import('@client/modules/NotebookList')
   },
   computed: {
     ...mapGetters(['allNotebooks'])

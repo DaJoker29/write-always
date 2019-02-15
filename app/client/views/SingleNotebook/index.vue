@@ -10,9 +10,8 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
   components: {
-    SingleNotebookHeader: () =>
-      import('@client/components/SingleNotebookHeader'),
-    EntryList: () => import('@client/components/EntryList')
+    SingleNotebookHeader: () => import('./SingleNotebookHeader'),
+    EntryList: () => import('@client/modules/EntryList')
   },
   computed: {
     ...mapGetters(['allNotebooks', 'allEntries']),
