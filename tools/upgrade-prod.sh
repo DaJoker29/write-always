@@ -9,5 +9,5 @@ else
   git pull
   npm install
   npm test
-  ./reload-prod.sh
+  ./tools/reload-prod.sh
 fi
