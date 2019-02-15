@@ -207,6 +207,10 @@ main {
   margin: var(--spacing-double);
 }
 
+p {
+  margin-bottom: var(--spacing);
+}
+
 .container > aside {
   flex: 1;
   min-height: 100vh;
