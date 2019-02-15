@@ -5,7 +5,7 @@
     <label for="isPrivate">Private?</label>
     <input id="isShared" v-model="isShared" type="checkbox" />
     <label for="isShared">Shared?</label>
-    <button @click="submitEntry">Create</button>
+    <button @click="submitEntry">Create Notebook</button>
   </main>
 </template>
 
@@ -32,8 +32,8 @@ export default {
         isShared,
         owner: this.username
       };
-      const response = await this.$http.post('/notebook/create', data);
-      console.log(response);
+      await this.$http.post('/notebook/create', data);
+      this.$router.push('/');
     }
   }
 };

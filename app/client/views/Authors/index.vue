@@ -17,8 +17,8 @@ import { mapActions, mapGetters } from 'vuex';
 
 export default {
   components: {
-    AuthorsListArticle: () => import('@client/components/AuthorsListArticle'),
-    SortAuthors: () => import('@client/components/SortAuthors')
+    AuthorsListArticle: () => import('./AuthorsListArticle'),
+    SortAuthors: () => import('./SortAuthors')
   },
   computed: {
     ...mapGetters(['allUsers'])

@@ -15,8 +15,8 @@ import NProgress from 'nprogress';
 
 export default {
   components: {
-    TheSiteHeader: () => import('@client/components/TheSiteHeader'),
-    TheSidebar: () => import('@client/components/TheSidebar')
+    TheSiteHeader: () => import('@client/layout/TheSiteHeader'),
+    TheSidebar: () => import('@client/layout/TheSidebar')
   },
   computed: {
     ...mapGetters([
@@ -205,6 +205,10 @@ strong {
 
 main {
   margin: var(--spacing-double);
+}
+
+p {
+  margin-bottom: var(--spacing);
 }
 
 .container > aside {

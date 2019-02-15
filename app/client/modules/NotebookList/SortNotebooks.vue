@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import BaseSort from './BaseSort';
+import BaseSort from '@client/base/BaseSort';
 
 export default {
   components: {
@@ -11,10 +11,11 @@ export default {
   },
   data: function() {
     return {
-      type: 'authors',
+      type: 'notebooks',
       orderBy: [
-        ['joined', 'Date Joined'],
-        ['active', 'Last Active'],
+        ['updated', 'Last Updated'],
+        ['oldest', 'Oldest'],
+        ['newest', 'Newest'],
         ['alphabetical', 'A-Z']
       ]
     };

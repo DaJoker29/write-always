@@ -7,7 +7,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import TodoList from './TodoList';
+import TodoList from '@client/modules/TodoList';
 
 export default {
   components: {

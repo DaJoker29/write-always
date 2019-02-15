@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.6.4"></a>
+## [0.6.4](https://github.com/DaJoker29/write-always/compare/v0.6.3...v0.6.4) (2019-02-15)
+
+
+### Bug Fixes
+
+* line breaks now render ([d2fc96c](https://github.com/DaJoker29/write-always/commit/d2fc96c)), closes [#61](https://github.com/DaJoker29/write-always/issues/61)
+* styled the notebook and entry editors ([a99d72c](https://github.com/DaJoker29/write-always/commit/a99d72c)), closes [#62](https://github.com/DaJoker29/write-always/issues/62)
+
+
+
 <a name="0.6.3"></a>
 ## [0.6.3](https://github.com/DaJoker29/write-always/compare/v0.6.2...v0.6.3) (2019-02-12)
 

@@ -3,6 +3,7 @@ import NProgress from 'nprogress';
 import moment from 'moment';
 import autosize from 'autosize';
 import VueAutosize from 'vue-autosize';
+import marked from 'marked';
 import store from './store';
 import App from './App';
 import router from './router';
@@ -12,6 +13,10 @@ Vue.config.productionTip = false;
 Vue.prototype.moment = moment;
 Vue.prototype.autosize = autosize;
 Vue.prototype.$http = http;
+Vue.prototype.marked = marked.setOptions({
+  gfm: true,
+  breaks: true
+});
 
 Vue.use(VueAutosize);
 

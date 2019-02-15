@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import BaseSort from './BaseSort';
+import BaseSort from '@client/base/BaseSort';
 
 export default {
   components: {

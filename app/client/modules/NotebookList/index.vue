@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import NotebookListing from '@client/components/NotebookListing';
-import SortNotebooks from '@client/components/SortNotebooks';
+import NotebookListing from './NotebookListing';
+import SortNotebooks from './SortNotebooks';
 
 export default {
   components: {

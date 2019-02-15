@@ -10,7 +10,7 @@
         </RouterLink>
       </span>
     </h3>
-    <p>{{ entry.body }}</p>
+    <p v-html="marked(entry.body)"></p>
   </article>
 </template>
 
