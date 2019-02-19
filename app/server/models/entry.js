@@ -15,7 +15,8 @@ const entrySchema = new Schema(
     },
     body: { type: String, required: true },
     author: { type: Schema.Types.ObjectId, ref: 'User' },
-    notebook: { type: Schema.Types.ObjectId, ref: 'Notebook' }
+    notebook: { type: Schema.Types.ObjectId, ref: 'Notebook' },
+    title: { type: String }
   },
   { versionKey: false, timestamps: true }
 );
