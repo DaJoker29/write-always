@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/DaJoker29/write-always/compare/v0.6.5...v0.7.0) (2019-02-19)
+
+
+### Features
+
+* add title to entries ([7765dd6](https://github.com/DaJoker29/write-always/commit/7765dd6)), closes [#67](https://github.com/DaJoker29/write-always/issues/67)
+
+
+
 <a name="0.6.5"></a>
 ## [0.6.5](https://github.com/DaJoker29/write-always/compare/v0.6.4...v0.6.5) (2019-02-15)
 
