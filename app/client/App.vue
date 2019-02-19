@@ -170,7 +170,7 @@ a:active {
   color: var(--color-red);
 }
 
-input,
+input[type='text'],
 textarea {
   margin: var(--spacing) 0;
   padding: var(--spacing-half) var(--spacing);

@@ -1,16 +1,20 @@
 <template>
   <article>
-    <h3>
-      {{ moment(entry.createdAt).format('LL') }}
+    <header v-if="entry.title">{{ entry.title }}</header>
+    <section v-html="marked(entry.body)"></section>
+    <footer>
+      <time>
+        {{ moment(entry.createdAt).format('LL') }}
 
-      ({{ moment(entry.createdAt).format('LT') }})
-      <span>
+        ({{ moment(entry.createdAt).format('LT') }})
+      </time>
+      <p>
         <RouterLink :to="entry.author.profileURL">
           {{ entry.author.displayName }}
         </RouterLink>
-      </span>
-    </h3>
-    <p v-html="marked(entry.body)"></p>
+      </p>
+    </footer>
+    <div class="sep"></div>
   </article>
 </template>
 
@@ -31,13 +35,22 @@ article {
   flex: 1 1 100%;
 }
 
-h3 > span {
-  margin-left: var(--spacing);
-  font-size: var(--font-size);
+article > header {
   font-weight: bold;
+  font-size: var(--h3);
+  text-align: center;
 }
 
-p {
-  font-weight: bold;
+article > section {
+  padding: 0 var(--spacing);
+  border-width: 0 2px;
+  border-style: dotted;
+  border-color: rgba(0, 0, 0, 0.3);
+}
+
+article > footer {
+  font-size: var(--small);
+  text-align: right;
+  color: var(--color-grey);
 }
 </style>
