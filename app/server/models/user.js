@@ -6,14 +6,6 @@ import mongooseLeanVirtuals from 'mongoose-lean-virtuals';
 
 const prefix = 'us';
 
-const todoSchema = new Schema(
-  {
-    text: { type: String, required: true },
-    isCompleted: { type: Boolean, required: true, default: () => false }
-  },
-  { versionKey: false, timestamps: true }
-);
-
 const userSchema = new Schema(
   {
     uid: {
@@ -31,13 +23,7 @@ const userSchema = new Schema(
     url: { type: String },
     bio: { type: String },
     fbUserID: { type: String, select: false },
-    fbUserAccess: { type: String, select: false },
-    todos: {
-      type: [todoSchema],
-      required: true,
-      default: () => [],
-      select: false
-    }
+    fbUserAccess: { type: String, select: false }
   },
   { versionKey: false }
 );

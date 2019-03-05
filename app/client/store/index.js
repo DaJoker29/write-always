@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import http from '@client/http-common';
-import todos from './todos';
 import ui from './ui';
 import auth from './auth';
 import sort, { sortEntries, sortNotebooks, sortUsers } from './sort';
@@ -12,8 +11,7 @@ export default new Vuex.Store({
   modules: {
     auth,
     ui,
-    sort,
-    todos
+    sort
   },
   state: {
     config: process.env.SITE_CONFIG,
