@@ -1,12 +1,14 @@
 <template>
   <article>
     <header>
-      <strong>Display Name</strong>
-      <span class="muted">@username &bull; 45m ago</span>
+      <strong>{{ entry.author.displayName }}</strong>
+      <span class="muted"
+        >@username &bull; {{ moment(entry.createdAt).fromNow() }}</span
+      >
       <span class="options"> <i class="fa fa-ellipsis-h"></i> </span>
     </header>
     <section>
-      <p>150 characters worth of content and stuff goes in here.</p>
+      <p>{{ entry.content }}</p>
     </section>
     <footer>
       <p class="meta">
@@ -16,6 +18,16 @@
     </footer>
   </article>
 </template>
+
+<script>
+export default {
+  props: {
+    entry: {
+      required: true
+    }
+  }
+};
+</script>
 
 <style scoped>
 article {

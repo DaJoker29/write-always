@@ -3,7 +3,7 @@
     <TheSiteHeader />
 
     <div class="container" @click="isSearchOpen === true ? toggleSearch : null">
-      <TheFeed v-if="isLoggedIn" />
+      <TheFeed />
       <Transition name="fade" mode="out-in"> <RouterView /> </Transition>
     </div>
   </body>

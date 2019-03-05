@@ -9,11 +9,15 @@
       ></textarea>
     </label>
     <span class="counter">{{ charCount }} / {{ maxChars }}</span>
-    <footer><button :disabled="contentTooLong">Post</button></footer>
+    <footer>
+      <button :disabled="contentTooLong" @click.prevent="submit">Post</button>
+    </footer>
   </form>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   data: function() {
     return {
@@ -34,6 +38,23 @@ export default {
     },
     contentTooLong() {
       return this.charCount > this.maxChars;
+    }
+  },
+  methods: {
+    ...mapActions(['fetchFeed']),
+    async submit() {
+      if (this.contentExists && !this.contentTooLong) {
+        const response = await this.$http.post('/feed/create', {
+          content: this.text
+        });
+
+        if (response.status === 200) {
+          this.text = '';
+          this.fetchFeed();
+        } else {
+          // TODO: Add some error handling right here.
+        }
+      }
     }
   }
 };

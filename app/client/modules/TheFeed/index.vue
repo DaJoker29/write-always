@@ -1,7 +1,8 @@
 <template>
   <aside>
-    <h3>Welcome back, {{ currentUser.displayName }}!</h3>
-    <CreateFeedEntry />
+    <h3 v-if="isLoggedIn">Welcome back, {{ currentUser.displayName }}!</h3>
+    <h3 v-else>Howdy!</h3>
+    <CreateFeedEntry v-if="isLoggedIn" />
     <PersonalFeed />
   </aside>
 </template>
@@ -17,7 +18,7 @@ export default {
     PersonalFeed
   },
   computed: {
-    ...mapGetters(['currentUser'])
+    ...mapGetters(['currentUser', 'isLoggedIn'])
   }
 };
 </script>

@@ -3,12 +3,14 @@ import Vuex from 'vuex';
 import http from '@client/http-common';
 import ui from './ui';
 import auth from './auth';
+import feed from './feed';
 import sort, { sortEntries, sortNotebooks, sortUsers } from './sort';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
+    feed,
     auth,
     ui,
     sort
@@ -46,6 +48,7 @@ export default new Vuex.Store({
   actions: {
     initialFetch({ dispatch }) {
       dispatch('fetchAllNotebooks');
+      dispatch('fetchFeed');
     },
     pushNewEntries({ commit, state }, payload) {
       if (payload.length) {
