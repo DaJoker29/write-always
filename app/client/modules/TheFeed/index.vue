@@ -1,6 +1,6 @@
 <template>
   <aside>
-    <h4>Welcome back, {{ currentUser.displayName }}!</h4>
+    <h3>Welcome back, {{ currentUser.displayName }}!</h3>
     <CreateFeedEntry />
     <PersonalFeed />
   </aside>

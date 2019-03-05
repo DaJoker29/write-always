@@ -81,6 +81,7 @@ export default {
   --font-headings: grandma, serif;
   --font-size: 20px;
   --line-height-body: 1.4;
+  --line-height-small: 1.1;
   --line-height-headings: 1.7;
 
   --h1: 2.441rem;
