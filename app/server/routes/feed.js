@@ -23,7 +23,7 @@ async function fetchFeed(req, res, next) {
 async function createFeedEntry(req, res, next) {
   const { id, content } = req.body;
 
-  if (!content) {
+  if (!content || !id) {
     return res.sendStatus(400);
   }
 

@@ -6,7 +6,7 @@ import Models from '@server/models';
 import jwt from 'jsonwebtoken';
 import { assert } from 'chai';
 
-const { User, Notebook, Entry } = Models;
+const { User, Notebook, Entry, FeedEntry } = Models;
 
 /////////////
 // Helpers //
@@ -80,6 +80,33 @@ async function populateEntries(notebooks) {
   return Promise.all(entries);
 }
 
+async function populateFeedEntries(users) {
+  const feedEntries = [];
+
+  users.forEach(async function(user) {
+    const first = {
+      content: 'first',
+      author: user._id
+    };
+
+    const second = {
+      content: 'second',
+      author: user._id
+    };
+
+    const third = {
+      content: 'third',
+      author: user._id
+    };
+
+    feedEntries.push(FeedEntry.create(first));
+    feedEntries.push(FeedEntry.create(second));
+    feedEntries.push(FeedEntry.create(third));
+  });
+
+  return Promise.all(feedEntries);
+}
+
 ///////////
 // Start //
 ///////////
@@ -93,11 +120,73 @@ db.on('connected', function() {
       testUsers = await populateUsers();
       testNotebooks = await populateNotebooks(testUsers);
       await populateEntries(testNotebooks);
+      await populateFeedEntries(testUsers);
     });
 
     after(async function() {
       await db.dropDatabase();
       await db.close();
+    });
+
+    //////////////////////
+    // Feed Entry Tests //
+    //////////////////////
+
+    describe('Feed Entries', function() {
+      describe('GET /feed', function() {
+        it('should return a list of users', function(done) {
+          request(Server())
+            .get('/api/feed')
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(function(err, { body }) {
+              if (err) return done(err);
+              assert.typeOf(body, 'array');
+              assert.lengthOf(body, 9);
+
+              assert.ok(body[0].content);
+              assert.ok(body[0].author);
+              done();
+            });
+        });
+      });
+
+      describe('POST /feed/create', function() {
+        it('should return 400 if no content is provided', function(done) {
+          const user = testUsers[0];
+          const params = {
+            id: user.id
+          };
+
+          request(Server())
+            .post('/api/feed/create')
+            .send(params)
+            .expect(400, done);
+        });
+        it('should return 400 if no ID is provided', function(done) {
+          const params = {
+            content: "Doesn't matter"
+          };
+
+          request(Server())
+            .post('/api/feed/create')
+            .send(params)
+            .expect(400, done);
+        });
+        it('should return 200 if entry was successfully created', function(done) {
+          const user = testUsers[0];
+          const params = {
+            id: user.id,
+            content: 'This content will be used.'
+          };
+
+          request(Server())
+            .post('/api/feed/create')
+            .send(params)
+            .expect(200, done);
+        });
+      });
     });
 
     ////////////////
