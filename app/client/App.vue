@@ -3,7 +3,7 @@
     <TheSiteHeader />
 
     <div class="container" @click="isSearchOpen === true ? toggleSearch : null">
-      <TheSidebar v-if="isLoggedIn" />
+      <TheFeed />
       <Transition name="fade" mode="out-in"> <RouterView /> </Transition>
     </div>
   </body>
@@ -16,7 +16,7 @@ import NProgress from 'nprogress';
 export default {
   components: {
     TheSiteHeader: () => import('@client/layout/TheSiteHeader'),
-    TheSidebar: () => import('@client/layout/TheSidebar')
+    TheFeed: () => import('@client/modules/TheFeed')
   },
   computed: {
     ...mapGetters([
@@ -80,7 +80,9 @@ export default {
   --font-main: open-sans, sans-serif;
   --font-headings: grandma, serif;
   --font-size: 20px;
-  --line-height: 1.7;
+  --line-height-body: 1.4;
+  --line-height-small: 1.1;
+  --line-height-headings: 1.7;
 
   --h1: 2.441rem;
   --h2: 1.953rem;
@@ -119,7 +121,7 @@ html {
 
 body {
   font-family: var(--font-main);
-  line-height: var(--line-height);
+  line-height: var(--line-height-body);
 }
 
 h1,
@@ -127,6 +129,7 @@ h2,
 h3,
 h4 {
   font-family: var(--font-headings);
+  line-height: var(--line-height-headings);
 }
 
 h1,
@@ -188,7 +191,9 @@ input:focus {
 }
 
 .container {
-  margin-top: calc(var(--spacing-half) * 3 + var(--h2) * var(--line-height));
+  margin-top: calc(
+    var(--spacing-half) * 3 + var(--h2) * var(--line-height-headings)
+  );
   transition: var(--transition-long);
   display: flex;
   flex-flow: row wrap;
@@ -217,7 +222,7 @@ p {
 }
 
 .container > main {
-  flex: 3;
+  flex: 2;
 }
 
 .box-container {

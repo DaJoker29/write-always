@@ -114,7 +114,7 @@ export default {
 .logo a {
   color: var(--color-black);
   border-bottom: 0;
-  font: bold var(--h2) / var(--line-height) var(--font-headings);
+  font: bold var(--h2) / var(--line-height-headings) var(--font-headings);
 }
 
 .hamburger a,

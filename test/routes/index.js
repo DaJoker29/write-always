@@ -6,7 +6,7 @@ import Models from '@server/models';
 import jwt from 'jsonwebtoken';
 import { assert } from 'chai';
 
-const { User, Notebook, Entry } = Models;
+const { User, Notebook, Entry, FeedEntry } = Models;
 
 /////////////
 // Helpers //
@@ -16,18 +16,15 @@ async function populateUsers() {
   return Promise.all([
     await User.create({
       fbUserID: 'test1',
-      email: 'test1@test.org',
-      todos: [{ text: 'my first todo' }]
+      email: 'test1@test.org'
     }),
     await User.create({
       fbUserID: 'test2',
-      email: 'test2@test.org',
-      todos: [{ text: 'my first todo' }]
+      email: 'test2@test.org'
     }),
     await User.create({
       fbUserID: 'test3',
-      email: 'test3@test.org',
-      todos: [{ text: 'my first todo' }]
+      email: 'test3@test.org'
     })
   ]);
 }
@@ -83,6 +80,33 @@ async function populateEntries(notebooks) {
   return Promise.all(entries);
 }
 
+async function populateFeedEntries(users) {
+  const feedEntries = [];
+
+  users.forEach(async function(user) {
+    const first = {
+      content: 'first',
+      author: user._id
+    };
+
+    const second = {
+      content: 'second',
+      author: user._id
+    };
+
+    const third = {
+      content: 'third',
+      author: user._id
+    };
+
+    feedEntries.push(FeedEntry.create(first));
+    feedEntries.push(FeedEntry.create(second));
+    feedEntries.push(FeedEntry.create(third));
+  });
+
+  return Promise.all(feedEntries);
+}
+
 ///////////
 // Start //
 ///////////
@@ -96,6 +120,7 @@ db.on('connected', function() {
       testUsers = await populateUsers();
       testNotebooks = await populateNotebooks(testUsers);
       await populateEntries(testNotebooks);
+      await populateFeedEntries(testUsers);
     });
 
     after(async function() {
@@ -103,107 +128,72 @@ db.on('connected', function() {
       await db.close();
     });
 
-    ////////////////
-    // User Tests //
-    ////////////////
+    //////////////////////
+    // Feed Entry Tests //
+    //////////////////////
 
-    describe('Users', function() {
-      describe('GET /user/todos', function() {
-        it('should return an array of todos for authenticated users', function(done) {
-          const user = testUsers[0];
+    describe('Feed Entries', function() {
+      describe('GET /feed', function() {
+        it('should return a list of users', function(done) {
           request(Server())
-            .get('/api/user/todos')
-            .send({ id: user._id })
+            .get('/api/feed')
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(200)
             .end(function(err, { body }) {
               if (err) return done(err);
-
               assert.typeOf(body, 'array');
-              assert.lengthOf(body, 1);
+              assert.lengthOf(body, 9);
 
-              assert.ok(body[0].text);
-              assert.isFalse(body[0].isCompleted);
-
+              assert.ok(body[0].content);
+              assert.ok(body[0].author);
               done();
             });
         });
-        it('should 400 for unauthenticated users', function(done) {
-          request(Server())
-            .get('/api/user/todos')
-            .expect(400, done);
-        });
       });
 
-      describe('POST /user/todos/create', function() {
-        it('should 200 if successful', function(done) {
+      describe('POST /feed/create', function() {
+        it('should return 400 if no content is provided', function(done) {
           const user = testUsers[0];
+          const params = {
+            id: user.id
+          };
 
           request(Server())
-            .post('/api/user/todos/create')
-            .send({ id: user._id, text: 'Hey, new todo' })
+            .post('/api/feed/create')
+            .send(params)
+            .expect(400, done);
+        });
+        it('should return 400 if no ID is provided', function(done) {
+          const params = {
+            content: "Doesn't matter"
+          };
+
+          request(Server())
+            .post('/api/feed/create')
+            .send(params)
+            .expect(400, done);
+        });
+        it('should return 200 if entry was successfully created', function(done) {
+          const user = testUsers[0];
+          const params = {
+            id: user.id,
+            content: 'This content will be used.'
+          };
+
+          request(Server())
+            .post('/api/feed/create')
+            .send(params)
             .expect(200, done);
         });
-        it('should 400 if no text is provided', function(done) {
-          const user = testUsers[0];
-
-          request(Server())
-            .post('/api/user/todos/create')
-            .send({ id: user._id })
-            .expect(400, done);
-        });
-        it('should 400 if user is not authenticated', function(done) {
-          request(Server())
-            .post('/api/user/todos/create')
-            .send({ text: 'Hey, new todo' })
-            .expect(400, done);
-        });
       });
+    });
 
-      describe('POST /user/todos/complete', function() {
-        it('should 200 if successful', function(done) {
-          const user = testUsers[0];
+    ////////////////
+    // User Tests //
+    ////////////////
 
-          request(Server())
-            .post('/api/user/todos/complete')
-            .send({ id: user._id, todoID: user.todos[0]._id })
-            .expect(200, done);
-        });
-        it('should 400 if no text ID is provided', function(done) {
-          const user = testUsers[0];
-
-          request(Server())
-            .post('/api/user/todos/complete')
-            .send({ id: user._id })
-            .expect(400, done);
-        });
-        it('should 400 if user is not authenticated', function(done) {
-          const user = testUsers[0];
-          request(Server())
-            .post('/api/user/todos/complete')
-            .send({ todoID: user.todos[0]._id })
-            .expect(400, done);
-        });
-      });
-
-      describe('POST /user/todos/clear', function() {
-        it('should 200 if successful', function(done) {
-          const user = testUsers[0];
-
-          request(Server())
-            .post('/api/user/todos/clear')
-            .send({ id: user._id })
-            .expect(200, done);
-        });
-
-        it('should 400 if user is not authenticated', function(done) {
-          request(Server())
-            .post('/api/user/todos/clear')
-            .expect(400, done);
-        });
-      });
-
+    describe('Users', function() {
       describe('GET /users', function() {
         it('should return a list of users', function(done) {
           request(Server())

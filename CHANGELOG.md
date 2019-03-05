@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.8.0"></a>
+# [0.8.0](https://github.com/DaJoker29/write-always/compare/v0.7.0...v0.8.0) (2019-03-05)
+
+
+### Features
+
+* add feed module ([56ea551](https://github.com/DaJoker29/write-always/commit/56ea551)), closes [#83](https://github.com/DaJoker29/write-always/issues/83) [#81](https://github.com/DaJoker29/write-always/issues/81)
+
+
+
 <a name="0.7.0"></a>
 # [0.7.0](https://github.com/DaJoker29/write-always/compare/v0.6.5...v0.7.0) (2019-02-19)
 
