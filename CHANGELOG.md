@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.9.0"></a>
+# [0.9.0](https://github.com/DaJoker29/write-always/compare/v0.8.0...v0.9.0) (2019-03-06)
+
+
+### Features
+
+* **client:** add main navigation ([3605e60](https://github.com/DaJoker29/write-always/commit/3605e60))
+* **client:** add story feed ([14458df](https://github.com/DaJoker29/write-always/commit/14458df)), closes [#90](https://github.com/DaJoker29/write-always/issues/90)
+
+
+
 <a name="0.8.0"></a>
 # [0.8.0](https://github.com/DaJoker29/write-always/compare/v0.7.0...v0.8.0) (2019-03-05)
 

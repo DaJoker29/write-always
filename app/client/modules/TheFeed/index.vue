@@ -9,13 +9,11 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import CreateFeedEntry from './CreateFeedEntry';
-import PersonalFeed from './PersonalFeed';
 
 export default {
   components: {
-    CreateFeedEntry,
-    PersonalFeed
+    CreateFeedEntry: () => import('./CreateFeedEntry'),
+    PersonalFeed: () => import('./PersonalFeed')
   },
   computed: {
     ...mapGetters(['currentUser', 'isLoggedIn'])
