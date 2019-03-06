@@ -222,7 +222,7 @@ p {
 }
 
 .container > main {
-  flex: 2;
+  flex: 3;
 }
 
 .box-container {

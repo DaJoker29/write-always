@@ -1,16 +1,17 @@
 <template>
-  <main><NotebookList :notebooks="allNotebooks" /></main>
+  <main>
+    <ActiveUserList />
+    <StoryFeed />
+  </main>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
   components: {
-    NotebookList: () => import('@client/modules/NotebookList')
-  },
-  computed: {
-    ...mapGetters(['allNotebooks'])
+    StoryFeed: () => import('@client/modules/StoryFeed'),
+    ActiveUserList: () => import('@client/modules/ActiveUserList')
   },
   watch: {
     $route() {
