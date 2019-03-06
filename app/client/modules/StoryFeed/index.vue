@@ -22,6 +22,7 @@ export default {
 
 <style scoped>
 .feed-container {
+  padding: var(--spacing);
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;

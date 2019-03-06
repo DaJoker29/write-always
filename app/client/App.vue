@@ -76,6 +76,7 @@ export default {
   --color-red: #ed7a66;
   --color-grey: #757575;
   --color-green: #98ff7d;
+  --color-yellow: #efeba2;
 
   --font-main: open-sans, sans-serif;
   --font-headings: grandma, serif;
@@ -206,10 +207,6 @@ input:focus {
 
 strong {
   font-weight: bolder;
-}
-
-main {
-  margin: var(--spacing-double);
 }
 
 p {
