@@ -6,7 +6,7 @@ import Models from '@server/models';
 import jwt from 'jsonwebtoken';
 import { assert } from 'chai';
 
-const { User, Notebook, Entry, FeedEntry } = Models;
+const { User, Notebook, Entry, FeedEntry, Story } = Models;
 
 /////////////
 // Helpers //
@@ -106,6 +106,35 @@ async function populateFeedEntries(users) {
 
   return Promise.all(feedEntries);
 }
+async function populateStories(users) {
+  const stories = [];
+
+  users.forEach(async function(user) {
+    const first = {
+      content: 'first',
+      title: 'first',
+      author: user._id
+    };
+
+    const second = {
+      content: 'second',
+      title: 'second',
+      author: user._id
+    };
+
+    const third = {
+      content: 'third',
+      title: 'third',
+      author: user._id
+    };
+
+    stories.push(Story.create(first));
+    stories.push(Story.create(second));
+    stories.push(Story.create(third));
+  });
+
+  return Promise.all(stories);
+}
 
 ///////////
 // Start //
@@ -121,11 +150,88 @@ db.on('connected', function() {
       testNotebooks = await populateNotebooks(testUsers);
       await populateEntries(testNotebooks);
       await populateFeedEntries(testUsers);
+      await populateStories(testUsers);
     });
 
     after(async function() {
       await db.dropDatabase();
       await db.close();
+    });
+
+    /////////////////
+    // Story Tests //
+    /////////////////
+
+    describe('Stories', function() {
+      describe('GET /stories', function() {
+        it('should return an array of stories', function(done) {
+          request(Server())
+            .get('/api/stories')
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(function(err, { body }) {
+              if (err) return done(err);
+              assert.typeOf(body, 'array');
+              assert.lengthOf(body, 9);
+
+              assert.ok(body[0].content);
+              assert.ok(body[0].author);
+              assert.ok(body[0].title);
+              done();
+            });
+        });
+      });
+
+      describe('POST /story/create', function() {
+        it('should return 400 if no content is provided', function(done) {
+          const user = testUsers[0];
+          const params = {
+            id: user.id,
+            title: 'Some title'
+          };
+
+          request(Server())
+            .post('/api/story/create')
+            .send(params)
+            .expect(400, done);
+        });
+        it('should return 400 if no title is provided', function(done) {
+          const user = testUsers[0];
+          const params = {
+            id: user.id,
+            content: "Doesn't matter"
+          };
+
+          request(Server())
+            .post('/api/story/create')
+            .send(params)
+            .expect(400, done);
+        });
+        it('should return 400 if no ID is provided', function(done) {
+          const params = {
+            content: "Doesn't matter"
+          };
+
+          request(Server())
+            .post('/api/story/create')
+            .send(params)
+            .expect(400, done);
+        });
+        it('should return 200 if entry was successfully created', function(done) {
+          const user = testUsers[0];
+          const params = {
+            title: 'Some title',
+            id: user.id,
+            content: 'This content will be used.'
+          };
+
+          request(Server())
+            .post('/api/story/create')
+            .send(params)
+            .expect(200, done);
+        });
+      });
     });
 
     //////////////////////
