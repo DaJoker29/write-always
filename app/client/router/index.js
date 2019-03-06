@@ -11,12 +11,21 @@ const SingleAuthorPage = () => import('@client/views/SingleAuthor');
 const SingleNotebookPage = () => import('@client/views/SingleNotebook');
 const CreateNotebookPage = () => import('@client/views/CreateNotebook');
 const CreateEntryPage = () => import('@client/views/CreateEntry');
+const CreateNewStory = () => import('@client/views/CreateNewStory');
 
 Vue.use(Router);
 
 const router = new Router({
   mode: 'history',
   routes: [
+    {
+      path: '/new-story',
+      name: 'newStory',
+      component: CreateNewStory,
+      meta: {
+        user: true
+      }
+    },
     {
       path: '/',
       name: 'home',
