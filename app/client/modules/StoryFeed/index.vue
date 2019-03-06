@@ -1,30 +1,30 @@
 <template>
-  <div class="feed-container">
-    <Story />
-    <Story />
-    <Story />
-    <Story />
-    <Story />
-    <Story />
-    <Story />
-    <Story />
-    <Story />
-  </div>
+  <TransitionGroup name="story-list" tag="div" class="story-list">
+    <Story v-for="story in recentStories" :key="story._id" :story="story" />
+  </TransitionGroup>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   components: {
     Story: () => import('./Story')
+  },
+  computed: {
+    ...mapGetters(['recentStories'])
   }
 };
 </script>
 
 <style scoped>
-.feed-container {
+.story-list {
   padding: var(--spacing);
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-between;
+}
+
+.story-list-move {
+  transition: transform var(--transition-long);
 }
 </style>

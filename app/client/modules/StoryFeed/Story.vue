@@ -1,30 +1,51 @@
 <template>
   <article>
     <header>
-      <time>6 Days Ago</time>
-      <h3>Breaking Boxes with CSS Fragmentation</h3>
-      <p>
-        <span class="author">by <a>John Doe Hastings</a></span>
-      </p>
+      <div class="time">
+        <time>{{ moment(story.createdAt).fromNow() }}</time>
+      </div>
+      <div class="title">
+        <h3>{{ story.title }}</h3>
+      </div>
+      <div v-if="story.author" class="author">
+        <span class="author"
+          >by <a>{{ story.author.displayName }}</a></span
+        >
+      </div>
     </header>
     <section>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur,
-        delectus autem cumque id, quae porro tempore iste hic sit, consectetur
-        reprehenderit voluptatem. Ducimus nihil modi omnis illum aliquam
-        architecto, excepturi.
-      </p>
+      <p v-if="story.description">{{ story.description }}</p>
     </section>
     <footer>
-      <p><i class="far fa-clock"></i> 7 min read</p>
-      <p><i class="fas fa-donate"></i> Subscribers Only</p>
+      <p><i class="far fa-clock"></i> {{ readingTime(story.content) }}</p>
+      <p v-if="story.isPremium">
+        <i class="fas fa-donate"></i> Subscribers Only
+      </p>
     </footer>
   </article>
 </template>
 
+<script>
+import time from 'reading-time';
+
+export default {
+  props: {
+    story: {
+      required: true,
+      type: Object
+    }
+  },
+  methods: {
+    readingTime: function(text) {
+      return time(text).text;
+    }
+  }
+};
+</script>
+
 <style scoped>
 article {
-  flex-basis: 33%;
+  flex: 0 1 33%;
   padding: var(--spacing) var(--spacing-double);
 }
 
@@ -38,6 +59,21 @@ article:hover {
 article:hover h3 {
   color: var(--color-blue);
   cursor: pointer;
+}
+
+article > header {
+  display: flex;
+  flex-flow: column nowrap;
+  margin-bottom: var(--spacing-double);
+}
+
+.time,
+.author {
+  flex: 2em;
+}
+
+.title {
+  flex: 8em;
 }
 
 time {
@@ -78,6 +114,7 @@ footer > p {
 .author {
   color: var(--color-grey);
   display: inline;
+  margin-top: var(--spacing);
 }
 
 .author > a {

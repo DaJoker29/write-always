@@ -10,17 +10,24 @@
         noDescription,
         descriptionTooLong,
         descriptionThreshold,
-        subscribersOnly
+        subscribersOnly,
+        titleTooLong,
+        titleThreshold
       }"
     >
       <input v-model="title" type="text" placeholder="Title" class="title" />
-      <small>*This field accepts Markdown.</small>
+      <Transition name="fade">
+        <small v-if="titleTooLong"
+          >Keep titles under {{ maxTitleLen }} characters.</small
+        >
+      </Transition>
       <textarea
         v-model="content"
         v-autosize="content"
         class="content"
         placeholder="Once upon a time..."
       ></textarea>
+      <small>*This field accepts Markdown.</small>
       <div class="settings">
         <label
           ><input v-model="isPremium" type="checkbox" /> Make this story
@@ -53,9 +60,10 @@ export default {
       title: '',
       description: '',
       isPremium: false,
-      minTitleLen: 1,
-      minContentLen: 20,
-      maxDescriptionLen: 150,
+      minTitleLen: 2,
+      maxTitleLen: 70,
+      minContentLen: 10,
+      maxDescriptionLen: 180,
       threshold: 0.6
     };
   },
@@ -64,13 +72,16 @@ export default {
       return this.validTitle && this.validContent && this.validDescription;
     },
     validTitle() {
-      return this.title.length > this.minTitleLen;
+      return (
+        this.title.length >= this.minTitleLen &&
+        this.title.length <= this.maxTitleLen
+      );
     },
     validContent() {
       return this.content.length > this.minContentLen;
     },
     validDescription() {
-      return this.description.length < this.maxDescriptionLen;
+      return this.description.length <= this.maxDescriptionLen;
     },
     noTitle() {
       return this.title.length === 0;
@@ -86,6 +97,12 @@ export default {
     },
     descriptionThreshold() {
       return this.description.length > this.maxDescriptionLen * this.threshold;
+    },
+    titleTooLong() {
+      return this.title.length > this.maxTitleLen;
+    },
+    titleThreshold() {
+      return this.title.length > this.maxTitleLen * this.threshold;
     },
     subscribersOnly() {
       return this.isPremium;
@@ -164,12 +181,17 @@ input:focus {
   color: var(--color-black);
 }
 
-.counter {
+.counter,
+.title-counter {
   padding: var(--spacing-half);
   border: 1px solid;
 }
 
 .descriptionTooLong .counter {
+  color: var(--color-red);
+}
+
+.titleTooLong .title-counter {
   color: var(--color-red);
 }
 </style>
