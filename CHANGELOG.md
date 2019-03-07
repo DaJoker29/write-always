@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.10.0"></a>
+# [0.10.0](https://github.com/DaJoker29/write-always/compare/v0.9.0...v0.10.0) (2019-03-07)
+
+
+### Features
+
+* build active user list ([ccadfc1](https://github.com/DaJoker29/write-always/commit/ccadfc1)), closes [#91](https://github.com/DaJoker29/write-always/issues/91) [#81](https://github.com/DaJoker29/write-always/issues/81)
+
+
+
 <a name="0.9.0"></a>
 # [0.9.0](https://github.com/DaJoker29/write-always/compare/v0.8.0...v0.9.0) (2019-03-06)
 

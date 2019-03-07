@@ -1,6 +1,6 @@
 {
   "name": "write-always",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "A community built around creative writing and sharing stories.",
   "main": "index.js",
   "scripts": {
