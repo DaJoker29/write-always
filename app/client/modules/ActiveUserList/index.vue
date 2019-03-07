@@ -1,15 +1,37 @@
 <template>
   <aside>
-    <small>3 Users Currently Active</small>
-    <ul>
-      <li class="active">User #1</li>
-      <li class="active">User #2</li>
-      <li>User #3</li>
-      <li class="active">User #4</li>
-      <li>User #5</li>
-    </ul>
+    <small>{{ activeCount }} Active User{{ activeCount > 1 ? 's' : '' }}</small>
+    <TransitionGroup name="users-list" tag="ul">
+      <li
+        v-for="user in allUsers"
+        :key="user._id"
+        :class="{ active: isActive(user) }"
+      >
+        {{ user.displayName }}
+      </li>
+    </TransitionGroup>
   </aside>
 </template>
+
+<script>
+import { mapGetters } from 'vuex';
+
+export default {
+  computed: {
+    ...mapGetters(['allUsers']),
+    activeCount() {
+      return this.allUsers.filter(user => this.isActive(user)).length;
+    }
+  },
+  methods: {
+    isActive(user) {
+      const now = this.moment();
+      const lastLogin = this.moment(user.dateLastLogin);
+      return now.diff(lastLogin, 'minutes') < 15;
+    }
+  }
+};
+</script>
 
 <style scoped>
 aside {
