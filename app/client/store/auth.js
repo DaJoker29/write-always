@@ -29,7 +29,19 @@ const auth = {
     }
   },
   actions: {
+    async login({ commit, dispatch }, email) {
+      const body = {
+        method: 'dab',
+        email
+      };
+      const token = (await axios.post('/auth/login', body)).data;
+
+      commit('setToken', token);
+      dispatch('fetchUser');
+      dispatch('fetchAllNotebooks');
+    },
     logout({ commit, dispatch }) {
+      window.FB.logout();
       commit('logout');
       dispatch('initialFetch');
     },

@@ -1,7 +1,7 @@
 <template>
   <main>
-    <h3>Creating an account...</h3>
     <form @submit.prevent="onSubmit">
+      <h3>Creating an account...</h3>
       <label>
         Username <input v-model="username" type="text" placeholder="Username" />
       </label>
@@ -53,9 +53,16 @@ export default {
       const response = await this.$http.post('/users', { data });
 
       if (response.status === 200) {
+        this.login(response.data);
         // Log in user
       }
     }
   }
 };
 </script>
+
+<style scoped>
+form {
+  padding: var(--spacing);
+}
+</style>

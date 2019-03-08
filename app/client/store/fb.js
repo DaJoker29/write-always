@@ -40,9 +40,11 @@ const fb = {
             window.FB.api('/me', { fields: 'name, email' }, async fbUser => {
               commit('setProfile', fbUser);
               // If no user exists or username doesn't exist, launch sign up flow.
-              const user = await http.get(`/user?email=${fbUser.email}`);
-              if (user && user.username) {
+              const response = await http.get(`/user?email=${fbUser.email}`);
+
+              if (response.status === 200 && response.data) {
                 // User logged in as normal. Retrieve Token.
+                dispatch('login', fbUser.email);
               } else {
                 // Put user through sign up flow
                 router.push('/signup');

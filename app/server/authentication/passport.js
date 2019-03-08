@@ -16,32 +16,13 @@ export default function() {
       },
       async function(req, method, email, cb) {
         try {
-          const options = {};
-
-          if (method === 'fb') {
-            options.email = email;
-            options.fbUserID = req.body.response.fbUserID;
-          } else {
-            throw new VError('No method specified');
-          }
-
-          const user = await User.findOne(options);
+          const user = await User.findOne({ email });
 
           if (user) {
             // Return user if they exist
             return cb(null, user, { message: 'Login was successful' });
           } else {
-            // Otherwise, create new user
-            const { displayName, fbUserID, fbUserAccess } = req.body.response;
-            const query = {
-              email,
-              displayName,
-              fbUserID,
-              fbUserAccess
-            };
-
-            const newUser = await User.create(query);
-            return cb(null, newUser, { message: 'New account created' });
+            throw new VError('User not found');
           }
         } catch (e) {
           return cb(e, null, { message: 'There was an error' });
