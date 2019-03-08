@@ -19,6 +19,15 @@ const router = new Router({
   mode: 'history',
   routes: [
     {
+      path: '/signup',
+      name: 'signUp',
+      component: () => import('@client/views/SignUp'),
+      // TODO: Switch to ^this^ format for the rest of these
+      meta: {
+        user: false
+      }
+    },
+    {
       path: '/new-story',
       name: 'newStory',
       component: CreateNewStory,

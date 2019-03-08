@@ -1,5 +1,10 @@
 <template>
-  <form><button @click="facebookLogin">Facebook Sign-in</button></form>
+  <form>
+    <fieldset>
+      <h2>Continue with Facebook</h2>
+      <button @click="facebookLogin">Facebook Sign-in</button>
+    </fieldset>
+  </form>
 </template>
 
 <script>

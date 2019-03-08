@@ -8,6 +8,9 @@ const fb = {
     userID: '',
     profile: {}
   },
+  getters: {
+    fbProfile: state => state.profile
+  },
   mutations: {
     setStatus(state, payload) {
       state.status = payload;
@@ -34,10 +37,10 @@ const fb = {
 
           if (status === 'connected') {
             // Fetch user with matching userID
-            window.FB.api('/me', { fields: 'email' }, async ({ email }) => {
-              // commit('setProfile', response);
+            window.FB.api('/me', { fields: 'name, email' }, async fbUser => {
+              commit('setProfile', fbUser);
               // If no user exists or username doesn't exist, launch sign up flow.
-              const user = await http.get(`/user?email=${email}`);
+              const user = await http.get(`/user?email=${fbUser.email}`);
               if (user && user.username) {
                 // User logged in as normal. Retrieve Token.
               } else {

@@ -10,10 +10,20 @@ const router = Router();
 
 router.get('/users', asyncHandler(fetchAllUsers));
 router.get('/user', asyncHandler(fetchUser));
+router.post('/users', asyncHandler(createUser));
 router.post('/user/token', asyncHandler(fetchCurrentUser));
 router.post('/user/fb', asyncHandler(updateFBToken));
 
 export default router;
+
+export async function createUser(req, res, next) {
+  const { data } = req.body;
+
+  data.username = data.username.toLowerCase();
+
+  await User.create(data);
+  res.sendStatus(200);
+}
 
 export async function fetchUser(req, res, next) {
   const { email, username } = req.query;
