@@ -5,12 +5,14 @@ import ui from './ui';
 import auth from './auth';
 import feed from './feed';
 import story from './story';
+import fb from './fb';
 import sort, { sortEntries, sortNotebooks, sortUsers } from './sort';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
+    fb,
     story,
     feed,
     auth,

@@ -1,17 +1,14 @@
 <template>
-  <main><button @click="facebookLogin">Facebook Sign-in</button></main>
+  <main>
+    <FacebookLogin />
+    <!-- Google Login will go here -->
+  </main>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-
 export default {
-  methods: {
-    ...mapActions(['loginToFacebook']),
-    facebookLogin() {
-      this.loginToFacebook();
-      this.$router.push('/');
-    }
+  components: {
+    FacebookLogin: () => import('@client/modules/FacebookLogin')
   }
 };
 </script>

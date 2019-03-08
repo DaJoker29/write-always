@@ -9,10 +9,22 @@ const log = Log('middleware');
 const router = Router();
 
 router.get('/users', asyncHandler(fetchAllUsers));
+router.get('/user', asyncHandler(fetchUser));
 router.post('/user/token', asyncHandler(fetchCurrentUser));
 router.post('/user/fb', asyncHandler(updateFBToken));
 
 export default router;
+
+export async function fetchUser(req, res, next) {
+  const { email, username } = req.query;
+
+  if (email || username) {
+    const user = await User.findOne(req.query).lean();
+    return res.json(user);
+  } else {
+    return res.sendStatus(400);
+  }
+}
 
 export async function updateFBToken(req, res, next) {
   const { fbUserAccess, fbUserID, id } = req.body;
