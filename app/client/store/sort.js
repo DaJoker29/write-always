@@ -5,12 +5,6 @@ const sort = {
     sort: {
       authors: {
         orderBy: 'joined'
-      },
-      notebooks: {
-        orderBy: 'updated'
-      },
-      entries: {
-        orderBy: 'newest'
       }
     }
   },
@@ -34,56 +28,10 @@ const sort = {
 
 export default sort;
 
-export { sortEntries, sortNotebooks, sortUsers };
+export { sortUsers };
 
 function dateCompare(a, b) {
   return moment(a).diff(moment(b));
-}
-
-function sortEntries(state) {
-  const { sort } = state.sort;
-  const { orderBy } = sort.entries;
-
-  // Map entries into object
-  const entries = state.allEntries.reduce(function(acc, cur) {
-    const key = cur.notebook.uid;
-
-    if (Object.keys(acc).indexOf(key) === -1) {
-      acc[key] = [cur];
-    } else {
-      acc[key].push(cur);
-    }
-    return acc;
-  }, {});
-
-  // Sort arrays of entries
-  Object.keys(entries).forEach(key => {
-    if (orderBy === 'oldest') {
-      entries[key].sort((a, b) => dateCompare(a.createdAt, b.createdAt));
-    } else {
-      entries[key].sort((a, b) => dateCompare(b.createdAt, a.createdAt));
-    }
-  });
-
-  return entries;
-}
-
-function sortNotebooks(state) {
-  const { sort } = state.sort;
-  const { orderBy } = sort.notebooks;
-
-  if (orderBy === 'oldest') {
-    state.allNotebooks.sort((a, b) => dateCompare(a.createdAt, b.createdAt));
-  } else if (orderBy === 'newest') {
-    state.allNotebooks.sort((a, b) => dateCompare(b.createdAt, a.createdAt));
-  } else if (orderBy === 'alphabetical') {
-    state.allNotebooks.sort((a, b) => {
-      return textCompare(a.title, b.title);
-    });
-  } else if (orderBy === 'updated') {
-    state.allNotebooks.sort((a, b) => dateCompare(b.updatedAt, a.updatedAt));
-  }
-  return state.allNotebooks;
 }
 
 function sortUsers(state) {

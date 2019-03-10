@@ -28,6 +28,7 @@ export default {
     ])
   },
   created() {
+    console.log('App loaded hook triggered');
     NProgress.start();
     const vm = this;
 

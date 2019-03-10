@@ -1,8 +1,13 @@
 <template>
   <aside>
-    <h3 v-if="isLoggedIn">Welcome back, {{ currentUser.displayName }}!</h3>
-    <h3 v-else>Howdy!</h3>
-    <CreateFeedEntry v-if="isLoggedIn" />
+    <div v-if="isLoggedIn">
+      <h3>Welcome back, {{ currentUser.displayName }}!</h3>
+      <CreateFeedEntry v-if="isLoggedIn" />
+    </div>
+    <div v-else>
+      <h3>Howdy!</h3>
+      <FacebookLogin />
+    </div>
     <PersonalFeed />
   </aside>
 </template>
@@ -13,7 +18,8 @@ import { mapGetters } from 'vuex';
 export default {
   components: {
     CreateFeedEntry: () => import('./CreateFeedEntry'),
-    PersonalFeed: () => import('./PersonalFeed')
+    PersonalFeed: () => import('./PersonalFeed'),
+    FacebookLogin: () => import('@client/modules/FacebookLogin')
   },
   computed: {
     ...mapGetters(['currentUser', 'isLoggedIn'])
@@ -25,6 +31,6 @@ export default {
 aside {
   background-color: var(--color-black);
   color: var(--color-white);
-  padding: var(--spacing) 0;
+  padding: var(--spacing);
 }
 </style>

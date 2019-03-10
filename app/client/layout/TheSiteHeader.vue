@@ -28,16 +28,6 @@
             Authors
           </RouterLink>
         </li>
-        <li>
-          <RouterLink
-            v-if="isLoggedIn"
-            :to="{ name: 'createNotebook' }"
-            @click.native="closeNav"
-          >
-            Create Notebook
-          </RouterLink>
-        </li>
-        <li><a href="/contact"> Contact </a></li>
         <li v-if="!isLoggedIn">
           <RouterLink :to="{ name: 'login' }" @click.native="toggleNav"
             >Log In</RouterLink
