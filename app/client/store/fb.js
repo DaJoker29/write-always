@@ -9,7 +9,8 @@ const fb = {
     profile: {}
   },
   getters: {
-    fbProfile: state => state.profile
+    fbProfile: state => state.profile,
+    fbStatus: state => state.status
   },
   mutations: {
     setStatus(state, payload) {
@@ -36,63 +37,32 @@ const fb = {
           commit('setAccessToken', accessToken);
 
           if (status === 'connected') {
-            // Fetch user with matching userID
             window.FB.api('/me', { fields: 'name, email' }, async fbUser => {
               commit('setProfile', fbUser);
-              // If no user exists or username doesn't exist, launch sign up flow.
               const response = await http.get(`/user?email=${fbUser.email}`);
 
               if (response.status === 200 && response.data) {
-                // User logged in as normal. Retrieve Token.
                 dispatch('login', fbUser.email);
               } else {
-                // Put user through sign up flow
                 router.push('/signup');
               }
             });
           }
         }
-
-        // if (authResponse && status === 'connected' && state.token) {
-        //   // User authenticated through Facebook and ready to roll
-        //   const { userID: fbUserID, accessToken: fbUserAccess } = authResponse;
-        //   dispatch('updateFBToken', { fbUserID, fbUserAccess });
-        // } else if (
-        //   status === 'authorization_expired' ||
-        //   status === 'not_authorized'
-        // ) {
-        //   // Problem with facebook authorization. :'(
-        //   dispatch('fbLogout');
-        //   dispatch('logout');
-        // } else {
-        //   // What's facebook?
-        //   dispatch('logout');
-        // }
       });
     },
-    fbLogin({ dispatch }, { email, ...response }) {
-      dispatch('fetchToken', { method: 'fb', email, response });
-    },
-    fbLogout() {
-      window.FB.logout();
+    fbLogout({ dispatch }) {
+      window.FB.logout(() => {
+        dispatch('checkFBStatus');
+        router.push('/');
+      });
     },
     loginToFacebook({ dispatch, commit }) {
       window.FB.login(
         ({ authResponse }) => {
           if (authResponse) {
             window.FB.api('/me', { fields: 'name, email' }, response => {
-              commit('setProfile', response);
-              const { name: displayName, id: fbUserID, email } = response;
-              const { accessToken: fbUserAccess } = authResponse;
-
-              const payload = {
-                email,
-                displayName,
-                fbUserID,
-                fbUserAccess
-              };
-
-              dispatch('fbLogin', payload);
+              dispatch('checkFBStatus');
             });
           } else {
             console.log('User cancelled login or did not fully authorize');

@@ -1,21 +1,30 @@
 <template>
   <form>
-    <fieldset>
+    <fieldset v-if="connected">
+      <p>Connected via Facebook as {{ fbProfile.name }}.</p>
+      <p><a @click="fbLogout">Log Out</a></p>
+    </fieldset>
+    <fieldset v-else>
       <h2>Continue with Facebook</h2>
-      <button @click="facebookLogin">Facebook Sign-in</button>
+      <button @click.prevent="facebookLogin">Facebook Sign-in</button>
     </fieldset>
   </form>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
+  computed: {
+    ...mapGetters(['fbStatus', 'fbProfile']),
+    connected() {
+      return this.fbStatus === 'connected';
+    }
+  },
   methods: {
-    ...mapActions(['loginToFacebook']),
+    ...mapActions(['loginToFacebook', 'fbLogout']),
     facebookLogin() {
       this.loginToFacebook();
-      this.$router.push('/');
     }
   }
 };

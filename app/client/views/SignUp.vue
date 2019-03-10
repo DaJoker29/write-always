@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   data() {
@@ -43,6 +43,7 @@ export default {
     this.displayName = this.name;
   },
   methods: {
+    ...mapActions(['checkFBStatus']),
     async onSubmit() {
       const data = {
         username: this.username,
@@ -53,7 +54,8 @@ export default {
       const response = await this.$http.post('/users', { data });
 
       if (response.status === 200) {
-        this.login(response.data);
+        this.$router.push('/');
+        this.checkFBStatus();
         // Log in user
       }
     }

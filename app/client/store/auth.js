@@ -41,7 +41,7 @@ const auth = {
       dispatch('fetchAllNotebooks');
     },
     logout({ commit, dispatch }) {
-      window.FB.logout();
+      dispatch('fbLogout');
       commit('logout');
       dispatch('initialFetch');
     },

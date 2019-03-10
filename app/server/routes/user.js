@@ -55,10 +55,9 @@ export async function fetchCurrentUser(req, res, next) {
     return res.sendStatus(400);
   }
 
-  const user = await User.findOne(
-    { _id: id },
-    '+email +token +fbUserAccess +fbUserID'
-  ).lean({ virtuals: true });
+  const user = await User.findOne({ _id: id }, '+email').lean({
+    virtuals: true
+  });
 
   return res.json(user);
 }
