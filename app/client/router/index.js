@@ -3,16 +3,6 @@ import Router from 'vue-router';
 import NProgress from 'nprogress';
 import store from '@client/store';
 
-const Home = () => import('@client/views/Home');
-const LoginPage = () => import('@client/views/Login');
-const AuthorsPage = () => import('@client/views/Authors');
-const PageNotFound = () => import('@client/views/PageNotFound');
-const SingleAuthorPage = () => import('@client/views/SingleAuthor');
-const SingleNotebookPage = () => import('@client/views/SingleNotebook');
-const CreateNotebookPage = () => import('@client/views/CreateNotebook');
-const CreateEntryPage = () => import('@client/views/CreateEntry');
-const CreateNewStory = () => import('@client/views/CreateNewStory');
-
 Vue.use(Router);
 
 const router = new Router({
@@ -30,7 +20,7 @@ const router = new Router({
     {
       path: '/new-story',
       name: 'newStory',
-      component: CreateNewStory,
+      component: () => import('@client/views/CreateNewStory'),
       meta: {
         user: true
       }
@@ -38,52 +28,18 @@ const router = new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: LoginPage,
-      meta: {
-        guest: true
-      }
+      component: () => import('@client/views/Home')
     },
     {
       path: '/authors',
       name: 'authors',
-      component: AuthorsPage
-    },
-    {
-      path: '/author/:authorID',
-      name: 'author',
-      component: SingleAuthorPage
-    },
-    {
-      path: '/notebook/:notebookID',
-      name: 'notebook',
-      component: SingleNotebookPage
-    },
-    {
-      path: '/notebook/create',
-      name: 'createNotebook',
-      component: CreateNotebookPage,
-      meta: {
-        user: true
-      }
-    },
-    {
-      path: '/entry/create',
-      name: 'createEntry',
-      component: CreateEntryPage,
-      meta: {
-        user: true
-      }
+      component: () => import('@client/views/Authors')
     },
     {
       path: '404',
       alias: '*',
       name: 'notFound',
-      component: PageNotFound
+      component: () => import('@client/views/PageNotFound')
     }
   ]
 });
